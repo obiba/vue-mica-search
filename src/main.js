@@ -1,8 +1,12 @@
-import Vue from 'vue'
-import App from './App.vue'
+import VariablesResult from './components/VariablesResult.vue'
 
-Vue.config.productionTip = false
+function install (Vue, options) {
+  VariablesResult.mixins = [options.mixin];
+  Vue.component(VariablesResult.name, VariablesResult)
+}
 
-new Vue({
-  render: h => h(App),
-}).$mount('#app')
+VariablesResult.install = install;
+
+export default {
+  VariablesResult
+};
