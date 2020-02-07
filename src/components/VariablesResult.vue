@@ -1,14 +1,29 @@
 <template>
   <div>
-    <button @click="increment">{{ text }}</button>
+    <table id="vosr-var-result">
+      <thead>
+        <tr>
+          <th>User ID</th>
+          <th>User Name</th>
+          <th>User Email</th>
+        </tr>
+      </thead>
+      <tbody>
+      </tbody>
+    </table>
   </div>
 </template>
 <script>
-export default {
+import $ from 'jquery'
+import DataTable from 'datatables.net-dt'
+import VariablesResultParser from '../libs/parsers/VariablesResultParser';
+
+export default {  
   name: 'VariablesResult',  
   data () {
     return {
-      count: 0
+      count:0,
+      dataTable: null
     }
   },
   computed: {
@@ -31,7 +46,17 @@ export default {
     }
   },
   mounted() {
-    this.getEventBus().register('query-type-selection', this.onSomeEvent)
+    this.dataTable = $('#vosr-var-result').DataTable({});
+    this.getEventBus().register('query-type-selection', this.onSomeEvent);
+    new VariablesResultParser().data.forEach(element => {
+      this.dataTable
+      .row.add([
+        element.id,
+        `<a href="#">+${element.name}</a>`,
+        element.email
+      ])
+      .draw(false);
+    });
   },
   beforeDestroy() {
     this.getEventBus().unregister('query-type-selection', this.onSomeEvent)
