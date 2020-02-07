@@ -1,6 +1,6 @@
 <template>
   <div>
-    <table id="vosr-var-result">
+    <table id="vosr-var-result" class="table table-bordered table-striped">
       <thead>
         <tr>
           <th>User ID</th>
@@ -46,7 +46,14 @@ export default {
     }
   },
   mounted() {
-    this.dataTable = $('#vosr-var-result').DataTable({});
+    this.dataTable = $('#vosr-var-result').DataTable({
+        "paging": true,
+        "lengthChange": true,
+        "searching": true,
+        "ordering": true,
+        "info": true,
+        "autoWidth": true,
+    });
     this.getEventBus().register('query-type-selection', this.onSomeEvent);
     new VariablesResultParser().data.forEach(element => {
       this.dataTable
