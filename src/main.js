@@ -1,4 +1,4 @@
-import VariablesResult from './components/VariablesResult.vue'
+import VariablesResult from 'components/variables/VariablesResult.vue'
 
 function install (Vue, options) {
   VariablesResult.mixins = [options.mixin];

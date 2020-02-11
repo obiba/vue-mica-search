@@ -1,61 +1,42 @@
 export default class VariablesResultParser {
-  
+
   constructor() {
-    this._data = [
-      {
-        "id": 1,
-        "name": "Leanne Graham",
-        "username": "Bret",
-        "email": "Sincere@april.biz",
-        "address": {
-          "street": "Kulas Light",
-          "suite": "Apt. 556",
-          "city": "Gwenborough",
-          "zipcode": "92998-3874",
-          "geo": {
-            "lat": "-37.3159",
-            "lng": "81.1496"
-          }
-        },
-        "phone": "1-770-736-8031 x56442",
-        "website": "hildegard.org",
-        "company": {
-          "name": "Romaguera-Crona",
-          "catchPhrase": "Multi-layered client-server neural-net",
-          "bs": "harness real-time e-markets"
-        }
-      },
-      {
-        "id": 2,
-        "name": "Ervin Howell",
-        "username": "Antonette",
-        "email": "Shanna@melissa.tv",
-        "address": {
-          "street": "Victor Plains",
-          "suite": "Suite 879",
-          "city": "Wisokyburgh",
-          "zipcode": "90566-7771",
-          "geo": {
-            "lat": "-43.9509",
-            "lng": "-34.4618"
-          }
-        },
-        "phone": "010-692-6593 x09125",
-        "website": "anastasia.net",
-        "company": {
-          "name": "Deckow-Crist",
-          "catchPhrase": "Proactive didactic contingency",
-          "bs": "synergize scalable supply-chains"
-        }
-      }   ];
-  }
+  }  
 
-  get data() {
-    return this._data;
-  }
+  parse(data) {
+    const variablesResult = data.variableResultDto;
 
-  set data(value) {
-    this._data = value;
-  }
+    if (!variablesResult) {
+      throw new Error("No variable results available.");
+    }
+
+    const result = variablesResult["obiba.mica.DatasetVariableResultDto.result"];
+
+    if (!variablesResult) {
+      throw new Error("Invalid JSON.");
+    }
+
+    let parsed = {
+      data: [],
+      totalHits: variablesResult.totalHits
+    }
+
+    result.summaries.forEach(summary => {
+      parsed.data.push(
+        [
+          `<a href="/variable/${summary.id}">${summary.name}</a>`,
+          summary.variableLabel[0].value,
+          summary.annotations.reduce((acc, annotation) => 
+            ('' !== acc ? `${acc}\n` : '') + `${annotation.taxonomy}.${annotation.vocabulary}.${annotation.value}`
+          , ''),
+          summary.variableType,
+          summary.studyAcronym[0].value,
+          summary.datasetAcronym[0].value
+        ]
+      );
+    });
+
+    return parsed;
+  } 
 }
 
