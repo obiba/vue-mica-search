@@ -1,5 +1,6 @@
 {
   "name": "vue-obiba-search-result",
+  "main": "dist/VueObibaSearchResult.umd.js",
   "version": "0.1.0",
   "private": true,
   "scripts": {
