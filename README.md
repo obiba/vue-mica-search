@@ -1,9 +1,10 @@
 # vue-obiba-search-result
 
 ## Installing tools
-
-npm install -g  @vue/cli
-npm install -g  yarn # if you don't have it
+```
+npm install -g @vue/cli 
+npm install -g yarn # if you don't have it
+```
 
 ## Project setup
 ```
