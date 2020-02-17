@@ -32,10 +32,10 @@ export default {
     }
   },
   methods: {
-    onDataReceived (payload) {
+    onResults (payload) {
       if (!this.dataTable) return;
       console.log(`Page info ${this.dataTable.page.info()} ${payload}`);
-      const parsed = this.parser.parse(payload);
+      const parsed = this.parser.parse(payload.response);
       this.ajaxCallback(
         {
           data: parsed.data,
@@ -47,7 +47,7 @@ export default {
   },
   mounted() {
     console.log('Varisbles Result Mounted...');
-    this.getEventBus().register('query-result-received', this.onDataReceived.bind(this));
+    this.getEventBus().register('variables-results', this.onResults.bind(this));
 
     this.dataTable = this.registerDataTable('vosr-var-result', {
       processing: true,
@@ -68,7 +68,7 @@ export default {
   beforeDestroy() {
     // TODO seems to be never called 
     console.log('Varisbles will be destroyed...');
-    this.getEventBus().unregister('query-result-received', this.onDataReceived)
+    this.getEventBus().unregister('variables-results', this.onResults)
   }
 }
 </script>
