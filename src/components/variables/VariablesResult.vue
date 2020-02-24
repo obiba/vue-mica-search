@@ -33,9 +33,11 @@ export default {
   },
   methods: {
     onResults (payload) {
-      if (!this.dataTable) return;
-      console.log(`Page info ${this.dataTable.page.info()} ${payload}`);
-      const parsed = this.parser.parse(payload.response);
+      if (!this.dataTable) return;     
+
+      console.log("Page info ".concat(this.dataTable.page.info(), " ").concat(payload));
+      const pageInfo = this.dataTable.page.info();
+      var parsed = this.parser.parse(payload.response);
       this.ajaxCallback(
         {
           data: parsed.data,
@@ -43,6 +45,34 @@ export default {
           recordsFiltered: parsed.totalHits
         }
       );
+
+      const start = payload.from || null;      
+      if(!start && pageInfo.start !== start) {
+        // The start has come from the query and not from pagination
+        this.manualPagination = true;
+        this.dataTable.page(start / pageInfo.length).draw(false);
+        this.ajaxCallback(
+          {
+            data: parsed.data,
+            recordsTotal: parsed.totalHits,
+            recordsFiltered: parsed.totalHits
+          }
+        );        
+      }
+    },
+    onAjaxCallback (data, callback) {
+      if (this.ajaxCallback) {
+        // this is called when paginating or page size is changed
+        if (this.manualPagination) {
+          this.manualPagination = false;
+        } else {
+          this.getEventBus().$emit('query-type-paginate', {display: 'list', type: 'variables', target: 'variable', from: data.start, size: data.length});
+        }
+        // this.getEventBus().$emit('gimme-data', {from: data.start, size: data.length});
+      } else {
+        // first time table is registered
+        this.ajaxCallback = callback;
+      }
     }
   },
   mounted() {
@@ -53,21 +83,13 @@ export default {
       processing: true,
       columns: columns,
       serverSide: true,      
-      ajax: (data, callback) => {
-        if (this.ajaxCallback) {
-          // this is called when paginating or page size is changed
-          this.getEventBus().$emit('query-type-selection', {type: 'variables-list', from: data.start, size: data.length});
-          // this.getEventBus().$emit('gimme-data', {from: data.start, size: data.length});
-        } else {
-          // first time table is registered
-          this.ajaxCallback = callback;
-        }
-      }
+      ajax: this.onAjaxCallback.bind(this)
     });
   },
   beforeDestroy() {
     // TODO seems to be never called 
     console.log('Varisbles will be destroyed...');
+    this.dataTable = null;
     this.getEventBus().unregister('variables-results', this.onResults)
   }
 }
