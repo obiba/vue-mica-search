@@ -46,8 +46,8 @@ export default {
         }
       );
 
-      const start = payload.from || null;      
-      if(!start && pageInfo.start !== start) {
+      const start = payload.hasOwnProperty('from') ? payload.from : null;      
+      if(start !== null && pageInfo.start !== start) {
         // The start has come from the query and not from pagination
         this.manualPagination = true;
         this.dataTable.page(start / pageInfo.length).draw(false);
@@ -55,7 +55,7 @@ export default {
           {
             data: parsed.data,
             recordsTotal: parsed.totalHits,
-            recordsFiltered: parsed.totalHits
+            recordsFiltered: parsed.totalHit  s
           }
         );        
       }
