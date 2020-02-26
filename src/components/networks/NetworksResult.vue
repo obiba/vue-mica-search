@@ -2,7 +2,7 @@
 <div> 
   <div class="row">
     <div class="col">      
-      <table id="vosr-variables-result" class="table table-bordered table-striped" width="100%">        
+      <table id="vosr-networks-result" class="table table-bordered table-striped" width="100%">        
       </table>
     </div>
   </div>
@@ -10,24 +10,25 @@
 </template>
 <script>
 import DataTable from 'datatables.net-dt' // eslint-disable-line no-unused-vars
-import VariablesResultParser from 'libs/parsers/VariablesResultParser';
+import NetworksResultParser from 'libs/parsers/NetworksResultParser';
 
 // TODO must be translatable
 const columns = [
+  {title: 'Acronym'},
   {title: 'Name'},
-  {title: 'Label'},
-  {title: 'Annotations'},
-  {title: 'Type'},
-  {title: 'Study'},
-  {title: 'Dataset'}
+  {title: 'Studies'},
+  {title: 'Datasets Collected'},
+  {title: 'Datasets Harmonized'},
+  {title: 'Variables Collected'},
+  {title: 'Variables Harmonized'},
 ];
 
 export default {  
-  name: 'VariablesResult',  
+  name: 'NetworksResult',  
   data () {
     return {
       dataTable: null,
-      parser: new VariablesResultParser(),
+      parser: new NetworksResultParser(),
       ajaxCallback: null
     }
   },
@@ -66,19 +67,18 @@ export default {
         if (this.manualPagination) {
           this.manualPagination = false;
         } else {
-          this.getEventBus().$emit('query-type-paginate', {display: 'list', type: 'variables', target: 'variable', from: data.start, size: data.length});
+          this.getEventBus().$emit('query-type-paginate', {display: 'list', type: 'networks', target: 'dataset', from: data.start, size: data.length});
         }
       } else {
-        // first time table is registered
         this.ajaxCallback = callback;
       }
     }
   },
   mounted() {
     console.log('Varisbles Result Mounted...');
-    this.getEventBus().register('variables-results', this.onResults.bind(this));
+    this.getEventBus().register('networks-results', this.onResults.bind(this));
 
-    this.dataTable = this.registerDataTable('vosr-variables-result', {
+    this.dataTable = this.registerDataTable('vosr-networks-result', {
       processing: true,
       columns: columns,
       serverSide: true,      
@@ -88,9 +88,9 @@ export default {
   },
   beforeDestroy() {
     // TODO seems to be never called 
-    console.log('Variables will be destroyed...');
+    console.log('Networks will be destroyed...');
     this.dataTable = null;
-    this.getEventBus().unregister('variables-results', this.onResults)
+    this.getEventBus().unregister('networks-results', this.onResults)
   }
 }
 </script>

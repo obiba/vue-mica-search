@@ -12,7 +12,7 @@ export default class VariablesResultParser {
 
     const result = variablesResult["obiba.mica.DatasetVariableResultDto.result"];
 
-    if (!variablesResult) {
+    if (!result) {
       throw new Error("Invalid JSON.");
     }
 
