@@ -162,6 +162,40 @@ exports.f = DESCRIPTORS ? nativeGetOwnPropertyDescriptor : function getOwnProper
 
 /***/ }),
 
+/***/ "09ac":
+/*!**************************************************!*\
+  !*** ./src/components/studies/StudiesResult.vue ***!
+  \**************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _StudiesResult_vue_vue_type_template_id_4713094b___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./StudiesResult.vue?vue&type=template&id=4713094b& */ "ffcc");
+/* harmony import */ var _StudiesResult_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./StudiesResult.vue?vue&type=script&lang=js& */ "ab56");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "2877");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _StudiesResult_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _StudiesResult_vue_vue_type_template_id_4713094b___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _StudiesResult_vue_vue_type_template_id_4713094b___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
 /***/ "0cfb":
 /*!**********************************************************!*\
   !*** ./node_modules/core-js/internals/ie8-dom-define.js ***!
@@ -26641,10 +26675,9 @@ function () {
         totalHits: datasetsResult.totalHits
       };
       result.datasets.forEach(function (dataset) {
-        var urlPrefix = dataset.variableType === 'Dataschema' ? 'harmonized-dataset' : 'collected-datasets';
         var type = dataset.variableType === 'Dataschema' ? 'Harmonized' : 'Collected';
         var stats = dataset['obiba.mica.CountStatsDto.datasetCountStats'] || {};
-        parsed.data.push(["<a href=\"/".concat(urlPrefix, "/").concat(dataset.id, "\">").concat(dataset.acronym[0].value, "</a>"), dataset.name[0].value, type, stats.networks || '-', stats.studies || '-', stats.variables || '-']);
+        parsed.data.push(["<a href=\"/dataset/".concat(dataset.id, "\">").concat(dataset.acronym[0].value, "</a>"), dataset.name[0].value, type, stats.networks || '-', stats.studies || '-', stats.variables || '-']);
       });
       return parsed;
     }
@@ -26771,6 +26804,131 @@ function () {
 }();
 
 
+
+/***/ }),
+
+/***/ "40f1":
+/*!***********************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/cache-loader/dist/cjs.js??ref--12-0!./node_modules/thread-loader/dist/cjs.js!./node_modules/babel-loader/lib!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/studies/StudiesResult.vue?vue&type=script&lang=js& ***!
+  \***********************************************************************************************************************************************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var core_js_modules_es_array_concat__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! core-js/modules/es.array.concat */ "99af");
+/* harmony import */ var core_js_modules_es_array_concat__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es_array_concat__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var datatables_net_dt__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! datatables.net-dt */ "b9b1");
+/* harmony import */ var datatables_net_dt__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(datatables_net_dt__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var libs_parsers_StudiesResultParser__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! libs/parsers/StudiesResultParser */ "726e");
+
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+ // eslint-disable-line no-unused-vars
+
+ // TODO must be translatable
+
+var columns = [{
+  title: 'Acronym'
+}, {
+  title: 'Name'
+}, {
+  title: 'Type'
+}, {
+  title: 'Study Design'
+}, {
+  title: 'Data Sources'
+}, {
+  title: 'Participants'
+}, {
+  title: 'Networks'
+}, {
+  title: 'Individual Datasets'
+}, {
+  title: 'Individual Variables'
+}, {
+  title: 'Harmonization Datasets'
+}, {
+  title: 'Harmonization Variables'
+}];
+/* harmony default export */ __webpack_exports__["default"] = ({
+  name: 'StudiesResult',
+  data: function data() {
+    return {
+      dataTable: null,
+      parser: new libs_parsers_StudiesResultParser__WEBPACK_IMPORTED_MODULE_2__["default"](),
+      ajaxCallback: null
+    };
+  },
+  methods: {
+    onResults: function onResults(payload) {
+      if (!this.dataTable) return;
+      console.log("Page info ".concat(this.dataTable.page.info(), " ").concat(payload));
+      var pageInfo = this.dataTable.page.info();
+      var parsed = this.parser.parse(payload.response);
+      this.ajaxCallback({
+        data: parsed.data,
+        recordsTotal: parsed.totalHits,
+        recordsFiltered: parsed.totalHits
+      });
+      var start = payload.hasOwnProperty('from') ? payload.from : null;
+
+      if (start !== null && pageInfo.start !== start) {
+        // The start has come from the query and not from pagination
+        this.manualPagination = true;
+        this.dataTable.page(start / pageInfo.length).draw(false);
+        this.ajaxCallback({
+          data: parsed.data,
+          recordsTotal: parsed.totalHits,
+          recordsFiltered: parsed.totalHits
+        });
+      }
+    },
+    onAjaxCallback: function onAjaxCallback(data, callback) {
+      if (this.ajaxCallback) {
+        // this is called when paginating or page size is changed
+        if (this.manualPagination) {
+          this.manualPagination = false;
+        } else {
+          this.getEventBus().$emit('query-type-paginate', {
+            display: 'list',
+            type: 'studies',
+            target: 'dataset',
+            from: data.start,
+            size: data.length
+          });
+        }
+      } else {
+        this.ajaxCallback = callback;
+      }
+    }
+  },
+  mounted: function mounted() {
+    console.log('Studies Result Mounted...');
+    this.getEventBus().register('studies-results', this.onResults.bind(this));
+    this.dataTable = this.registerDataTable('vosr-studies-result', {
+      processing: true,
+      columns: columns,
+      serverSide: true,
+      ajax: this.onAjaxCallback.bind(this),
+      fixedHeader: true
+    });
+  },
+  beforeDestroy: function beforeDestroy() {
+    // TODO seems to be never called 
+    console.log('Studies will be destroyed...');
+    this.dataTable = null;
+    this.getEventBus().unregister('studies-results', this.onResults);
+  }
+});
 
 /***/ }),
 
@@ -27081,7 +27239,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var core_js_modules_es_function_name__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es_function_name__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var components_variables_VariablesResult_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! components/variables/VariablesResult.vue */ "cd4c");
 /* harmony import */ var components_datasets_DatasetsResult_vue__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! components/datasets/DatasetsResult.vue */ "34af");
-/* harmony import */ var components_networks_NetworksResult_vue__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! components/networks/NetworksResult.vue */ "126c");
+/* harmony import */ var components_studies_StudiesResult_vue__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! components/studies/StudiesResult.vue */ "09ac");
+/* harmony import */ var components_networks_NetworksResult_vue__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! components/networks/NetworksResult.vue */ "126c");
+
 
 
 
@@ -27092,8 +27252,10 @@ function install(Vue, options) {
   Vue.component(components_variables_VariablesResult_vue__WEBPACK_IMPORTED_MODULE_1__["default"].name, components_variables_VariablesResult_vue__WEBPACK_IMPORTED_MODULE_1__["default"]);
   components_datasets_DatasetsResult_vue__WEBPACK_IMPORTED_MODULE_2__["default"].mixins = [options.mixin];
   Vue.component(components_datasets_DatasetsResult_vue__WEBPACK_IMPORTED_MODULE_2__["default"].name, components_datasets_DatasetsResult_vue__WEBPACK_IMPORTED_MODULE_2__["default"]);
-  components_networks_NetworksResult_vue__WEBPACK_IMPORTED_MODULE_3__["default"].mixins = [options.mixin];
-  Vue.component(components_networks_NetworksResult_vue__WEBPACK_IMPORTED_MODULE_3__["default"].name, components_networks_NetworksResult_vue__WEBPACK_IMPORTED_MODULE_3__["default"]);
+  components_studies_StudiesResult_vue__WEBPACK_IMPORTED_MODULE_3__["default"].mixins = [options.mixin];
+  Vue.component(components_studies_StudiesResult_vue__WEBPACK_IMPORTED_MODULE_3__["default"].name, components_studies_StudiesResult_vue__WEBPACK_IMPORTED_MODULE_3__["default"]);
+  components_networks_NetworksResult_vue__WEBPACK_IMPORTED_MODULE_4__["default"].mixins = [options.mixin];
+  Vue.component(components_networks_NetworksResult_vue__WEBPACK_IMPORTED_MODULE_4__["default"].name, components_networks_NetworksResult_vue__WEBPACK_IMPORTED_MODULE_4__["default"]);
 }
 
 /* harmony default export */ __webpack_exports__["default"] = (install);
@@ -27303,6 +27465,96 @@ var TEMPLATE = String(String).split('String');
 })(Function.prototype, 'toString', function toString() {
   return typeof this == 'function' && getInternalState(this).source || inspectSource(this);
 });
+
+
+/***/ }),
+
+/***/ "726e":
+/*!*************************************************!*\
+  !*** ./src/libs/parsers/StudiesResultParser.js ***!
+  \*************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return StudiesResultParser; });
+/* harmony import */ var core_js_modules_es_array_concat__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! core-js/modules/es.array.concat */ "99af");
+/* harmony import */ var core_js_modules_es_array_concat__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es_array_concat__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var core_js_modules_es_array_for_each__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! core-js/modules/es.array.for-each */ "4160");
+/* harmony import */ var core_js_modules_es_array_for_each__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es_array_for_each__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var core_js_modules_es_array_join__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! core-js/modules/es.array.join */ "a15b");
+/* harmony import */ var core_js_modules_es_array_join__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es_array_join__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var core_js_modules_es_function_name__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! core-js/modules/es.function.name */ "b0c0");
+/* harmony import */ var core_js_modules_es_function_name__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es_function_name__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var core_js_modules_web_dom_collections_for_each__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! core-js/modules/web.dom-collections.for-each */ "159b");
+/* harmony import */ var core_js_modules_web_dom_collections_for_each__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_web_dom_collections_for_each__WEBPACK_IMPORTED_MODULE_4__);
+/* harmony import */ var _home_ramin_projects_mlstr_vue_obiba_search_result_node_modules_babel_runtime_helpers_esm_classCallCheck__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./node_modules/@babel/runtime/helpers/esm/classCallCheck */ "d4ec");
+/* harmony import */ var _home_ramin_projects_mlstr_vue_obiba_search_result_node_modules_babel_runtime_helpers_esm_createClass__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./node_modules/@babel/runtime/helpers/esm/createClass */ "bee2");
+
+
+
+
+
+
+
+
+var StudiesResultParser =
+/*#__PURE__*/
+function () {
+  function StudiesResultParser() {
+    Object(_home_ramin_projects_mlstr_vue_obiba_search_result_node_modules_babel_runtime_helpers_esm_classCallCheck__WEBPACK_IMPORTED_MODULE_5__["default"])(this, StudiesResultParser);
+  }
+
+  Object(_home_ramin_projects_mlstr_vue_obiba_search_result_node_modules_babel_runtime_helpers_esm_createClass__WEBPACK_IMPORTED_MODULE_6__["default"])(StudiesResultParser, [{
+    key: "__getNumberOfParticipants",
+    value: function __getNumberOfParticipants(content) {
+      var numberOfParticipants = content['numberOfParticipants'];
+
+      if (numberOfParticipants) {
+        var participant = numberOfParticipants['participant'];
+
+        if (participant) {
+          return participant.number || '-';
+        }
+      }
+
+      return '-';
+    }
+  }, {
+    key: "parse",
+    value: function parse(data) {
+      var _this = this;
+
+      var studiesResult = data.studyResultDto;
+
+      if (!studiesResult) {
+        throw new Error("No network results available.");
+      }
+
+      var result = studiesResult["obiba.mica.StudyResultDto.result"];
+
+      if (!result) {
+        throw new Error("Invalid JSON.");
+      }
+
+      var parsed = {
+        data: [],
+        totalHits: studiesResult.totalHits
+      };
+      result.summaries.forEach(function (summary) {
+        var type = summary.variableType === 'Dataschema' ? 'Harmonized' : 'Collected';
+        var stats = summary['obiba.mica.CountStatsDto.studyCountStats'] || {};
+        var content = JSON.parse(summary.content);
+        parsed.data.push(["<a href=\"/study/".concat(summary.id, "\">").concat(summary.acronym[0].value, "</a>"), summary.name[0].value, type, summary.design || '-', (summary.dataSources || []).join('<br>'), _this.__getNumberOfParticipants(content), stats.networks || '-', stats.studyDatasets || '-', stats.studyVariables || '-', stats.harmonizationDatasets || '-', stats.dataschemaVariables || '-']);
+      });
+      return parsed;
+    }
+  }]);
+
+  return StudiesResultParser;
+}();
+
 
 
 /***/ }),
@@ -27857,6 +28109,36 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "a15b":
+/*!*******************************************************!*\
+  !*** ./node_modules/core-js/modules/es.array.join.js ***!
+  \*******************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var $ = __webpack_require__(/*! ../internals/export */ "23e7");
+var IndexedObject = __webpack_require__(/*! ../internals/indexed-object */ "44ad");
+var toIndexedObject = __webpack_require__(/*! ../internals/to-indexed-object */ "fc6a");
+var arrayMethodIsStrict = __webpack_require__(/*! ../internals/array-method-is-strict */ "a640");
+
+var nativeJoin = [].join;
+
+var ES3_STRINGS = IndexedObject != Object;
+var STRICT_METHOD = arrayMethodIsStrict('join', ',');
+
+// `Array.prototype.join` method
+// https://tc39.github.io/ecma262/#sec-array.prototype.join
+$({ target: 'Array', proto: true, forced: ES3_STRINGS || !STRICT_METHOD }, {
+  join: function join(separator) {
+    return nativeJoin.call(toIndexedObject(this), separator === undefined ? ',' : separator);
+  }
+});
+
+
+/***/ }),
+
 /***/ "a640":
 /*!******************************************************************!*\
   !*** ./node_modules/core-js/internals/array-method-is-strict.js ***!
@@ -27895,6 +28177,20 @@ module.exports = function (argument) {
   return isNaN(argument = +argument) ? 0 : (argument > 0 ? floor : ceil)(argument);
 };
 
+
+/***/ }),
+
+/***/ "ab56":
+/*!***************************************************************************!*\
+  !*** ./src/components/studies/StudiesResult.vue?vue&type=script&lang=js& ***!
+  \***************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_cache_loader_dist_cjs_js_ref_12_0_node_modules_thread_loader_dist_cjs_js_node_modules_babel_loader_lib_index_js_node_modules_cache_loader_dist_cjs_js_ref_0_0_node_modules_vue_loader_lib_index_js_vue_loader_options_StudiesResult_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/cache-loader/dist/cjs.js??ref--12-0!../../../node_modules/thread-loader/dist/cjs.js!../../../node_modules/babel-loader/lib!../../../node_modules/cache-loader/dist/cjs.js??ref--0-0!../../../node_modules/vue-loader/lib??vue-loader-options!./StudiesResult.vue?vue&type=script&lang=js& */ "40f1");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_cache_loader_dist_cjs_js_ref_12_0_node_modules_thread_loader_dist_cjs_js_node_modules_babel_loader_lib_index_js_node_modules_cache_loader_dist_cjs_js_ref_0_0_node_modules_vue_loader_lib_index_js_vue_loader_options_StudiesResult_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
 
 /***/ }),
 
@@ -27993,6 +28289,24 @@ module.exports = function (name) {
     else WellKnownSymbolsStore[name] = createWellKnownSymbol('Symbol.' + name);
   } return WellKnownSymbolsStore[name];
 };
+
+
+/***/ }),
+
+/***/ "b6c5":
+/*!**************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"62619ecc-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/studies/StudiesResult.vue?vue&type=template&id=4713094b& ***!
+  \**************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _vm._m(0)}
+var staticRenderFns = [function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',[_c('div',{staticClass:"row"},[_c('div',{staticClass:"col"},[_c('table',{staticClass:"table table-bordered table-striped",attrs:{"id":"vosr-studies-result","width":"100%"}})])])])}]
+
 
 
 /***/ }),
@@ -28915,6 +29229,24 @@ module.exports = NATIVE_SYMBOL
   && !Symbol.sham
   // eslint-disable-next-line no-undef
   && typeof Symbol.iterator == 'symbol';
+
+
+/***/ }),
+
+/***/ "ffcc":
+/*!*********************************************************************************!*\
+  !*** ./src/components/studies/StudiesResult.vue?vue&type=template&id=4713094b& ***!
+  \*********************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_cache_loader_dist_cjs_js_cacheDirectory_node_modules_cache_vue_loader_cacheIdentifier_62619ecc_vue_loader_template_node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_cache_loader_dist_cjs_js_ref_0_0_node_modules_vue_loader_lib_index_js_vue_loader_options_StudiesResult_vue_vue_type_template_id_4713094b___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"62619ecc-vue-loader-template"}!../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../node_modules/cache-loader/dist/cjs.js??ref--0-0!../../../node_modules/vue-loader/lib??vue-loader-options!./StudiesResult.vue?vue&type=template&id=4713094b& */ "b6c5");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_cache_loader_dist_cjs_js_cacheDirectory_node_modules_cache_vue_loader_cacheIdentifier_62619ecc_vue_loader_template_node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_cache_loader_dist_cjs_js_ref_0_0_node_modules_vue_loader_lib_index_js_vue_loader_options_StudiesResult_vue_vue_type_template_id_4713094b___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_cache_loader_dist_cjs_js_cacheDirectory_node_modules_cache_vue_loader_cacheIdentifier_62619ecc_vue_loader_template_node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_cache_loader_dist_cjs_js_ref_0_0_node_modules_vue_loader_lib_index_js_vue_loader_options_StudiesResult_vue_vue_type_template_id_4713094b___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
 
 
 /***/ })

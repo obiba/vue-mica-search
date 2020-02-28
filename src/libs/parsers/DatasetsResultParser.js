@@ -22,13 +22,12 @@ export default class DatasetsResultParser {
     }
 
     result.datasets.forEach(dataset => {
-      const urlPrefix = dataset.variableType === 'Dataschema' ? 'harmonized-dataset' : 'collected-datasets';
       const type = dataset.variableType === 'Dataschema' ? 'Harmonized' : 'Collected';
       const stats = dataset['obiba.mica.CountStatsDto.datasetCountStats'] || {};
 
       parsed.data.push(
         [
-          `<a href="/${urlPrefix}/${dataset.id}">${dataset.acronym[0].value}</a>`,
+          `<a href="/dataset/${dataset.id}">${dataset.acronym[0].value}</a>`,
           dataset.name[0].value,
           type,
           stats.networks || '-',
