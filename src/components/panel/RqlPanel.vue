@@ -70,6 +70,8 @@ export default {
 
         if (found && Array.isArray(vocabulary.terms) && vocabulary.terms.length > 0 && ["exists", "missing"].indexOf(found.operator) === -1) {
           vocabulary.allSelectableTerms = vocabulary.terms.length > (Array.isArray(found.args[1]) ? found.args[1] : [found.args[1]]).length;
+        } else if (Array.isArray(vocabulary.terms) && vocabulary.terms.length > 0) {
+          vocabulary.allSelectableTerms = true;
         }
 
         return vocabulary;
