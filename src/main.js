@@ -3,6 +3,9 @@ import DatasetsResult from 'components/datasets/DatasetsResult.vue'
 import StudiesResult from 'components/studies/StudiesResult.vue'
 import NetworksResult from 'components/networks/NetworksResult.vue'
 
+import RqlQueryBuilder from 'components/builer/RqlQueryBuilder.vue'
+import RqlPanel from 'components/builer/RqlPanel.vue'
+
 function install(Vue, options) {
   VariablesResult.mixins = [options.mixin];
   Vue.component(VariablesResult.name, VariablesResult)
@@ -15,6 +18,12 @@ function install(Vue, options) {
 
   NetworksResult.mixins = [options.mixin];
   Vue.component(NetworksResult.name, NetworksResult)
+
+  RqlQueryBuilder.mixins = [options.mixin];
+  Vue.component('rql-query-builder', RqlQueryBuilder)
+
+  RqlPanel.mixins = [options.mixin];
+  Vue.component('rql-panel', RqlPanel)
 }
 
 export default install;
