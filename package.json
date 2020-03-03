@@ -9,18 +9,18 @@
     "build-lib": "vue-cli-service build --target lib --name VueObibaSearchResult src/main.js",
     "lint": "vue-cli-service lint"
   },
-  "dependencies": {
-  },
+  "dependencies": {},
   "devDependencies": {
-    "core-js": "^3.4.4",
-    "datatables.net-dt": "^1.10.20",
-    "vue": "^2.6.10",
     "@vue/cli-plugin-babel": "^4.1.0",
     "@vue/cli-plugin-eslint": "^4.1.0",
     "@vue/cli-service": "^4.1.0",
     "babel-eslint": "^10.0.3",
+    "core-js": "^3.4.4",
+    "datatables.net-dt": "^1.10.20",
     "eslint": "^5.16.0",
     "eslint-plugin-vue": "^5.0.0",
+    "rql": "https://github.com/epigeny/rql.git#master",
+    "vue": "^2.6.10",
     "vue-template-compiler": "^2.6.10"
   },
   "eslintConfig": {

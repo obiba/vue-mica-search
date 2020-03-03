@@ -2,26 +2,32 @@
 <div> 
   <div class="row">
     <div class="col">      
-      <table id="vosr-networks-result" class="table table-bordered table-striped" width="100%">        
+      <table id="vosr-networks-result" class="table table-bordered table-striped" width="100%">       
+        <thead>
+          <tr>
+            <th rowspan="2">Acronym</th>
+            <th rowspan="2">Name</th>
+            <th rowspan="2">Studies</th>
+            <th colspan="2">Datasets</th>
+            <th colspan="2">Variables</th>
+          </tr>
+          <tr>
+            <th>Collected</th>
+            <th>Harmonized</th>
+            <th>Collected</th>
+            <th>Harmonized</th>
+          </tr>
+        </thead> 
       </table>
     </div>
   </div>
 </div>
 </template>
 <script>
+import $ from 'jquery';
+import Query from 'rql/src/query';
 import DataTable from 'datatables.net-dt' // eslint-disable-line no-unused-vars
 import NetworksResultParser from 'libs/parsers/NetworksResultParser';
-
-// TODO must be translatable
-const columns = [
-  {title: 'Acronym'},
-  {title: 'Name'},
-  {title: 'Studies'},
-  {title: 'Datasets Collected'},
-  {title: 'Datasets Harmonized'},
-  {title: 'Variables Collected'},
-  {title: 'Variables Harmonized'},
-];
 
 export default {  
   name: 'NetworksResult',  
@@ -72,6 +78,20 @@ export default {
       } else {
         this.ajaxCallback = callback;
       }
+    },
+    onAnchorClicked(event) {
+      event.preventDefault();
+      const anchor = $(event.target);
+      const query = new Query('in', ['Mica_network.id', `${anchor.attr('data-target-id')}`]);
+      this.getEventBus().$emit(
+        'query-type-update', 
+        {
+          type: `${anchor.attr('data-type')}`, 
+          target: `${anchor.attr('data-target')}`, 
+          query          
+        });
+
+      console.log(`${anchor.attr('data-target')} - ${anchor.attr('data-target-id')}`);
     }
   },
   mounted() {
@@ -80,11 +100,13 @@ export default {
 
     this.dataTable = this.registerDataTable('vosr-networks-result', {
       processing: true,
-      columns: columns,
       serverSide: true,      
       ajax: this.onAjaxCallback.bind(this),
       fixedHeader: true
     });  
+
+    $('#vosr-networks-result').on('click', 'td', this.onAnchorClicked);
+
   },
   beforeDestroy() {
     // TODO seems to be never called 

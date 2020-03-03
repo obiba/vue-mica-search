@@ -3,6 +3,29 @@
   <div class="row">
     <div class="col">      
       <table id="vosr-studies-result" class="table table-bordered table-striped" width="100%">        
+        <thead>
+          <tr>
+            <th rowspan="2">Acronym</th>
+            <th rowspan="2">Name</th>
+            <th rowspan="2">Type</th>
+            <th rowspan="2">Study Design</th>
+            <th colspan="4">Data Sources Available</th>
+            <th rowspan="2">Participants</th>
+            <th rowspan="2">Networks</th>
+            <th colspan="2">Individual</th>
+            <th colspan="2">Harmonization</th>
+          </tr>
+          <tr>
+            <th><i class="fa fa-file-alt"></i></th>
+            <th><i class="fa fa-stethoscope"></i></th>
+            <th><i class="fa fa-flask"></i></th>
+            <th><i class="far fa-plus-square"></i></th>
+            <th>Datasets</th>
+            <th>Variables</th>
+            <th>Datasets</th>
+            <th>Variables</th>
+          </tr>
+        </thead> 
       </table>
     </div>
   </div>
@@ -12,20 +35,6 @@
 import DataTable from 'datatables.net-dt' // eslint-disable-line no-unused-vars
 import StudiesResultParser from 'libs/parsers/StudiesResultParser';
 
-// TODO must be translatable
-const columns = [
-  {title: 'Acronym'},
-  {title: 'Name'},
-  {title: 'Type'},
-  {title: 'Study Design'},
-  {title: 'Data Sources'},
-  {title: 'Participants'},
-  {title: 'Networks'},
-  {title: 'Individual Datasets'},
-  {title: 'Individual Variables'},
-  {title: 'Harmonization Datasets'},
-  {title: 'Harmonization Variables'}
-];
 
 export default {  
   name: 'StudiesResult',  
@@ -84,7 +93,6 @@ export default {
 
     this.dataTable = this.registerDataTable('vosr-studies-result', {
       processing: true,
-      columns: columns,
       serverSide: true,      
       ajax: this.onAjaxCallback.bind(this),
       fixedHeader: true

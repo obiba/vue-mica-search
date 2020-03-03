@@ -9,7 +9,9 @@
 </div>
 </template>
 <script>
-import DataTable from 'datatables.net-dt' // eslint-disable-line no-unused-vars
+import $ from 'jquery';
+import Query from 'rql/src/query';
+import DataTable from 'datatables.net-dt'; // eslint-disable-line no-unused-vars
 import DatasetsResultParser from 'libs/parsers/DatasetsResultParser';
 
 // TODO must be translatable
@@ -71,6 +73,20 @@ export default {
       } else {
         this.ajaxCallback = callback;
       }
+    },
+    onAnchorClicked(event) {
+      event.preventDefault();
+      const anchor = $(event.target);
+      const query = new Query('in', ['Mica_dataset.id', `${anchor.attr('data-target-id')}`]);
+      this.getEventBus().$emit(
+        'query-type-update', 
+        {
+          type: `${anchor.attr('data-type')}`, 
+          target: `${anchor.attr('data-target')}`, 
+          query          
+        });
+
+      console.log(`${anchor.attr('data-target')} - ${anchor.attr('data-target-id')}`);
     }
   },
   mounted() {
@@ -83,7 +99,10 @@ export default {
       serverSide: true,      
       ajax: this.onAjaxCallback.bind(this),
       fixedHeader: true
-    });  
+    });
+
+    $('#vosr-datasets-result').on('click', 'td', this.onAnchorClicked);
+
   },
   beforeDestroy() {
     // TODO seems to be never called 

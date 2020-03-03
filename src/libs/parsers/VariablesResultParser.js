@@ -26,7 +26,7 @@ export default class VariablesResultParser {
         [
           `<a href="/variable/${summary.id}">${summary.name}</a>`,
           summary.variableLabel[0].value,
-          summary.annotations.reduce((acc, annotation) => 
+          (summary.annotations || []).reduce((acc, annotation) => 
             ('' !== acc ? `${acc}\n` : '') + `${annotation.taxonomy}.${annotation.vocabulary}.${annotation.value}`
           , ''),
           summary.variableType,

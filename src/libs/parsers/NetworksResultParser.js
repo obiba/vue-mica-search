@@ -22,19 +22,18 @@ export default class NetworksResultParser {
     }
 
     result.networks.forEach(network => {
-      const type = network.variableType === 'Dataschema' ? 'Harmonized' : 'Collected';
       const stats = network['obiba.mica.CountStatsDto.networkCountStats'] || {};
+      let anchor = (type, value, studyType) => `<a href="" data-study-type="${studyType}" data-target="network" data-target-id="${network.id}" data-type="${type}">${value}</a>`;
 
       parsed.data.push(
         [
           `<a href="/network/${network.id}">${network.acronym[0].value}</a>`,
           network.name[0].value,
-          type,
-          stats.studies || '-',
-          stats.studyDatasets || '-',
-          stats.harmonizationDatasets || '-',
-          stats.studyVariables || '-',
-          stats.dataschemaVariables || '-'
+          stats.studies ? anchor('studies', stats.studies, null) : '-',
+          stats.studyDatasets ? anchor('datasets', stats.studyDatasets, 'Study') : '-',
+          stats.harmonizationDatasets ? anchor('datasets', stats.harmonizationDatasets, 'HarmonizationStudy') : '-',
+          stats.studyVariables ? anchor('variables', stats.studyVariables, 'Study') : '-',
+          stats.dataschemaVariables ? anchor('variables', stats.dataschemaVariables, 'HarmonizationStudy') : '-'
         ]
       );
     });
