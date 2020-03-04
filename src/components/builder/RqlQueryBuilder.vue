@@ -1,6 +1,6 @@
 <template>
 <div>
-  <span class="badge badge-primary">{{taxonomy.name}}</span>
+  <span class="badge badge-primary">{{ taxonomyName }}</span>
   <ul class="list-inline">
     <li class="list-inline-item" v-for="criterion in criteria" v-bind:key="criterion.name">
       <rql-query v-bind:vocabulary="criterion.vocabulary" v-bind:operator="criterion.operator" v-bind:args="criterion.args" v-on:update-query="updateQuery" v-on:remove-query="removeQuery"></rql-query>
@@ -27,19 +27,24 @@ function getVocabulary(taxonomy, operatorName, args) {
 
 export default {
   props: {
-    query: {
-      type: Object,
-      required: true
-    },
-    taxonomy: {
-      type: Object,
-      required: true
-    }
+    query: Object,
+    taxonomy: Object
   },
   computed: {
+    taxonomyName() {
+      if (this.taxonomy) {
+        return this.taxonomy.name;
+      }
+
+      return "";
+    },
     criteria() {
       let result = [];
-      this.query.walk((name, args) => result.push({operator: name, vocabulary: getVocabulary(this.taxonomy, name, args), args}));
+
+      if (this.query) {
+        this.query.walk((name, args) => result.push({operator: name, vocabulary: getVocabulary(this.taxonomy, name, args), args}));
+      }      
+
       return result.filter(r => r.vocabulary);
     }
   },

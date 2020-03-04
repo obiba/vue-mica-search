@@ -47,12 +47,10 @@ function isMatchQuery(vocabulary) {
   return !Array.isArray(vocabulary.terms);
 }
 
-function initialPayload(vocabulary) {
+function initialPayload(vocabulary, query) {
   let payload = {};
 
-  if (vocabulary.associatedQuery) {
-    let query = vocabulary.associatedQuery;
-
+  if (query) {
     if (isTermsQuery(vocabulary)) {
       payload.operator = query.operator;
 
@@ -127,11 +125,12 @@ export default {
     vocabulary: {
       type: Object,
       required: true
-    }
+    },
+    query: Object
   },
   computed: {
     value() {
-      return initialPayload(this.vocabulary);
+      return initialPayload(this.vocabulary, this.query);
     },
     type() {
       if (isTermsQuery(this.vocabulary)) {
@@ -144,6 +143,11 @@ export default {
 
       return undefined;
     }
+  },
+  watch: {
+    query(val) {
+      this.value = initialPayload(this.vocabulary, val);
+    }  
   },
   methods: {
     onInput() {

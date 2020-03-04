@@ -13,7 +13,7 @@
       <span class="input-group-text">Filter</span>
     </div>
   </div>
-  <div class="card mb-2" v-for="vocabulary in vocabularies" v-bind:key="vocabulary.name">
+  <div class="card mb-2" v-for="vocabulary in filteredVocabularies" v-bind:key="vocabulary.name">
     <div class="card-header">
       <span>{{ vocabulary.name }}</span>
       <span class="float-right">
@@ -22,7 +22,7 @@
       </span>      
     </div>
     <div class="card-body">
-      <rql-panel-vocabulary v-bind:vocabulary="vocabulary" v-on:update-query="updateQuery"></rql-panel-vocabulary>
+      <rql-panel-vocabulary v-bind:vocabulary="vocabulary" v-bind:query="vocabulary.associatedQuery" v-on:update-query="updateQuery"></rql-panel-vocabulary>
     </div>    
   </div>
   </template>
@@ -44,6 +44,19 @@ function criterionIsForVocabulary(criterion, vocabulary) {
   return false;
 }
 
+function processVocabulary(vocabulary, criteria) {
+  let found = criteria.filter(criterion => criterionIsForVocabulary(criterion, vocabulary))[0];
+  vocabulary.associatedQuery = found;
+
+  if (found && Array.isArray(vocabulary.terms) && vocabulary.terms.length > 0 && ["exists", "missing"].indexOf(found.operator) === -1) {
+    vocabulary.allSelectableTerms = vocabulary.terms.length > (Array.isArray(found.args[1]) ? found.args[1] : [found.args[1]]).length;
+  } else if (Array.isArray(vocabulary.terms) && vocabulary.terms.length > 0) {
+    vocabulary.allSelectableTerms = true;
+  }
+
+  return vocabulary;
+}
+
 export default {
   name: "rql-panel",
   props: {
@@ -60,24 +73,32 @@ export default {
   },
   computed: {
     vocabularies() {
+      if (!this.taxonomy) return [];
       let criteria = [];
-      this.query.walk((name, args) => criteria.push({operator: name, args}));
+
+      if (this.query) this.query.walk((name, args) => criteria.push({operator: name, args}));         
 
       return (this.taxonomy.vocabularies || [])
       .map(vocabulary => {
-        let found = criteria.filter(criterion => criterionIsForVocabulary(criterion, vocabulary))[0];
-        vocabulary.associatedQuery = found;
-
-        if (found && Array.isArray(vocabulary.terms) && vocabulary.terms.length > 0 && ["exists", "missing"].indexOf(found.operator) === -1) {
-          vocabulary.allSelectableTerms = vocabulary.terms.length > (Array.isArray(found.args[1]) ? found.args[1] : [found.args[1]]).length;
-        } else if (Array.isArray(vocabulary.terms) && vocabulary.terms.length > 0) {
-          vocabulary.allSelectableTerms = true;
-        }
-
-        return vocabulary;
-      })      
+        return processVocabulary(vocabulary, criteria);
+      });
+    },
+    filteredVocabularies() {
+      return (this.vocabularies || [])
       .filter(vocabulary => {
         return (!this.panelFilter || this.panelFilter.trim().length === 0) || vocabulary.name.toLowerCase().indexOf(this.panelFilter.toLowerCase()) > -1;
+      });
+    }
+  },
+  watch: {
+    query(val) {
+      let criteria = [];
+
+      if (val) val.walk((name, args) => criteria.push({operator: name, args}));
+
+      (this.vocabularies || [])
+      .forEach(vocabulary => {
+        processVocabulary(vocabulary, criteria);
       });
     }
   },
