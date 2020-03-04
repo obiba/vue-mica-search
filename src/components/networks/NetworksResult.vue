@@ -80,16 +80,23 @@ export default {
       }
     },
     onAnchorClicked(event) {
+      console.log('Network onAnchorClicked');
       event.preventDefault();
       const anchor = $(event.target);
-      const query = new Query('in', ['Mica_network.id', `${anchor.attr('data-target-id')}`]);
-      this.getEventBus().$emit(
-        'query-type-update', 
-        {
-          type: `${anchor.attr('data-type')}`, 
-          target: `${anchor.attr('data-target')}`, 
-          query          
-        });
+      const target = anchor.attr('data-target');
+      const targetId = anchor.attr('data-target-id');
+      const type = anchor.attr('data-type');
+      const studyType = anchor.attr('data-study-type');
+
+      console.log(`Target ${target} TargetID ${targetId} Type ${type} Study Type ${studyType}`);
+
+      const updates = [{target, query: new Query('in', ['Mica_network.id',targetId])}];
+
+      if ("" !== studyType) {
+        updates.push({target: 'study', query: new Query('in', ['Mica_study.className', studyType])});
+      }
+
+      this.getEventBus().$emit('query-type-updates-selection', {type: `${type}`, updates});
 
       console.log(`${anchor.attr('data-target')} - ${anchor.attr('data-target-id')}`);
     }

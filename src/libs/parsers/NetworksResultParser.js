@@ -29,7 +29,7 @@ export default class NetworksResultParser {
         [
           `<a href="/network/${network.id}">${network.acronym[0].value}</a>`,
           network.name[0].value,
-          stats.studies ? anchor('studies', stats.studies, null) : '-',
+          stats.studies ? anchor('studies', stats.studies, "") : '-',
           stats.studyDatasets ? anchor('datasets', stats.studyDatasets, 'Study') : '-',
           stats.harmonizationDatasets ? anchor('datasets', stats.harmonizationDatasets, 'HarmonizationStudy') : '-',
           stats.studyVariables ? anchor('variables', stats.studyVariables, 'Study') : '-',
