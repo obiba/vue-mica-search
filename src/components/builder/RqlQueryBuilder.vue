@@ -14,21 +14,30 @@ import RqlQuery from "./RqlQuery.vue";
 
 function getVocabulary(taxonomy, operatorName, args) {
   if (!taxonomy) return null;
+
   let name = operatorName === "match" ? args[1] : args[0];
-
   let parts = name.split(".");
-  if (parts.length === 2) {
-    let vocabularyName = parts[1];
-    return (taxonomy.vocabularies || []).filter(vocabulary => vocabulary.name === vocabularyName)[0];
-  }
 
-  return null;
+  let input = Array.isArray(taxonomy) ? taxonomy : [taxonomy];
+
+  let result = null;
+  input.forEach((taxo => {
+    if (parts.length === 2) {
+      let taxonomyName = parts[0];
+      let vocabularyName = parts[1];
+      let found = (taxo.vocabularies || []).filter(vocabulary => taxo.name === taxonomyName && vocabulary.name === vocabularyName)[0];
+
+      if (found) result = found;
+    } 
+  }));
+
+  return result;
 }
 
 export default {
   props: {
     query: Object,
-    taxonomy: Object
+    taxonomy: [Object, Array]
   },
   computed: {
     taxonomyName() {
