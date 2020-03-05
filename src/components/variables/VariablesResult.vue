@@ -12,14 +12,13 @@
             <th>Study</th>
             <th>Dataset</th>
           </tr>
-        </thead>            
+        </thead>
       </table>
     </div>
   </div>
 </div>
 </template>
 <script>
-import DataTable from 'datatables.net-dt' // eslint-disable-line no-unused-vars
 import EntityResult from 'components/EntityResult';
 import VariablesResultParser from 'libs/parsers/VariablesResultParser';
 
@@ -34,7 +33,7 @@ export default {
     }
   },
   mounted() {
-    this.registerTable(); 
+    this.registerTable();
   }
 }
 </script>
