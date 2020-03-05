@@ -32,6 +32,8 @@
 </div>
 </template>
 <script>
+import $ from 'jquery';
+import Query from 'rql/src/query';
 import DataTable from 'datatables.net-dt' // eslint-disable-line no-unused-vars
 import StudiesResultParser from 'libs/parsers/StudiesResultParser';
 
@@ -85,6 +87,27 @@ export default {
       } else {
         this.ajaxCallback = callback;
       }
+    },
+    onAnchorClicked(event) {
+      console.log('Study onAnchorClicked');
+      event.preventDefault();
+      const anchor = $(event.target);
+      const target = anchor.attr('data-target');
+      const targetId = anchor.attr('data-target-id');
+      const type = anchor.attr('data-type');
+      const studyType = anchor.attr('data-study-type');
+
+      console.log(`Target ${target} TargetID ${targetId} Type ${type} Study Type ${studyType}`);
+
+      const updates = [{target, query: new Query('in', ['Mica_study.id',targetId])}];
+
+      if ("" !== studyType) {
+        updates.push({target: 'study', query: new Query('in', ['Mica_study.className', studyType])});
+      }
+
+      this.getEventBus().$emit('query-type-updates-selection', {type: `${type}`, updates});
+
+      console.log(`${anchor.attr('data-target')} - ${anchor.attr('data-target-id')}`);
     }
   },
   mounted() {
@@ -97,6 +120,8 @@ export default {
       ajax: this.onAjaxCallback.bind(this),
       fixedHeader: true
     });  
+
+    $('#vosr-studies-result').on('click', 'td', this.onAnchorClicked);
   },
   beforeDestroy() {
     // TODO seems to be never called 

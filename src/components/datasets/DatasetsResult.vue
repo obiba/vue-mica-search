@@ -2,7 +2,7 @@
 <div> 
   <div class="row">
     <div class="col">      
-      <table id="vosr-datasets-result" class="table table-bordered table-striped" width="100%">        
+      <table id="vosr-datasets-result" class="table table-bordered table-striped" width="100%">
       </table>
     </div>
   </div>
@@ -90,7 +90,7 @@ export default {
     }
   },
   mounted() {
-    console.log('Varisbles Result Mounted...');
+    console.log('Datasets Result Mounted...');
     this.getEventBus().register('datasets-results', this.onResults.bind(this));
 
     this.dataTable = this.registerDataTable('vosr-datasets-result', {

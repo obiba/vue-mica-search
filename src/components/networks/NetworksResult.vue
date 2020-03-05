@@ -102,7 +102,7 @@ export default {
     }
   },
   mounted() {
-    console.log('Varisbles Result Mounted...');
+    console.log('Networks Result Mounted...');
     this.getEventBus().register('networks-results', this.onResults.bind(this));
 
     this.dataTable = this.registerDataTable('vosr-networks-result', {

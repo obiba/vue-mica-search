@@ -22,18 +22,21 @@ export default class VariablesResultParser {
     }
 
     result.summaries.forEach(summary => {
-      parsed.data.push(
-        [
-          `<a href="/variable/${summary.id}">${summary.name}</a>`,
-          summary.variableLabel[0].value,
-          (summary.annotations || []).reduce((acc, annotation) => 
-            ('' !== acc ? `${acc}\n` : '') + `${annotation.taxonomy}.${annotation.vocabulary}.${annotation.value}`
-          , ''),
-          summary.variableType,
-          summary.studyAcronym[0].value,
-          summary.datasetAcronym[0].value
-        ]
+      const annotations = (summary.annotations || []).reduce(
+        (acc, annotation) =>
+          ("" !== acc ? `${acc}\n` : "") +
+          `${annotation.taxonomy}.${annotation.vocabulary}.${annotation.value}`,
+        ""
       );
+
+      parsed.data.push([
+        `<a href="/variable/${summary.id}">${summary.name}</a>`,
+        summary.variableLabel[0].value,
+        `${annotations}`,
+        summary.variableType,
+        `<a href="/study/${summary.studyId}">${summary.studyAcronym[0].value}</a>`,
+        `<a href="/dataset/${summary.datasetId}">${summary.datasetAcronym[0].value}</a>`
+      ]);
     });
 
     return parsed;

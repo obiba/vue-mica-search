@@ -33,13 +33,16 @@ export default class StudiesResultParser {
       totalHits: studiesResult.totalHits
     }
 
+    const checkIcon = `<i class="fa fa-check">`;
+
     result.summaries.forEach(summary => {
       const type = summary.variableType === 'Dataschema' ? 'Harmonized' : 'Collected';
       const stats = summary['obiba.mica.CountStatsDto.studyCountStats'] || {};
       const content = JSON.parse(summary.content);
       const dataSources = summary.dataSources || [];
       const hasDatasource = (dataSources, id) => dataSources.indexOf(id) > -1;
-      const checkIcon = `<i class="fa fa-check">`;
+      let anchor = (type, value, studyType) =>
+        `<a href="" data-study-type="${studyType}" data-target="study" data-target-id="${summary.id}" data-type="${type}">${value}</a>`;
 
       parsed.data.push([
         `<a href="/study/${summary.id}">${summary.acronym[0].value}</a>`,
@@ -51,11 +54,19 @@ export default class StudiesResultParser {
         hasDatasource(dataSources, "biological_samples") ? checkIcon : "-",
         hasDatasource(dataSources, "others") ? checkIcon : "-",
         this.__getNumberOfParticipants(content),
-        stats.networks || "-",
-        stats.studyDatasets || "-",
-        stats.studyVariables || "-",
-        stats.harmonizationDatasets || "-",
-        stats.dataschemaVariables || "-"
+        stats.networks ? anchor("networks", stats.networks, "") : "-",
+        stats.studyDatasets
+          ? anchor("datasets", stats.studyDatasets, "Study")
+          : "-",
+        stats.studyVariables
+          ? anchor("variables", stats.studyVariables, "Study")
+          : "-",
+        stats.harmonizationDatasets
+          ? anchor("datasets", stats.harmonizationDatasets, "HarmonizationStudy")
+          : "-",
+        stats.dataschemaVariables
+          ? anchor("variables", stats.dataschemaVariables, "HarmonizationStudy")
+          : "-"
       ]);
     });
 
