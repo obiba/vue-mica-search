@@ -1,6 +1,6 @@
 <template>
 <div>
-  <span class="badge badge-primary">{{ taxonomyName }}</span>
+  <span class="badge badge-primary" v-show="criteria.length > 0">{{ target }}</span>
   <ul class="list-inline">
     <li class="list-inline-item" v-for="criterion in criteria" v-bind:key="criterion.name">
       <rql-query v-bind:vocabulary="criterion.vocabulary" v-bind:operator="criterion.operator" v-bind:args="criterion.args" v-on:update-query="updateQuery" v-on:remove-query="removeQuery"></rql-query>
@@ -36,17 +36,14 @@ function getVocabulary(taxonomy, operatorName, args) {
 
 export default {
   props: {
+    target: {
+      type: String,
+      required: true
+    },
     query: Object,
     taxonomy: [Object, Array]
   },
   computed: {
-    taxonomyName() {
-      if (this.taxonomy) {
-        return this.taxonomy.name;
-      }
-
-      return "";
-    },
     criteria() {
       let result = [];
 
@@ -62,11 +59,11 @@ export default {
   },
   methods: {
     updateQuery(payload) {
-      payload.target = this.taxonomy.name;
+      payload.target = this.target;
       this.$emit("update-query", payload);
     },
     removeQuery(payload) {
-      payload.target = this.taxonomy.name;
+      payload.target = this.target;
       this.$emit("remove-query", payload);
     }
   }
