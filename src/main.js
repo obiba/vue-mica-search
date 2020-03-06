@@ -1,7 +1,7 @@
-import VariablesResult from 'components/variables/VariablesResult.vue'
-import DatasetsResult from 'components/datasets/DatasetsResult.vue'
-import StudiesResult from 'components/studies/StudiesResult.vue'
-import NetworksResult from 'components/networks/NetworksResult.vue'
+import VariablesResult from 'components/result/variables/VariablesResult.vue'
+import DatasetsResult from 'components/result/datasets/DatasetsResult.vue'
+import StudiesResult from 'components/result/studies/StudiesResult.vue'
+import NetworksResult from 'components/result/networks/NetworksResult.vue'
 
 import RqlQueryBuilder from 'components/builder/RqlQueryBuilder.vue'
 import RqlPanel from 'components/panel/RqlPanel.vue'

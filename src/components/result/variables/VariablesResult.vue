@@ -19,7 +19,7 @@
 </div>
 </template>
 <script>
-import EntityResult from 'components/EntityResult';
+import EntityResult from 'components/result/EntityResult';
 import VariablesResultParser from 'libs/parsers/VariablesResultParser';
 
 export default {  

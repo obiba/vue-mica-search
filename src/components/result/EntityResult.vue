@@ -1,4 +1,5 @@
 <script>
+import $ from 'jquery';
 import DataTable from "datatables.net-dt"; // eslint-disable-line no-unused-vars
 
 export default {
@@ -67,7 +68,7 @@ export default {
         serverSide: true,
         ajax: this.onAjaxCallback.bind(this),
         fixedHeader: true
-      })
+      });
     }
   },
   mounted() {
