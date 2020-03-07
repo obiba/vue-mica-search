@@ -1,6 +1,6 @@
 <template>
-<div> 
-  <div class="row">
+<div>
+  <div class="row" v-show="showResult">
     <div class="col">      
       <table id="vosr-studies-result" class="table table-bordered table-striped" width="100%">        
         <thead>
@@ -29,6 +29,11 @@
       </table>
     </div>
   </div>
+
+  <div v-show="!showResult">
+    <span>No study found</span>
+  </div>
+
 </div>
 </template>
 <script>
@@ -67,7 +72,8 @@ export default {
   },
   mounted() {
     console.log('Studies Result Mounted...');
-    this.registerTable();  
+    this.registerTable(); 
+     
     $('#vosr-studies-result').on('click', 'a.query-anchor', this.onAnchorClicked);
   }
 }

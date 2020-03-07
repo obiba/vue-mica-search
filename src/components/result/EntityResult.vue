@@ -7,7 +7,8 @@ export default {
       dataTable: null,
       ajaxCallback: null,
       type: null,
-      target: null
+      target: null,
+      showResult: false
     };
   },
   methods: {
@@ -18,6 +19,10 @@ export default {
       if (!this.dataTable) return;
       const pageInfo = this.dataTable.page.info();
       var parsed = this.parser.parse(payload.response);
+      this.showResult = parsed.totalHits > 0;
+
+      if (!this.showResult) return; 
+
       this.ajaxCallback({
         data: parsed.data,
         recordsTotal: parsed.totalHits,

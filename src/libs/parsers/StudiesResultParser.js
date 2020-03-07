@@ -22,6 +22,8 @@ export default class StudiesResultParser {
       throw new Error("No network results available.");
     }
 
+    if (studiesResult.totalHits < 1) return { totalHits: 0 };
+
     const result = studiesResult["obiba.mica.StudyResultDto.result"];
 
     if (!result) {

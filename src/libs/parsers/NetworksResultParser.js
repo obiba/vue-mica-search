@@ -10,6 +10,8 @@ export default class NetworksResultParser {
       throw new Error("No network results available.");
     }
 
+    if (networksResult.totalHits < 1) return { totalHits: 0};
+
     const result = networksResult["obiba.mica.NetworkResultDto.result"];
 
     if (!result) {

@@ -10,6 +10,8 @@ export default class DatasetsResultParser {
       throw new Error("No dataset results available.");
     }
 
+    if (datasetsResult.totalHits < 1) return { totalHits: 0};
+
     const result = datasetsResult["obiba.mica.DatasetResultDto.result"];
 
     if (!result) {

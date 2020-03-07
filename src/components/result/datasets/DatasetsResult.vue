@@ -1,6 +1,6 @@
 <template>
 <div> 
-  <div class="row">
+  <div class="row" v-show="showResult">
     <div class="col">      
       <table id="vosr-datasets-result" class="table table-bordered table-striped" width="100%">
         <thead>
@@ -16,6 +16,11 @@
       </table>
     </div>
   </div>
+
+  <div v-show="!showResult">
+    <span>No dataset found</span>
+  </div>
+
 </div>
 </template>
 <script>

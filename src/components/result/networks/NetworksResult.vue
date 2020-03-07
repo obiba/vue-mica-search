@@ -1,6 +1,6 @@
 <template>
 <div> 
-  <div class="row">
+  <div class="row" v-show="showResult">
     <div class="col">      
       <table id="vosr-networks-result" class="table table-bordered table-striped" width="100%">       
         <thead>
@@ -20,6 +20,10 @@
         </thead> 
       </table>
     </div>
+
+      <div v-show="!showResult">
+        <span>No network found</span>
+      </div>
   </div>
 </div>
 </template>

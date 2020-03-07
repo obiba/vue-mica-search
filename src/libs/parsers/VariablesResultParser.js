@@ -10,6 +10,8 @@ export default class VariablesResultParser {
       throw new Error("No variable results available.");
     }
 
+    if (variablesResult.totalHits < 1) return { totalHits: 0 };
+
     const result = variablesResult["obiba.mica.DatasetVariableResultDto.result"];
 
     if (!result) {
