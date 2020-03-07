@@ -30,10 +30,6 @@
 </div>  
 </template>
 
-<style>
-@import "../../assets/bootstrap-grid.css";
-</style>
-
 <script>
 import RqlPanelVocabulary from "./RqlPanelVocabulary.vue";
 

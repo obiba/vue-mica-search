@@ -9,10 +9,6 @@
 </div>    
 </template>
 
-<style>
-@import "../../assets/bootstrap-grid.css";
-</style>
-
 <script>
 import RqlQuery from "./RqlQuery.vue";
 
