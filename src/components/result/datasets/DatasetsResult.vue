@@ -53,7 +53,7 @@ export default {
   mounted() {
     console.log('Datasets Result Mounted...');
     this.registerTable();
-    $('#vosr-datasets-result').on('click', 'td', this.onAnchorClicked);
+    $('#vosr-datasets-result').on('click', 'a.query-anchor', this.onAnchorClicked);
   }
 }
 </script>

@@ -63,7 +63,7 @@ export default {
   mounted() {
     console.log('Networks Result Mounted...');
     this.registerTable();  
-    $('#vosr-networks-result').on('click', 'td', this.onAnchorClicked);
+    $('#vosr-networks-result').on('click', 'a.query-anchor', this.onAnchorClicked);
   }
 }
 </script>

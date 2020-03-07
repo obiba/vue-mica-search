@@ -23,7 +23,7 @@ export default class NetworksResultParser {
 
     result.networks.forEach(network => {
       const stats = network['obiba.mica.CountStatsDto.networkCountStats'] || {};
-      let anchor = (type, value, studyType) => `<a href="" data-study-type="${studyType}" data-target="network" data-target-id="${network.id}" data-type="${type}">${value}</a>`;
+      let anchor = (type, value, studyType) => `<a href="" class="query-anchor" data-study-type="${studyType}" data-target="network" data-target-id="${network.id}" data-type="${type}">${value}</a>`;
 
       parsed.data.push(
         [

@@ -42,7 +42,7 @@ export default class StudiesResultParser {
       const dataSources = summary.dataSources || [];
       const hasDatasource = (dataSources, id) => dataSources.indexOf(id) > -1;
       let anchor = (type, value, studyType) =>
-        `<a href="" data-study-type="${studyType}" data-target="study" data-target-id="${summary.id}" data-type="${type}">${value}</a>`;
+        `<a href="" class="query-anchor" data-study-type="${studyType}" data-target="study" data-target-id="${summary.id}" data-type="${type}">${value}</a>`;
 
       parsed.data.push([
         `<a href="/study/${summary.id}">${summary.acronym[0].value}</a>`,

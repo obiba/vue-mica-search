@@ -68,7 +68,7 @@ export default {
   mounted() {
     console.log('Studies Result Mounted...');
     this.registerTable();  
-    $('#vosr-studies-result').on('click', 'td', this.onAnchorClicked);
+    $('#vosr-studies-result').on('click', 'a.query-anchor', this.onAnchorClicked);
   }
 }
 </script>

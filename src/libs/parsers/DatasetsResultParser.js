@@ -24,7 +24,7 @@ export default class DatasetsResultParser {
     result.datasets.forEach(dataset => {
       const type = dataset.variableType === 'Dataschema' ? 'Harmonized' : 'Collected';
       const stats = dataset['obiba.mica.CountStatsDto.datasetCountStats'] || {};
-      let anchor = (type, value) => `<a href="" data-target="dataset" data-target-id="${dataset.id}" data-type="${type}">${value}</a>`;
+      let anchor = (type, value) => `<a href="" class="query-anchor" data-target="dataset" data-target-id="${dataset.id}" data-type="${type}">${value}</a>`;
       parsed.data.push(
         [
           `<a href="/dataset/${dataset.id}">${dataset.acronym[0].value}</a>`,
