@@ -2,7 +2,7 @@
 <div> 
   <div class="row" v-show="showResult">
     <div class="col">      
-      <table id="vosr-datasets-result" class="table table-bordered table-striped">
+      <table id="vosr-datasets-result" class="table table-bordered table-striped" width="100%">
         <thead>
           <tr>
             <th>Acronym</th>
@@ -38,6 +38,9 @@ export default {
       type: "datasets",
       target: "dataset"
     }
+  },
+  props: {
+    micaConfig: String
   },
   methods: {
      onAnchorClicked(event) {

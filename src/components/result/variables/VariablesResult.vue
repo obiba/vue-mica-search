@@ -2,7 +2,7 @@
 <div> 
   <div class="row" v-show="showResult">
     <div class="col">      
-      <table id="vosr-variables-result" class="table table-bordered table-striped">
+      <table id="vosr-variables-result" class="table table-bordered table-striped" width="100%">
         <thead>
           <tr>
             <th>Name</th>

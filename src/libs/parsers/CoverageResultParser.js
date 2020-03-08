@@ -125,7 +125,7 @@ class IdSplitter {
     this.result.rows.forEach((row, i) => {
       row.hitsTitles = row.hits.map(function (hit) {
         // TODO return LocalizedValues.formatNumber(hit);
-        return hit;
+        return hit+"";
       });
       cols.ids[row.value] = [];
       if (this.bucket.startsWith('dce')) {
@@ -215,7 +215,7 @@ class IdSplitter {
 
     // adjust the rowspans and the progress
     if (this.bucket.startsWith('dce')) {
-      this.result.rows.forEach(function (row, i) {
+      this.result.rows.forEach((row, i) => {
         row.hitsTitles = row.hits.map(function (hit) {
           // TODO return LocalizedValues.formatNumber(hit);
           return hit;

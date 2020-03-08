@@ -2,7 +2,7 @@
 <div> 
   <div class="row" v-show="showResult">
     <div class="col">      
-      <table id="vosr-networks-result" class="table table-bordered table-striped">       
+      <table id="vosr-networks-result" class="table table-bordered table-striped" width="100%">       
         <thead>
           <tr>
             <th rowspan="2">Acronym</th>
@@ -21,9 +21,9 @@
       </table>
     </div>
 
-      <div v-show="!showResult">
-        <span>No network found</span>
-      </div>
+    <div v-show="!showResult">
+      <span>No network found</span>
+    </div>
   </div>
 </div>
 </template>
