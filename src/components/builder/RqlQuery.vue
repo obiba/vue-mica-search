@@ -11,19 +11,19 @@
 
       <div class="container">
         <div class="form-check">
-          <input class="form-check-input" type="radio" v-bind:id="'radio-' + vocabulary.name + '-all'" value="exists" v-model="value.operator" v-on:change="onInput()">
+          <input class="form-check-input" type="radio" v-bind:id="'radio-' + vocabulary.name + '-all'" name="terms-choice" value="exists" v-model="value.operator" v-on:change="onInput()">
           <label class="form-check-label" v-bind:for="'radio-' + vocabulary.name + '-all'">all</label>
         </div>
         <div class="form-check">
-          <input class="form-check-input" type="radio" v-bind:id="'radio-' + vocabulary.name + '-none'" value="missing" v-model="value.operator" v-on:change="onInput()">
+          <input class="form-check-input" type="radio" v-bind:id="'radio-' + vocabulary.name + '-none'" name="terms-choice" value="missing" v-model="value.operator" v-on:change="onInput()">
           <label class="form-check-label" v-bind:for="'radio-' + vocabulary.name + '-none'">none</label>
         </div>
         <div class="form-check">
-          <input class="form-check-input" type="radio" v-bind:id="'radio-' + vocabulary.name + '-in'" value="in" v-model="value.operator" v-on:change="onInput()">
+          <input class="form-check-input" type="radio" v-bind:id="'radio-' + vocabulary.name + '-in'" name="terms-choice" value="in" v-model="value.operator" v-on:change="onInput()">
           <label class="form-check-label" v-bind:for="'radio-' + vocabulary.name + '-in'">in</label>
         </div>
         <div class="form-check">
-          <input class="form-check-input" type="radio" v-bind:id="'radio-' + vocabulary.name + '-not-in'" value="out" v-model="value.operator" v-on:change="onInput()">
+          <input class="form-check-input" type="radio" v-bind:id="'radio-' + vocabulary.name + '-not-in'" name="terms-choice" value="out" v-model="value.operator" v-on:change="onInput()">
           <label class="form-check-label" v-bind:for="'radio-' + vocabulary.name + '-not-in'">not in</label>
         </div>
       </div>          
@@ -51,11 +51,11 @@
 
       <div class="container">
         <div class="form-check">
-          <input class="form-check-input" type="radio" v-bind:id="'radio-' + vocabulary.name + '-all'" value="exists" v-model="value.operator" v-on:change="onInput()">
+          <input class="form-check-input" type="radio" v-bind:id="'radio-' + vocabulary.name + '-all'" name="numeric-choice" value="exists" v-model="value.operator" v-on:change="onInput()">
           <label class="form-check-label" v-bind:for="'radio-' + vocabulary.name + '-all'">all</label>
         </div>
         <div class="form-check">
-          <input class="form-check-input" type="radio" v-bind:id="'radio-' + vocabulary.name + '-none'" value="missing" v-model="value.operator" v-on:change="onInput()">
+          <input class="form-check-input" type="radio" v-bind:id="'radio-' + vocabulary.name + '-none'" name="numeric-choice" value="missing" v-model="value.operator" v-on:change="onInput()">
           <label class="form-check-label" v-bind:for="'radio-' + vocabulary.name + '-none'">none</label>
         </div>
       </div>          
@@ -133,26 +133,34 @@ function initialPayload(vocabulary, operator, args) {
 }
 
 function finalPayload(vocabulary, operator, payload) {
+  let args = null;
+
   if (isTermsQuery(operator, vocabulary)) {
     if (["exists", "missing"].indexOf(payload.operator) > -1) {
-      payload.terms = [];
+      payload.terms = [...vocabulary.terms];
     }
+    args = payload.terms;
   } else if (isNumericQuery(operator, vocabulary)) {
     if (payload.from !== undefined && payload.to === undefined) {
       payload.operator = "ge";
+      args = [payload.from];
     } else if (payload.from === undefined && payload.to !== undefined) {
       payload.operator = "le";
+      args = [payload.to];
     } else if (payload.from !== undefined && payload.to !== undefined) {
       payload.operator = "between";
+      args = [payload.from, payload.to];
     }
 
-    if (payload.operator === "missing") {
+    if (["exists", "missing"].indexOf(payload.operator) > -1) {
       payload.from = null;
       payload.to = null;
     }
+  } else if (isMatchQuery(operator)) {
+    args = [payload.match];
   }
 
-  return payload;
+  return {args, operator: payload.operator};
 }
 
 export default {
@@ -201,7 +209,7 @@ export default {
       this.$emit("update-query", {vocabularyName: this.vocabulary.name, value: finalPayload(this.vocabulary, this.operator, this.value)});
     },
     onRemove() {
-      this.$emit("remove-query", {vocabularyName: this.vocabulary.name});
+      this.$emit("remove-query", {vocabularyName: this.vocabulary.name, value: {operator: this.operator}});
     }
   }
 }

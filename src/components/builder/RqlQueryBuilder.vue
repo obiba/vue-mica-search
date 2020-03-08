@@ -11,6 +11,7 @@
 
 <script>
 import RqlQuery from "./RqlQuery.vue";
+import Query from "rql/src/query";
 
 function getVocabulary(taxonomy, operatorName, args) {
   if (!taxonomy) return null;
@@ -59,12 +60,23 @@ export default {
   },
   methods: {
     updateQuery(payload) {
-      payload.target = this.target;
-      this.$emit("update-query", payload);
+      let args = [`${this.taxonomy.name}.${payload.vocabularyName}`];
+
+      if (["missing", "exists"].indexOf(payload.value.operator) === -1 && (!Array.isArray(payload.value.args) || payload.value.args.length === 0)) {
+        this.$emit("remove-query", new Query(payload.value.operator, args));
+      } else {
+        if ("match" === payload.value.operator) {
+          args.unshift(payload.value.args);
+        } else if (["missing", "exists"].indexOf(payload.value.operator) === -1) {
+          args.push(payload.value.args);
+        }
+
+        this.$emit("update-query", {target: this.target, query: new Query(payload.value.operator, args)});
+      }
     },
     removeQuery(payload) {
-      payload.target = this.target;
-      this.$emit("remove-query", payload);
+      let args = [`${this.taxonomy.name}.${payload.vocabularyName}`];    
+      this.$emit("remove-query", {target: this.target, query: new Query(payload.value.operator, args)});
     }
   }
 }

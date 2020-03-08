@@ -92,6 +92,8 @@ function initialPayload(vocabulary, query) {
 }
 
 function finalPayload(vocabulary, payload) {
+  let args = null;
+
   if (isTermsQuery(vocabulary)) {
     if (Array.isArray(payload.terms) && payload.terms.length === vocabulary.terms.length) {
       payload.operator = "exists";
@@ -100,24 +102,31 @@ function finalPayload(vocabulary, payload) {
     }
 
     if (["exists", "missing"].indexOf(payload.operator) > -1) {
-      payload.terms = [];
+      payload.terms = [...vocabulary.terms];
     }
+
+    args = payload.terms;
   } else if (isNumericQuery(vocabulary)) {
     if (payload.from !== undefined && payload.to === undefined) {
       payload.operator = "ge";
+      args = [payload.from];
     } else if (payload.from === undefined && payload.to !== undefined) {
       payload.operator = "le";
+      args = [payload.to];
     } else if (payload.from !== undefined && payload.to !== undefined) {
       payload.operator = "between";
+      args = [payload.from, payload.to];
     }
 
-    if (payload.operator === "missing") {
+    if (["exists", "missing"].indexOf(payload.operator) > -1) {
       payload.from = null;
       payload.to = null;
     }
+  } else if (isMatchQuery(vocabulary)) {
+    args = [payload.match];
   }
 
-  return payload;
+  return {args, operator: payload.operator};
 }
 
 export default {
