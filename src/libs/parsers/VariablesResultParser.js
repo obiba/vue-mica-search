@@ -3,7 +3,7 @@ export default class VariablesResultParser {
   constructor() {
   }  
 
-  parse(data) {
+  parse(data, micaConfig) {
     const variablesResult = data.variableResultDto;
 
     if (!variablesResult) {
@@ -31,14 +31,23 @@ export default class VariablesResultParser {
         ""
       );
 
-      parsed.data.push([
+      let row = [
         `<a href="/variable/${summary.id}">${summary.name}</a>`,
         summary.variableLabel[0].value,
-        `${annotations}`,
-        summary.variableType,
-        `<a href="/study/${summary.studyId}">${summary.studyAcronym[0].value}</a>`,
-        `<a href="/dataset/${summary.datasetId}">${summary.datasetAcronym[0].value}</a>`
-      ]);
+        `${annotations}`
+      ];
+
+      if (micaConfig.isCollectedDatasetEnabled && micaConfig.isHarmonizedDatasetEnabled) {
+        row.push(summary.variableType);
+      }
+
+      if (!micaConfig.isSingleStudyEnabled) {
+        row.push(`<a href="/study/${summary.studyId}">${summary.studyAcronym[0].value}</a>`);
+      }
+
+      row.push(`<a href="/dataset/${summary.datasetId}">${summary.datasetAcronym[0].value}</a>`);
+
+      parsed.data.push(row);
     });
 
     return parsed;

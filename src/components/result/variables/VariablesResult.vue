@@ -8,8 +8,8 @@
             <th>Name</th>
             <th>Label</th>
             <th>Annotations</th>
-            <th>Type</th>
-            <th>Study</th>
+            <th v-if="withCollectedDataset && withHarmonizedDataset">Type</th>
+            <th v-if="withStudies">Study</th>
             <th>Dataset</th>
           </tr>
         </thead>

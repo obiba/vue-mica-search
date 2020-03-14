@@ -15,7 +15,7 @@ export default class StudiesResultParser {
      return '-';
   }
 
-  parse(data) {
+  parse(data, micaConfig) {
     const studiesResult = data.studyResultDto;
 
     if (!studiesResult) {
@@ -45,8 +45,8 @@ export default class StudiesResultParser {
       const hasDatasource = (dataSources, id) => dataSources.indexOf(id) > -1;
       let anchor = (type, value, studyType) =>
         `<a href="" class="query-anchor" data-study-type="${studyType}" data-target="study" data-target-id="${summary.id}" data-type="${type}">${value}</a>`;
-
-      parsed.data.push([
+      
+      let row = [
         `<a href="/study/${summary.id}">${summary.acronym[0].value}</a>`,
         summary.name[0].value,
         type,
@@ -56,20 +56,31 @@ export default class StudiesResultParser {
         hasDatasource(dataSources, "biological_samples") ? checkIcon : "-",
         hasDatasource(dataSources, "others") ? checkIcon : "-",
         this.__getNumberOfParticipants(content),
-        stats.networks ? anchor("networks", stats.networks, "") : "-",
-        stats.studyDatasets
+      ];
+
+      if (micaConfig.isNetworkEnabled && !micaConfig.isSingleNetworkEnabled) {
+        row.push(stats.networks ? anchor("networks", stats.networks, "") : "-");
+      }
+
+      if (micaConfig.isCollectedDatasetEnabled) {
+        row.push(stats.studyDatasets
           ? anchor("datasets", stats.studyDatasets, "Study")
-          : "-",
-        stats.studyVariables
+          : "-");
+        row.push(stats.studyVariables
           ? anchor("variables", stats.studyVariables, "Study")
-          : "-",
-        stats.harmonizationDatasets
+          : "-");
+      }
+
+      if (micaConfig.isHarmonizedDatasetEnabled) {
+        row.push(stats.harmonizationDatasets
           ? anchor("datasets", stats.harmonizationDatasets, "HarmonizationStudy")
-          : "-",
-        stats.dataschemaVariables
+          : "-");
+        row.push(stats.dataschemaVariables
           ? anchor("variables", stats.dataschemaVariables, "HarmonizationStudy")
-          : "-"
-      ]);
+          : "-");
+      }
+
+      parsed.data.push(row);
     });
 
     return parsed;
