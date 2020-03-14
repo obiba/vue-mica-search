@@ -1,9 +1,9 @@
 <template>
 <div>
-  <span class="badge badge-primary" v-show="criteria.length > 0">{{ target }}</span>
+  <span class="badge badge-primary" v-show="vocabularies.length > 0">{{ target }}</span>
   <ul class="list-inline">
-    <li class="list-inline-item" v-for="criterion in criteria" v-bind:key="criterion.name">
-      <rql-query v-bind:vocabulary="criterion.vocabulary" v-bind:operator="criterion.operator" v-bind:args="criterion.args" v-on:update-query="updateQuery" v-on:remove-query="removeQuery"></rql-query>
+    <li class="list-inline-item" v-for="vocabulary in vocabularies" v-bind:key="vocabulary.name">
+      <rql-query v-bind:vocabulary="vocabulary" v-bind:query="getAssociatedQuery(vocabulary)" v-on:update-query="updateQuery" v-on:remove-query="removeQuery"></rql-query>
     </li>
   </ul>
 </div>    
@@ -11,29 +11,7 @@
 
 <script>
 import RqlQuery from "./RqlQuery.vue";
-import Query from "rql/src/query";
-
-function getVocabulary(taxonomy, operatorName, args) {
-  if (!taxonomy) return null;
-
-  let name = operatorName === "match" ? args[1] : args[0];
-  let parts = name.split(".");
-
-  let input = Array.isArray(taxonomy) ? taxonomy : [taxonomy];
-
-  let result = null;
-  input.forEach((taxo => {
-    if (parts.length === 2) {
-      let taxonomyName = parts[0];
-      let vocabularyName = parts[1];
-      let found = (taxo.vocabularies || []).filter(vocabulary => taxo.name === taxonomyName && vocabulary.name === vocabularyName)[0];
-
-      if (found) result = found;
-    } 
-  }));
-
-  return result;
-}
+import Criterion from "../../libs/Criterion";
 
 export default {
   props: {
@@ -45,38 +23,41 @@ export default {
     taxonomy: [Object, Array]
   },
   computed: {
-    criteria() {
-      let result = [];
+    inputs() {
+      return Criterion.splitQuery(this.query);
+    },
+    vocabularies() {
+      if (!this.taxonomy) return [];      
 
-      if (this.query) {
-        this.query.walk((name, args) => result.push({operator: name, vocabulary: getVocabulary(this.taxonomy, name, args), args}));
-      }      
-
-      return result.filter(r => r.vocabulary);
+      return (this.taxonomy.vocabularies || [])
+      .filter(vocabulary => {
+        return this.hasAssociatedQuery(vocabulary);
+      });
     }
   },
   components: {
     RqlQuery
   },
   methods: {
-    updateQuery(payload) {
-      let args = [`${this.taxonomy.name}.${payload.vocabularyName}`];
-
-      if (["missing", "exists"].indexOf(payload.value.operator) === -1 && (!Array.isArray(payload.value.args) || payload.value.args.length === 0)) {
-        this.$emit("remove-query", new Query(payload.value.operator, args));
-      } else {
-        if ("match" === payload.value.operator) {
-          args.unshift(payload.value.args);
-        } else if (["missing", "exists"].indexOf(payload.value.operator) === -1) {
-          args.push(payload.value.args);
-        }
-
-        this.$emit("update-query", {target: this.target, query: new Query(payload.value.operator, args)});
+    getAssociatedQuery(vocabulary) {
+      if (this.query) {
+        return Criterion.associatedQuery(vocabulary, this.inputs);       
       }
+
+      return undefined;
+    },
+    hasAssociatedQuery(vocabulary) {
+      return this.getAssociatedQuery(vocabulary) && true;
+    },
+    updateQuery(payload) {
+      if (["missing", "exists"].indexOf(payload.operator) === -1 && (!Array.isArray(payload.value) || payload.value.length === 0)) {
+        this.$emit("remove-query", payload.asQuery(this.taxonomy.name));
+      } else {
+        this.$emit("update-query", payload.asQuery(this.taxonomy.name));
+      }      
     },
     removeQuery(payload) {
-      let args = [`${this.taxonomy.name}.${payload.vocabularyName}`];    
-      this.$emit("remove-query", {target: this.target, query: new Query(payload.value.operator, args)});
+      this.$emit("remove-query", payload.asQuery(this.taxonomy.name));
     }
   }
 }

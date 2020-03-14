@@ -13,16 +13,16 @@
       <span class="input-group-text">Filter</span>
     </div>
   </div>
-  <div class="card mb-2" v-for="vocabulary in filteredVocabularies" v-bind:key="vocabulary.name">
+  <div class="card mb-2" v-for="vocabulary in vocabularies" v-bind:key="vocabulary.name">
     <div class="card-header">
       <span>{{ vocabulary.name }}</span>
       <span class="float-right">
-        <button type="button" class="btn btn-link btn-sm" v-if="vocabulary.allSelectableTerms" v-on:click="updateQuery({vocabularyName: vocabulary.name, value: {operator: 'exists', args: []}})"><span aria-hidden="true">Select All</span></button>
-        <button type="button" class="btn btn-link btn-sm" v-if="vocabulary.associatedQuery" v-on:click="removeQuery({vocabularyName: vocabulary.name, value: {operator: vocabulary.associatedQuery.operator}})"><span aria-hidden="true">Clear</span></button>
+        <button type="button" class="btn btn-link btn-sm" v-if="canDoSelectAll(vocabulary)" v-on:click="selectAll(vocabulary)"><span aria-hidden="true">Select All</span></button>
+        <button type="button" class="btn btn-link btn-sm" v-if="hasAssociatedQuery(vocabulary)" v-on:click="clear(vocabulary)"><span aria-hidden="true">Clear</span></button>
       </span>      
     </div>
     <div class="card-body">
-      <rql-panel-vocabulary v-bind:vocabulary="vocabulary" v-bind:query="vocabulary.associatedQuery" v-on:update-query="updateQuery"></rql-panel-vocabulary>
+      <rql-panel-vocabulary v-bind:vocabulary="vocabulary" v-bind:query="getAssociatedQuery(vocabulary)" v-on:update-query="updateQuery"></rql-panel-vocabulary>
     </div>    
   </div>
   </template>
@@ -32,38 +32,17 @@
 
 <script>
 import RqlPanelVocabulary from "./RqlPanelVocabulary.vue";
-import Query from "rql/src/query";
-
-function criterionIsForVocabulary(criterion, vocabulary) {
-  let name = criterion.operator === "match" ? criterion.args[1] : criterion.args[0];
-  let parts = name.split(".");
-  if (parts.length === 2) {
-    let vocabularyName = parts[1];
-    return vocabularyName === vocabulary.name;
-  }
-
-  return false;
-}
-
-function processVocabulary(vocabulary, criteria) {
-  let found = criteria.filter(criterion => criterionIsForVocabulary(criterion, vocabulary))[0];
-  vocabulary.associatedQuery = found;
-
-  if (found && Array.isArray(vocabulary.terms) && vocabulary.terms.length > 0 && ["exists", "missing"].indexOf(found.operator) === -1) {
-    vocabulary.allSelectableTerms = vocabulary.terms.length > (Array.isArray(found.args[1]) ? found.args[1] : [found.args[1]]).length;
-  } else if (Array.isArray(vocabulary.terms) && vocabulary.terms.length > 0) {
-    vocabulary.allSelectableTerms = true;
-  }
-
-  return vocabulary;
-}
+import Criterion from "../../libs/Criterion";
 
 export default {
   name: "rql-panel",
   props: {
-    taxonomy: Object,
+    target: {
+      type: String,
+      required: true
+    },
     query: Object,
-    target: String
+    taxonomy: [Object, Array]    
   },
   components: {
     RqlPanelVocabulary
@@ -74,55 +53,65 @@ export default {
     };
   },
   computed: {
+    inputs() {
+      return Criterion.splitQuery(this.query);
+    },
     vocabularies() {
-      if (!this.taxonomy) return [];
-      let criteria = [];
-
-      if (this.query) this.query.walk((name, args) => criteria.push({operator: name, args}));         
+      if (!this.taxonomy) return [];      
 
       return (this.taxonomy.vocabularies || [])
-      .map(vocabulary => {
-        return processVocabulary(vocabulary, criteria);
-      });
-    },
-    filteredVocabularies() {
-      return (this.vocabularies || [])
       .filter(vocabulary => {
         return (!this.panelFilter || this.panelFilter.trim().length === 0) || vocabulary.name.toLowerCase().indexOf(this.panelFilter.toLowerCase()) > -1;
       });
     }
   },
-  watch: {
-    query(val) {
-      let criteria = [];
-
-      if (val) val.walk((name, args) => criteria.push({operator: name, args}));
-
-      (this.vocabularies || [])
-      .forEach(vocabulary => {
-        processVocabulary(vocabulary, criteria);
-      });
-    }
-  },
   methods: {
-    updateQuery(payload) {
-      let args = [`${this.taxonomy.name}.${payload.vocabularyName}`];
+    getAssociatedQuery(vocabulary) {
+      if (this.query) {
+        return Criterion.associatedQuery(vocabulary, this.inputs);      
+      }
 
-      if (["missing", "exists"].indexOf(payload.value.operator) === -1 && (!Array.isArray(payload.value.args) || payload.value.args.length === 0)) {
-        this.$emit("remove-query", new Query(payload.value.operator, args));
-      } else {
-        if ("match" === payload.value.operator) {
-          args.unshift(payload.value.args);
-        } else if (["missing", "exists"].indexOf(payload.value.operator) === -1) {
-          args.push(payload.value.args);
-        }
-
-        this.$emit("update-query", {target: this.target, query: new Query(payload.value.operator, args)});
-      }      
+      return undefined;
     },
-    removeQuery(payload) {  
-      let args = [`${this.taxonomy.name}.${payload.vocabularyName}`];    
-      this.$emit("remove-query", {target: this.target, query: new Query(payload.value.operator, args)});
+    hasAssociatedQuery(vocabulary) {
+      return this.getAssociatedQuery(vocabulary) && true;
+    },
+    canDoSelectAll(vocabulary) {
+      let type = Criterion.typeOfVocabulary(vocabulary);
+      if (type === "TERMS") {
+        let query = this.getAssociatedQuery(vocabulary);
+        if (query) {
+          return vocabulary.terms.length > query.args[1].length;
+        }
+        
+        return true;
+      }
+
+      return false;
+    },
+    selectAll(payload) {
+      let criterion = new Criterion(payload);
+      criterion.query = {operator: "exists"};
+      this.updateQuery(criterion);
+    },
+    clear(payload) {
+      let criterion = new Criterion(payload);
+      let input = this.getAssociatedQuery(payload);
+
+      if (input) {
+        criterion.query = input;
+        this.removeQuery(criterion);
+      }       
+    },
+    updateQuery(payload) {
+      if (["missing", "exists"].indexOf(payload.operator) === -1 && (!Array.isArray(payload.value) || payload.value.length === 0)) {
+        this.$emit("remove-query", payload.asQuery(this.taxonomy.name));
+      } else {
+        this.$emit("update-query", payload.asQuery(this.taxonomy.name));
+      }
+    },
+    removeQuery(payload) { 
+      this.$emit("remove-query", payload.asQuery(this.taxonomy.name));
     }
   }
 }

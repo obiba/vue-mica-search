@@ -7,23 +7,23 @@
       <div class="container">{{ vocabulary.name }}</div>
       <div class="dropdown-divider"></div>
 
-      <template v-if="type === 'TERMS'">
+      <template v-if="criterion.type === 'TERMS'">
 
       <div class="container">
         <div class="form-check">
-          <input class="form-check-input" type="radio" v-bind:id="'radio-' + vocabulary.name + '-all'" name="terms-choice" value="exists" v-model="value.operator" v-on:change="onInput()">
+          <input class="form-check-input" type="radio" v-bind:id="'radio-' + vocabulary.name + '-all'" name="terms-choice" value="exists" v-model="criterion.operator" v-on:change="onInput()">
           <label class="form-check-label" v-bind:for="'radio-' + vocabulary.name + '-all'">all</label>
         </div>
         <div class="form-check">
-          <input class="form-check-input" type="radio" v-bind:id="'radio-' + vocabulary.name + '-none'" name="terms-choice" value="missing" v-model="value.operator" v-on:change="onInput()">
+          <input class="form-check-input" type="radio" v-bind:id="'radio-' + vocabulary.name + '-none'" name="terms-choice" value="missing" v-model="criterion.operator" v-on:change="onInput()">
           <label class="form-check-label" v-bind:for="'radio-' + vocabulary.name + '-none'">none</label>
         </div>
         <div class="form-check">
-          <input class="form-check-input" type="radio" v-bind:id="'radio-' + vocabulary.name + '-in'" name="terms-choice" value="in" v-model="value.operator" v-on:change="onInput()">
+          <input class="form-check-input" type="radio" v-bind:id="'radio-' + vocabulary.name + '-in'" name="terms-choice" value="in" v-model="criterion.operator" v-on:change="onInput()">
           <label class="form-check-label" v-bind:for="'radio-' + vocabulary.name + '-in'">in</label>
         </div>
         <div class="form-check">
-          <input class="form-check-input" type="radio" v-bind:id="'radio-' + vocabulary.name + '-not-in'" name="terms-choice" value="out" v-model="value.operator" v-on:change="onInput()">
+          <input class="form-check-input" type="radio" v-bind:id="'radio-' + vocabulary.name + '-not-in'" name="terms-choice" value="out" v-model="criterion.operator" v-on:change="onInput()">
           <label class="form-check-label" v-bind:for="'radio-' + vocabulary.name + '-not-in'">not in</label>
         </div>
       </div>          
@@ -38,7 +38,7 @@
         <ul class="list-unstyled">
           <li v-for="term in terms" v-bind:key="term.name">
             <div class="form-check">
-              <input class="form-check-input" type="checkbox" v-bind:id="vocabulary.name + '-' + term.name" v-bind:value="term.name" v-model="value.terms" v-on:change="onInput()">
+              <input class="form-check-input" type="checkbox" v-bind:id="vocabulary.name + '-' + term.name" v-bind:value="term.name" v-model="criterion.value" v-on:change="onInput()">
               <label class="form-check-label" v-bind:for="vocabulary.name + '-' + term.name">{{ term.title[0].text }}</label>
             </div>
           </li>
@@ -47,36 +47,25 @@
 
       </template>
 
-      <template v-else-if="type === 'NUMERIC'">
+      <template v-else-if="criterion.type === 'NUMERIC'">
 
-      <div class="container">
-        <div class="form-check">
-          <input class="form-check-input" type="radio" v-bind:id="'radio-' + vocabulary.name + '-all'" name="numeric-choice" value="exists" v-model="value.operator" v-on:change="onInput()">
-          <label class="form-check-label" v-bind:for="'radio-' + vocabulary.name + '-all'">all</label>
-        </div>
-        <div class="form-check">
-          <input class="form-check-input" type="radio" v-bind:id="'radio-' + vocabulary.name + '-none'" name="numeric-choice" value="missing" v-model="value.operator" v-on:change="onInput()">
-          <label class="form-check-label" v-bind:for="'radio-' + vocabulary.name + '-none'">none</label>
-        </div>
-      </div>          
-      <div class="dropdown-divider"></div>
       <div class="container">
         <div class="form-group">
           <label v-bind:for="vocabulary.name + 'from'">from</label>
-          <input type="number" class="form-control" v-bind:id="vocabulary.name + '-from'" v-model="value.from" v-on:input="onInput()">
+          <input type="number" class="form-control" v-bind:id="vocabulary.name + '-from'" v-model="criterion.value[0]" v-on:input="onInput()">
         </div>
         <div class="form-group">
           <label v-bind:for="vocabulary.name + 'to'">to</label>
-          <input type="number" class="form-control" v-bind:id="vocabulary.name + '-to'" v-model="value.to" v-on:input="onInput()">
+          <input type="number" class="form-control" v-bind:id="vocabulary.name + '-to'" v-model="criterion.value[1]" v-on:input="onInput()">
         </div>
       </div> 
 
       </template>
 
-      <template v-else-if="type === 'MATCH'">
+      <template v-else-if="criterion.type === 'MATCH'">
 
       <div class="container">
-        <input type="text" class="form-control" v-model="value.match" v-on:input="onInput()">
+        <input type="text" class="form-control" v-model="criterion.value" v-on:input="onInput()">
       </div>      
 
       </template>
@@ -87,96 +76,15 @@
 </template>
 
 <script>
-function isTermsQuery(operator, vocabulary) {
-  return Array.isArray(vocabulary.terms) && vocabulary.terms.length > 0 && ["in", "out"].indexOf(operator) > -1;
-}
-
-function isNumericQuery(operator, vocabulary) {
-  return !Array.isArray(vocabulary.terms) && ["ge", "le", "between"].indexOf(operator) > -1;
-}
-
-function isMatchQuery(operator) {
-  return ["match"].indexOf(operator) > -1;
-}
-
-function initialPayload(vocabulary, operator, args) {
-  let payload = {};
-
-  if (isTermsQuery(operator, vocabulary)) {
-      payload.operator = operator;
-
-      if (operator === "exists") {
-        payload.terms = [...vocabulary.terms];
-      } else {
-        payload.terms = Array.isArray(args[1]) ? args[1] : [args[1]];
-      }      
-  } else if (isNumericQuery(operator, vocabulary)) {
-    if (operator === "ge") {
-      payload.from = args[1];
-    } else if (operator === "le") {
-      payload.to = args[1];
-    } else if (operator === "between") {
-      payload.from = args[1][0];
-      payload.to = args[1][1];
-    }
-
-    if (["ge", "le", "between"].indexOf(operator) > -1) {
-      payload.operator = "exists";
-    } else {
-      payload.operator = "missing";
-    }
-  } else if (isMatchQuery(operator)) {
-    payload.match = args[0];
-  }
-
-  return payload;
-}
-
-function finalPayload(vocabulary, operator, payload) {
-  let args = null;
-
-  if (isTermsQuery(operator, vocabulary)) {
-    if (["exists", "missing"].indexOf(payload.operator) > -1) {
-      payload.terms = [...vocabulary.terms];
-    }
-    args = payload.terms;
-  } else if (isNumericQuery(operator, vocabulary)) {
-    if (payload.from !== undefined && payload.to === undefined) {
-      payload.operator = "ge";
-      args = [payload.from];
-    } else if (payload.from === undefined && payload.to !== undefined) {
-      payload.operator = "le";
-      args = [payload.to];
-    } else if (payload.from !== undefined && payload.to !== undefined) {
-      payload.operator = "between";
-      args = [payload.from, payload.to];
-    }
-
-    if (["exists", "missing"].indexOf(payload.operator) > -1) {
-      payload.from = null;
-      payload.to = null;
-    }
-  } else if (isMatchQuery(operator)) {
-    args = [payload.match];
-  }
-
-  return {args, operator: payload.operator};
-}
+import Criterion from "../../libs/Criterion";
 
 export default {
   props: {
-    operator: {
-      type: String,
-      required: true
-    },
-    args: {
-      type: Array,
-      required: true
-    },
     vocabulary: {
       type: Object,
       required: true
-    }
+    },
+    query: Object
   }, 
   data() {
     return {
@@ -184,19 +92,17 @@ export default {
     };
   },
   computed: {
-    value() {
-      return initialPayload(this.vocabulary, this.operator, this.args);
-    },
-    type() {
-      if (isTermsQuery(this.operator, this.vocabulary)) {
-        return "TERMS";
-      } else if (isNumericQuery(this.operator, this.vocabulary)) {
-        return "NUMERIC";
-      } else if(isMatchQuery(this.operator)) {
-        return "MATCH";
+    criterion() {
+      let output = null;
+      if (this.vocabulary) {
+        output = new Criterion(this.vocabulary);
+
+        if (this.query) {
+          output.query = this.query;
+        }
       }
 
-      return undefined;
+      return output;
     },
     terms() {
       return (this.vocabulary.terms || []).filter(term => {
@@ -206,10 +112,10 @@ export default {
   },
   methods: {
     onInput() {
-      this.$emit("update-query", {vocabularyName: this.vocabulary.name, value: finalPayload(this.vocabulary, this.operator, this.value)});
+      this.$emit("update-query", this.criterion);
     },
     onRemove() {
-      this.$emit("remove-query", {vocabularyName: this.vocabulary.name, value: {operator: this.operator}});
+      this.$emit("remove-query", this.criterion);
     }
   }
 }
