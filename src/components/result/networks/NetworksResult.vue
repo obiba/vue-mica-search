@@ -3,7 +3,7 @@
   <div class="row" v-show="showResult">
     <div class="col">      
       <table id="vosr-networks-result" class="table table-striped" width="100%">       
-        <thead v-if="withCollectedDatasets || withHarmonizedDatasets">
+        <thead v-if="withCollectedDatasets && withHarmonizedDatasets">
           <tr>
             <th rowspan="2">{{ tr("acronym") }}</th>
             <th rowspan="2">{{ tr("name") }}</th>
@@ -18,7 +18,16 @@
             <th v-if="withHarmonizedDatasets">{{ tr("harmonized") }}</th>
           </tr>
         </thead>
-        <thead v-if="!withCollectedDatasets && !withHarmonizedDatasets">
+        <thead v-else-if="withCollectedDatasets || withHarmonizedDatasets">
+          <tr>
+            <th>{{ tr("acronym") }}</th>
+            <th>{{ tr("name") }}</th>
+            <th>{{ tr("studies") }}</th>
+            <th>{{ tr("datasets") }}</th>
+            <th>{{ tr("variables") }}</th>
+          </tr>
+        </thead>
+        <thead v-else>
           <tr>
             <th>{{ tr("acronym") }}</th>
             <th>{{ tr("name") }}</th>
