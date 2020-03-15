@@ -3,7 +3,6 @@ import DatasetsResult from 'components/result/datasets/DatasetsResult.vue'
 import StudiesResult from 'components/result/studies/StudiesResult.vue'
 import NetworksResult from 'components/result/networks/NetworksResult.vue'
 import CoverageResult from 'components/result/coverage/CoverageResult.vue'
-import StudyFilterShortcut from 'components/filter/StudyFilterShortcut.vue'
 
 import RqlQueryBuilder from 'components/builder/RqlQueryBuilder.vue'
 import RqlPanel from 'components/panel/RqlPanel.vue'
@@ -29,9 +28,6 @@ function install(Vue, options) {
 
   RqlPanel.mixins = [options.mixin];
   Vue.component('rql-panel', RqlPanel);
-
-  StudyFilterShortcut.mixins = [options.mixin];
-  Vue.component(StudyFilterShortcut.name, StudyFilterShortcut);
 }
 
 export default install;

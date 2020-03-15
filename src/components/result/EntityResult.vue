@@ -33,7 +33,6 @@ export default {
     onResults(payload) {
       if (!this.dataTable) return;
       const pageInfo = this.dataTable.page.info();
-      this.showHits(payload.response);
       var parsed = this.parser.parse(payload.response, this.getMicaConfig(), this.tr);
       this.showResult = parsed.totalHits > 0;
       this.loading = false;

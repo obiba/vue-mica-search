@@ -126,7 +126,7 @@ export default {
     //   }, 50 );
     // },
     onResults(payload) {     
-      console.log('On coverage result', payload);
+      console.log('On coverage result');
       
       // Header initialization
       this.showResult = (payload.response.rows || []).length > 0;
@@ -139,7 +139,6 @@ export default {
       let headersData = this.parser.parseHeaders(payload.bucket, payload.response);
       this.table = headersData.table;
       this.vocabulariesTermsMap = headersData.vocabulariesTermsMap;
-      console.log(JSON.stringify(this.table));
 
       if (this.dataTable) {
         this.dataTable.destroy();
