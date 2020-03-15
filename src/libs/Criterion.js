@@ -87,13 +87,21 @@ export default class Criterion {
     this.type = Criterion.typeOfVocabulary(vocabulary);
   }
 
+  get terms() {
+    if (this.type === "TERMS") {
+      return (this.vocabulary.terms || []).map(term => term.name);
+    }
+
+    return null;
+  }
+
   set query(input) {
     this.operator = input.operator;
 
     switch(this.type) {
       case "TERMS":
         if (["missing", "exists"].indexOf(this.operator) > -1) {
-          this.value = [...this.vocabulary.terms];
+          this.value = [...this.terms];
         } else {
           this.value = Array.isArray(input.args[1]) ? input.args[1] : [input.args[1]];
         }
@@ -122,7 +130,9 @@ export default class Criterion {
         query.push(`${taxonomy}.${this.vocabulary.name}`);
 
         if (["missing", "exists"].indexOf(this.operator) > -1) {
-          this.value = [...this.vocabulary.terms];
+          this.value = [...this.terms];
+        } else if (this.terms.length === this.value.length) {
+          query.name === "exists";
         }
         
         query.push(this.value);
