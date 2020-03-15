@@ -1,3 +1,5 @@
+import $ from 'jquery';
+
 export default class NetworksResultParser {
 
   constructor() {
@@ -6,6 +8,8 @@ export default class NetworksResultParser {
   parse(data, micaConfig) {
     const networksResult = data.networkResultDto;
 
+    this.showHits(data);
+    
     if (!networksResult) {
       throw new Error("No network results available.");
     }
@@ -53,6 +57,29 @@ export default class NetworksResultParser {
     });
 
     return parsed;
-  } 
+  }
+
+  showHits(data) {
+    if (data.variableResultDto && data.variableResultDto.totalHits) {
+      $('#variable-count').text(data.variableResultDto.totalHits);
+    } else {
+      $('#variable-count').text(0);
+    }
+    if (data.datasetResultDto && data.datasetResultDto.totalHits) {
+      $('#dataset-count').text(data.datasetResultDto.totalHits);
+    } else {
+      $('#dataset-count').text(0);
+    }
+    if (data.studyResultDto && data.studyResultDto.totalHits) {
+      $('#study-count').text(data.studyResultDto.totalHits);
+    } else {
+      $('#study-count').text(0);
+    }
+    if (data.networkResultDto && data.networkResultDto.totalHits) {
+      $('#network-count').text(data.networkResultDto.totalHits);
+    } else {
+      $('#network-count').text(0);
+    }
+  }
 }
 

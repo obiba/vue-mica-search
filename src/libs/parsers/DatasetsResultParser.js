@@ -1,3 +1,5 @@
+import $ from 'jquery';
+
 export default class DatasetsResultParser {
 
   constructor() {
@@ -6,6 +8,8 @@ export default class DatasetsResultParser {
   parse(data, micaConfig) {
     const datasetsResult = data.datasetResultDto;
 
+    this.showHits(data);
+    
     if (!datasetsResult) {
       throw new Error("No dataset results available.");
     }
@@ -51,6 +55,29 @@ export default class DatasetsResultParser {
     });
 
     return parsed;
-  } 
+  }
+
+  showHits(data) {
+    if (data.variableResultDto && data.variableResultDto.totalHits) {
+      $('#variable-count').text(data.variableResultDto.totalHits);
+    } else {
+      $('#variable-count').text(0);
+    }
+    if (data.datasetResultDto && data.datasetResultDto.totalHits) {
+      $('#dataset-count').text(data.datasetResultDto.totalHits);
+    } else {
+      $('#dataset-count').text(0);
+    }
+    if (data.studyResultDto && data.studyResultDto.totalHits) {
+      $('#study-count').text(data.studyResultDto.totalHits);
+    } else {
+      $('#study-count').text(0);
+    }
+    if (data.networkResultDto && data.networkResultDto.totalHits) {
+      $('#network-count').text(data.networkResultDto.totalHits);
+    } else {
+      $('#network-count').text(0);
+    }
+  }
 }
 
