@@ -5,32 +5,36 @@
       <table id="vosr-networks-result" class="table table-striped" width="100%">       
         <thead v-if="withCollectedDatasets || withHarmonizedDatasets">
           <tr>
-            <th rowspan="2">Acronym</th>
-            <th rowspan="2">Name</th>
-            <th rowspan="2">Studies</th>
-            <th colspan="2">Datasets</th>
-            <th colspan="2">Variables</th>
+            <th rowspan="2">{{ tr("acronym") }}</th>
+            <th rowspan="2">{{ tr("name") }}</th>
+            <th rowspan="2">{{ tr("studies") }}</th>
+            <th colspan="2">{{ tr("datasets") }}</th>
+            <th colspan="2">{{ tr("variables") }}</th>
           </tr>
           <tr>
-            <th v-if="withCollectedDatasets">Collected</th>
-            <th v-if="withHarmonizedDatasets">Harmonized</th>
-            <th v-if="withCollectedDatasets">Collected</th>
-            <th v-if="withHarmonizedDatasets">Harmonized</th>
+            <th v-if="withCollectedDatasets">{{ tr("collected") }}</th>
+            <th v-if="withHarmonizedDatasets">{{ tr("harmonized") }}</th>
+            <th v-if="withCollectedDatasets">{{ tr("collected") }}</th>
+            <th v-if="withHarmonizedDatasets">{{ tr("harmonized") }}</th>
           </tr>
         </thead>
         <thead v-if="!withCollectedDatasets && !withHarmonizedDatasets">
           <tr>
-            <th>Acronym</th>
-            <th>Name</th>
-            <th>Studies</th>
+            <th>{{ tr("acronym") }}</th>
+            <th>{{ tr("name") }}</th>
+            <th>{{ tr("studies") }}</th>
           </tr>
         </thead> 
       </table>
     </div>
+  </div>
 
-    <div v-show="!showResult">
-      <span>No network found</span>
-    </div>
+  <div v-show="loading">
+    <img src="/assets/images/loading.gif">
+  </div>
+
+  <div v-show="!loading && !showResult">
+    <span>{{ tr("no-network-found") }}</span>
   </div>
 </div>
 </template>

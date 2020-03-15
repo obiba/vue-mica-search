@@ -1,14 +1,10 @@
-import $ from 'jquery';
-
 export default class VariablesResultParser {
 
   constructor() {
   }  
 
-  parse(data, micaConfig) {
+  parse(data, micaConfig, tr) {
     const variablesResult = data.variableResultDto;
-
-    this.showHits(data);
 
     if (!variablesResult) {
       throw new Error("No variable results available.");
@@ -42,7 +38,7 @@ export default class VariablesResultParser {
       ];
 
       if (micaConfig.isCollectedDatasetEnabled && micaConfig.isHarmonizedDatasetEnabled) {
-        row.push(summary.variableType);
+        row.push(tr(summary.variableType.toLowerCase()));
       }
 
       if (!micaConfig.isSingleStudyEnabled) {
@@ -55,29 +51,6 @@ export default class VariablesResultParser {
     });
 
     return parsed;
-  }
-
-  showHits(data) {
-    if (data.variableResultDto && data.variableResultDto.totalHits) {
-      $('#variable-count').text(data.variableResultDto.totalHits);
-    } else {
-      $('#variable-count').text(0);
-    }
-    if (data.datasetResultDto && data.datasetResultDto.totalHits) {
-      $('#dataset-count').text(data.datasetResultDto.totalHits);
-    } else {
-      $('#dataset-count').text(0);
-    }
-    if (data.studyResultDto && data.studyResultDto.totalHits) {
-      $('#study-count').text(data.studyResultDto.totalHits);
-    } else {
-      $('#study-count').text(0);
-    }
-    if (data.networkResultDto && data.networkResultDto.totalHits) {
-      $('#network-count').text(data.networkResultDto.totalHits);
-    } else {
-      $('#network-count').text(0);
-    }
   }
 }
 

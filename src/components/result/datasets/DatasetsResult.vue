@@ -5,20 +5,24 @@
       <table id="vosr-datasets-result" class="table table-striped" width="100%">
         <thead>
           <tr>
-            <th>Acronym</th>
-            <th>Name</th>
-            <th v-if="withCollectedDatasets && withHarmonizedDatasets">Type</th>
-            <th v-if="withNetworks">Networks</th>
-            <th v-if="withStudies">Studies</th>
-            <th>Variables</th>
+            <th>{{ tr("acronym") }}</th>
+            <th>{{ tr("name") }}</th>
+            <th v-if="withCollectedDatasets && withHarmonizedDatasets">{{ tr("type") }}</th>
+            <th v-if="withNetworks">{{ tr("networks") }}</th>
+            <th v-if="withStudies">{{ tr("studies") }}</th>
+            <th>{{ tr("variables") }}</th>
           </tr>
         </thead>
       </table>
     </div>
   </div>
 
-  <div v-show="!showResult">
-    <span>No dataset found</span>
+  <div v-show="loading">
+    <img src="/assets/images/loading.gif">
+  </div>
+
+  <div v-show="!loading && !showResult">
+    <span>{{ tr("no-dataset-found") }}</span>
   </div>
 
 </div>

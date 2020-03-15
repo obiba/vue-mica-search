@@ -5,20 +5,24 @@
       <table id="vosr-variables-result" class="table table-striped" width="100%">
         <thead>
           <tr>
-            <th>Name</th>
-            <th>Label</th>
-            <th>Annotations</th>
+            <th>{{ tr("name") }}</th>
+            <th>{{ tr("label") }}</th>
+            <th>{{ tr("annotations") }}</th>
             <th v-if="withCollectedDataset && withHarmonizedDataset">Type</th>
             <th v-if="withStudies">Study</th>
-            <th>Dataset</th>
+            <th>{{ tr("dataset") }}</th>
           </tr>
         </thead>
       </table>
     </div>
   </div>
 
-  <div v-show="!showResult">
-    <span>No variable found</span>
+  <div v-show="loading">
+    <img src="/assets/images/loading.gif">
+  </div>
+
+  <div v-show="!loading && !showResult">
+    <span>{{ tr("no-variable-found") }}</span>
   </div>
 
 </div>
