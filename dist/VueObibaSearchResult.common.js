@@ -29965,7 +29965,7 @@ var Criterion = /*#__PURE__*/function () {
           if (["missing", "exists"].indexOf(this.operator) > -1) {
             this.value = Object(_home_user_projects_epigeny_vue_obiba_search_result_node_modules_babel_runtime_helpers_esm_toConsumableArray__WEBPACK_IMPORTED_MODULE_6__["default"])(this.terms);
           } else if (this.terms.length === this.value.length) {
-            query.name === "exists";
+            query.name = "exists";
           }
 
           query.push(this.value);

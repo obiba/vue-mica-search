@@ -132,7 +132,7 @@ export default class Criterion {
         if (["missing", "exists"].indexOf(this.operator) > -1) {
           this.value = [...this.terms];
         } else if (this.terms.length === this.value.length) {
-          query.name === "exists";
+          query.name = "exists";
         }
         
         query.push(this.value);
