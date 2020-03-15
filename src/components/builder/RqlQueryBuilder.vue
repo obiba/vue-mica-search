@@ -23,6 +23,7 @@ import RqlQuery from "./RqlQuery.vue";
 import Criterion from "../../libs/Criterion";
 
 export default {
+  name: "rql-query-builder",
   props: {
     target: {
       type: String,
