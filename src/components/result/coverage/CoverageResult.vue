@@ -2,7 +2,7 @@
   <div>
     <div class="row" v-show="showResult">
       <div class="col">
-        <table v-if="table" id="vosr-coverage-result" class="table table-bordered table-striped" width="100%">
+        <table v-if="table" id="vosr-coverage-result" class="table table-striped" width="100%">
           <thead>
             <tr>
               <th v-bind:rowspan="bucketStartsWithDce ? 1 : 2" v-bind:colspan="table.cols.colSpan">

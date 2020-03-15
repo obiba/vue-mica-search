@@ -2,7 +2,7 @@
 <div> 
   <div class="row" v-show="showResult">
     <div class="col">      
-      <table id="vosr-datasets-result" class="table table-bordered table-striped" width="100%">
+      <table id="vosr-datasets-result" class="table table-striped" width="100%">
         <thead>
           <tr>
             <th>Acronym</th>
