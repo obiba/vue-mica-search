@@ -2,7 +2,7 @@
 <div>
   <template v-if="Array.isArray(taxonomy)">
   <div v-for="sub in taxonony" v-bind:key="sub.name">
-    <rql-panel v-bind:taxonomy="sub" v-bind:query="query"></rql-panel>
+    <rql-panel v-bind:target="target" v-bind:taxonomy="sub" v-bind:query="query"></rql-panel>
   </div>
   </template>
 

@@ -129,14 +129,14 @@ export default class Criterion {
       case "TERMS":
         query.push(`${taxonomy}.${this.vocabulary.name}`);
 
-        if (["missing", "exists"].indexOf(this.operator) > -1) {
-          this.value = [...this.terms];
-        } else if (this.terms.length === this.value.length) {
+        if (this.terms.length === this.value.length) {
           query.name = "exists";
         }
-        
-        query.push(this.value);
 
+        if (["missing", "exists"].indexOf(query.name) === -1) {
+          query.push(this.value);
+        }      
+        
         break;
       case "NUMERIC":
         query.push(`${taxonomy}.${this.vocabulary.name}`);

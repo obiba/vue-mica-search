@@ -1,11 +1,20 @@
 <template>
 <div>
-  <span class="badge badge-primary" v-show="vocabularies.length > 0">{{ target }}</span>
+  <span class="badge badge-primary" v-show="Array.isArray(taxonomy) || vocabularies.length > 0">{{ target }}</span>
+
+  <template v-if="Array.isArray(taxonomy)">
+  <div v-for="sub in taxonony" v-bind:key="sub.name">
+    <rql-query-builder v-bind:target="target" v-bind:taxonomy="sub" v-bind:query="query"></rql-query-builder>
+  </div>
+  </template>
+
+  <template v-else>
   <ul class="list-inline">
     <li class="list-inline-item" v-for="vocabulary in vocabularies" v-bind:key="vocabulary.name">
       <rql-query v-bind:vocabulary="vocabulary" v-bind:query="getAssociatedQuery(vocabulary)" v-on:update-query="updateQuery" v-on:remove-query="removeQuery"></rql-query>
     </li>
   </ul>
+  </template>
 </div>    
 </template>
 
