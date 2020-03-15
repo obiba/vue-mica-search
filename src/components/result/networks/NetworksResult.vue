@@ -2,8 +2,8 @@
 <div> 
   <div class="row" v-show="showResult">
     <div class="col">      
-      <table id="vosr-networks-result" class="table table-bordered table-striped" width="100%">       
-        <thead>
+      <table id="vosr-networks-result" class="table table-striped" width="100%">       
+        <thead v-if="withCollectedDatasets || withHarmonizedDatasets">
           <tr>
             <th rowspan="2">Acronym</th>
             <th rowspan="2">Name</th>
@@ -12,10 +12,17 @@
             <th colspan="2">Variables</th>
           </tr>
           <tr>
-            <th>Collected</th>
-            <th>Harmonized</th>
-            <th>Collected</th>
-            <th>Harmonized</th>
+            <th v-if="withCollectedDatasets">Collected</th>
+            <th v-if="withHarmonizedDatasets">Harmonized</th>
+            <th v-if="withCollectedDatasets">Collected</th>
+            <th v-if="withHarmonizedDatasets">Harmonized</th>
+          </tr>
+        </thead>
+        <thead v-if="!withCollectedDatasets && !withHarmonizedDatasets">
+          <tr>
+            <th>Acronym</th>
+            <th>Name</th>
+            <th>Studies</th>
           </tr>
         </thead> 
       </table>

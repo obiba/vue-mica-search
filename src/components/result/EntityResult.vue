@@ -11,6 +11,20 @@ export default {
       showResult: false
     };
   },
+  computed: {
+    withNetworks: function() {
+      return this.getMicaConfig().isNetworkEnabled && !this.getMicaConfig().isSingleNetworkEnabled;
+    },
+    withStudies: function() {
+      return !this.getMicaConfig().isSingleStudyEnabled
+    },
+    withCollectedDatasets: function() {
+      return this.getMicaConfig().isCollectedDatasetEnabled;
+    },
+    withHarmonizedDatasets: function() {
+      return this.getMicaConfig().isHarmonizedDatasetEnabled;
+    }
+  },
   methods: {
     /**
      * Callback invoked when request response arrives
@@ -18,7 +32,7 @@ export default {
     onResults(payload) {
       if (!this.dataTable) return;
       const pageInfo = this.dataTable.page.info();
-      var parsed = this.parser.parse(payload.response);
+      var parsed = this.parser.parse(payload.response, this.getMicaConfig());
       this.showResult = parsed.totalHits > 0;
 
       if (!this.showResult) return; 

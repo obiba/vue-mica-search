@@ -7,9 +7,9 @@
           <tr>
             <th>Acronym</th>
             <th>Name</th>
-            <th>Type</th>
-            <th>Networks</th>
-            <th>Studies</th>
+            <th v-if="withCollectedDatasets && withHarmonizedDatasets">Type</th>
+            <th v-if="withNetworks">Networks</th>
+            <th v-if="withStudies">Studies</th>
             <th>Variables</th>
           </tr>
         </thead>

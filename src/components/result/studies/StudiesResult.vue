@@ -2,7 +2,7 @@
 <div>
   <div class="row" v-show="showResult">
     <div class="col">      
-      <table id="vosr-studies-result" class="table table-bordered table-striped" width="100%">        
+      <table id="vosr-studies-result" class="table table-striped" width="100%">        
         <thead>
           <tr>
             <th rowspan="2">Acronym</th>
@@ -11,19 +11,19 @@
             <th rowspan="2">Study Design</th>
             <th colspan="4">Data Sources Available</th>
             <th rowspan="2">Participants</th>
-            <th rowspan="2">Networks</th>
-            <th colspan="2">Individual</th>
-            <th colspan="2">Harmonization</th>
+            <th rowspan="2" v-if="withNetworks">Networks</th>
+            <th colspan="2" v-if="withCollectedDatasets">Individual</th>
+            <th colspan="2" v-if="withHarmonizedDatasets">Harmonization</th>
           </tr>
           <tr>
             <th><i class="fa fa-file-alt"></i></th>
             <th><i class="fa fa-stethoscope"></i></th>
             <th><i class="fa fa-flask"></i></th>
             <th><i class="far fa-plus-square"></i></th>
-            <th>Datasets</th>
-            <th>Variables</th>
-            <th>Datasets</th>
-            <th>Variables</th>
+            <th v-if="withCollectedDatasets">Datasets</th>
+            <th v-if="withCollectedDatasets">Variables</th>
+            <th v-if="withHarmonizedDatasets">Datasets</th>
+            <th v-if="withHarmonizedDatasets">Variables</th>
           </tr>
         </thead> 
       </table>
@@ -49,7 +49,8 @@ export default {
     return {
       parser: new StudiesResultParser(),
       type: "studies",
-      target: "study"    }
+      target: "study"
+    }
   },
   methods: {    
     onAnchorClicked(event) {

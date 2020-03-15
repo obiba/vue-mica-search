@@ -3,7 +3,7 @@ export default class DatasetsResultParser {
   constructor() {
   }  
 
-  parse(data) {
+  parse(data, micaConfig) {
     const datasetsResult = data.datasetResultDto;
 
     if (!datasetsResult) {
@@ -27,16 +27,27 @@ export default class DatasetsResultParser {
       const type = dataset.variableType === 'Dataschema' ? 'Harmonized' : 'Collected';
       const stats = dataset['obiba.mica.CountStatsDto.datasetCountStats'] || {};
       let anchor = (type, value) => `<a href="" class="query-anchor" data-target="dataset" data-target-id="${dataset.id}" data-type="${type}">${value}</a>`;
-      parsed.data.push(
-        [
-          `<a href="/dataset/${dataset.id}">${dataset.acronym[0].value}</a>`,
-          dataset.name[0].value,
-          type,
-          stats.networks ? anchor('networks', stats.networks) : '-',
-          stats.studies ? anchor('studies', stats.studies) : '-',
-          stats.variables ? anchor('variables', stats.variables) : '-'
-        ]
-      );
+      
+      let row = [
+        `<a href="/dataset/${dataset.id}">${dataset.acronym[0].value}</a>`,
+        dataset.name[0].value
+      ];
+
+      if (micaConfig.isCollectedDatasetEnabled && micaConfig.isHarmonizedDatasetEnabled) {
+        row.push(type);
+      }
+
+      if (micaConfig.isNetworkEnabled && !micaConfig.isSingleNetworkEnabled) {
+        row.push(stats.networks ? anchor('networks', stats.networks) : '-');
+      }
+
+      if (!micaConfig.isSingleStudyEnabled) {
+        row.push(stats.studies ? anchor('studies', stats.studies) : '-');
+      }
+
+      row.push(stats.variables ? anchor('variables', stats.variables) : '-');
+
+      parsed.data.push(row);
     });
 
     return parsed;
