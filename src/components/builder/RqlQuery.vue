@@ -62,7 +62,7 @@
 
       </template>
 
-      <template>
+      <template v-else>
 
       <div class="container">
         <input type="text" class="form-control" v-model="criterion.value" v-on:input="onInput()">
