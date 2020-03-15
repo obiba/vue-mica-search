@@ -105,13 +105,13 @@ export default {
     },
     updateQuery(payload) {
       if (["missing", "exists"].indexOf(payload.operator) === -1 && (!Array.isArray(payload.value) || payload.value.length === 0)) {
-        this.$emit("remove-query", {target: this.taget, query: payload.asQuery(this.taxonomy.name)});
+        this.$emit("remove-query", {target: this.target, query: payload.asQuery(this.taxonomy.name)});
       } else {
-        this.$emit("update-query", {target: this.taget, query: payload.asQuery(this.taxonomy.name)});
+        this.$emit("update-query", {target: this.target, query: payload.asQuery(this.taxonomy.name)});
       }
     },
     removeQuery(payload) { 
-      this.$emit("remove-query", {target: this.taget, query: payload.asQuery(this.taxonomy.name)});
+      this.$emit("remove-query", {target: this.target, query: payload.asQuery(this.taxonomy.name)});
     }
   }
 }

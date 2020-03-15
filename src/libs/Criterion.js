@@ -74,10 +74,13 @@ export default class Criterion {
     this.vocabulary = vocabulary;
 
     if (isTermsQuery(this.vocabulary)) {
+      this.operator = "in";
       this.value = [];
     } else if (isNumericQuery(this.vocabulary)) {
+      this.operator = "between";
       this.value = [];
-    } else if(isMatchQuery(this.vocabulary)) {
+    } else {
+      this.operator = "match";
       this.value = null;
     }
 
@@ -104,7 +107,7 @@ export default class Criterion {
         }
 
         break;
-      case "MATCH":
+      default:
         this.value = input.args[0];
 
         break;  
@@ -147,7 +150,7 @@ export default class Criterion {
         query.push(this.value);
 
         break;
-      case "MATCH": 
+      default: 
         query.push(this.value);
         query.push(`${taxonomy}.${this.vocabulary.name}`);        
 

@@ -26,7 +26,7 @@
 
   </template>
 
-  <template v-else-if="criterion.type === 'MATCH'">
+  <template v-else>
 
     <input type="text" class="form-control" v-model="criterion.value" v-on:input="onInput()">
 
