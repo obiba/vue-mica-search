@@ -8,8 +8,8 @@
             <th>{{ tr("name") }}</th>
             <th>{{ tr("label") }}</th>
             <th>{{ tr("annotations") }}</th>
-            <th v-if="withCollectedDataset && withHarmonizedDataset">Type</th>
-            <th v-if="withStudies">Study</th>
+            <th v-if="withCollectedDatasets && withHarmonizedDatasets">{{ tr("type") }}</th>
+            <th v-if="withStudies">{{ tr("study") }}</th>
             <th>{{ tr("dataset") }}</th>
           </tr>
         </thead>
