@@ -1,7 +1,7 @@
 <template>
 <div class="btn-group" role="group">
   <div class="btn-group">
-    <button type="button" class="btn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown">{{ vocabulary.title[0].text }}</button>
+    <button type="button" class="btn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown">{{ criterion }}</button>
     
     <div class="dropdown-menu" style="width: 25em;">
       <div class="container">{{ vocabulary.name }}</div>

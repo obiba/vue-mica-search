@@ -13,8 +13,9 @@ function isMatchQuery(vocabulary) {
 }
 
 function stringIsNullOrEmpty(str) {
-  if (str === null || str === undefined) return true
-  return str.trim().length === 0;
+  if (str === null || str === undefined) return true;
+  if (typeof str === "string") return str.trim().length === 0;
+  else return false;
 }
 
 export default class Criterion {
@@ -142,7 +143,7 @@ export default class Criterion {
         query.push(`${taxonomy}.${this.vocabulary.name}`);
 
         if (["missing", "exists"].indexOf(this.operator) > -1) {
-          this.value = ["*", "*"]
+          this.value = ["*", "*"];
         } else {
           if (stringIsNullOrEmpty(this.value[0]) && stringIsNullOrEmpty(this.value[1])) {
             this.value = [];
@@ -161,12 +162,47 @@ export default class Criterion {
 
         break;
       default: 
-        query.push(this.value);
+        if (stringIsNullOrEmpty(this.value)) {
+          query.push("");
+        } else {
+          query.push(this.value);
+        }
+        
         query.push(`${taxonomy}.${this.vocabulary.name}`);        
 
         break;  
     }
 
     return query;
+  }
+
+  toString() {
+    if (["missing", "exists"].indexOf(this.operator) > -1) {
+      let text = this.operator === "missing" ? "none" : "any";
+      return `${this.vocabulary.name}:${text}`;
+    }
+
+    if (this.type === "TERMS") {
+      let text = (this.value || []).join(" | ");
+      return `${text}`;
+    } else if (this.type === "NUMERIC") {
+      let text = ""
+
+      if (!stringIsNullOrEmpty(this.value[0]) && stringIsNullOrEmpty(this.value[1])) {
+        text = `:>${this.value[0]}`;
+      } else if (stringIsNullOrEmpty(this.value[0]) && !stringIsNullOrEmpty(this.value[1])) {
+        text = `:<${this.value[1]}`;
+      } else if (!stringIsNullOrEmpty(this.value[0]) && !stringIsNullOrEmpty(this.value[1])) {
+        text = `:[${this.value[0]},${this.value[1]}]`;
+      }
+
+      return `${this.vocabulary.name}${text}`;
+    } else {
+      let text = "";
+      if (!stringIsNullOrEmpty(this.value)) {
+        text = `:match(${this.value})`;
+      }
+      return `${this.vocabulary.name}${text}`;
+    }
   }
 }
