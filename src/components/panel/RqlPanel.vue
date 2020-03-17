@@ -1,12 +1,14 @@
 <template>
 <div>
   <template v-if="Array.isArray(taxonomy)">
-  <div v-for="sub in taxonony" v-bind:key="sub.name">
-    <rql-panel v-bind:target="target" v-bind:taxonomy="sub" v-bind:query="query"></rql-panel>
+  <div v-for="sub in taxonomy" v-bind:key="sub.name">
+    <rql-panel v-bind:target="target" v-bind:taxonomy="sub" v-bind:query="query" v-on:update-query="updateQuery" v-on:remove-query="removeQuery"></rql-panel>
   </div>
   </template>
 
   <template v-else>
+  <h4 v-if="taxonomy">{{ taxonomy.name }}</h4>  
+
   <div class="input-group mb-4">
     <input type="text" class="form-control" v-model="panelFilter">
     <div class="input-group-append">
@@ -104,14 +106,19 @@ export default {
       }       
     },
     updateQuery(payload) {
-      if (["missing", "exists"].indexOf(payload.operator) === -1 && (!Array.isArray(payload.value) || payload.value.length === 0)) {
-        this.$emit("remove-query", {target: this.target, query: payload.asQuery(this.taxonomy.name)});
+      if (payload instanceof Criterion) {
+        if (["missing", "exists"].indexOf(payload.operator) === -1 && (!Array.isArray(payload.value) || payload.value.length === 0)) {
+          this.$emit("remove-query", {target: this.target, query: payload.asQuery(this.taxonomy.name)});
+        } else {
+          this.$emit("update-query", {target: this.target, query: payload.asQuery(this.taxonomy.name)});
+        }
       } else {
-        this.$emit("update-query", {target: this.target, query: payload.asQuery(this.taxonomy.name)});
-      }
+        this.$emit("update-query", payload);
+      }      
     },
     removeQuery(payload) { 
-      this.$emit("remove-query", {target: this.target, query: payload.asQuery(this.taxonomy.name)});
+      if (payload instanceof Criterion) this.$emit("remove-query", {target: this.target, query: payload.asQuery(this.taxonomy.name)});
+      else this.$emit("remove-query", payload);
     }
   }
 }

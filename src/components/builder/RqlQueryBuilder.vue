@@ -1,20 +1,11 @@
 <template>
 <div>
-  <span class="badge badge-primary" v-show="Array.isArray(taxonomy) || vocabularies.length > 0">{{ target }}</span>
-
-  <template v-if="Array.isArray(taxonomy)">
-  <div v-for="sub in taxonony" v-bind:key="sub.name">
-    <rql-query-builder v-bind:target="target" v-bind:taxonomy="sub" v-bind:query="query"></rql-query-builder>
-  </div>
-  </template>
-
-  <template v-else>
+  <span class="badge badge-primary" v-show="vocabularies.length > 0">{{ target }}</span>  
   <ul class="list-inline">
     <li class="list-inline-item" v-for="vocabulary in vocabularies" v-bind:key="vocabulary.name">
-      <rql-query v-bind:vocabulary="vocabulary" v-bind:query="getAssociatedQuery(vocabulary)" v-on:update-query="updateQuery" v-on:remove-query="removeQuery"></rql-query>
+      <rql-query v-bind:vocabulary="vocabulary" v-bind:query="getAssociatedQuery(vocabulary)" v-on:update-query="updateQuery($event, getAssociatedTaxonomyName(vocabulary))" v-on:remove-query="removeQuery($event, getAssociatedTaxonomyName(vocabulary))"></rql-query>
     </li>
   </ul>
-  </template>
 </div>    
 </template>
 
@@ -37,18 +28,47 @@ export default {
       return Criterion.splitQuery(this.query);
     },
     vocabularies() {
-      if (!this.taxonomy) return [];      
+      if (!this.taxonomy) return [];
+      if (Array.isArray(this.taxonomy)) {
+        let result = [];
+        this.taxonomy.forEach((t) => {
+          let found = (t.vocabularies || [])
+          .filter(vocabulary => {
+            return this.hasAssociatedQuery(vocabulary);
+          });
 
-      return (this.taxonomy.vocabularies || [])
-      .filter(vocabulary => {
-        return this.hasAssociatedQuery(vocabulary);
-      });
+          result = result.concat(found);  
+        });
+
+        return result;
+      } else {
+        return (this.taxonomy.vocabularies || [])
+          .filter(vocabulary => {
+            return this.hasAssociatedQuery(vocabulary);
+          });
+      }
     }
   },
   components: {
     RqlQuery
   },
   methods: {
+    getAssociatedTaxonomyName(test) {
+      if (Array.isArray(this.taxonomy)) {
+        let result = this.taxonomy.filter((t) => {
+          let found = (t.vocabularies || [])
+          .filter(vocabulary => {
+            return vocabulary.name === test.name;
+          });
+
+          return found.length > 0;
+        })[0];
+
+        return result ? result.name : undefined;
+      } else {
+        return this.taxonomy.name;
+      }
+    },
     getAssociatedQuery(vocabulary) {
       if (this.query) {
         return Criterion.associatedQuery(vocabulary, this.inputs);       
@@ -59,15 +79,15 @@ export default {
     hasAssociatedQuery(vocabulary) {
       return this.getAssociatedQuery(vocabulary) && true;
     },
-    updateQuery(payload) {
+    updateQuery(payload, taxonomyName) {
       if (["missing", "exists"].indexOf(payload.operator) === -1 && (!Array.isArray(payload.value) || payload.value.length === 0)) {
-        this.$emit("remove-query", {target: this.target, query: payload.asQuery(this.taxonomy.name)});
+        this.$emit("remove-query", {target: this.target, query: payload.asQuery(taxonomyName)});
       } else {
-        this.$emit("update-query", {target: this.target, query: payload.asQuery(this.taxonomy.name)});
+        this.$emit("update-query", {target: this.target, query: payload.asQuery(taxonomyName)});
       }      
     },
-    removeQuery(payload) {
-      this.$emit("remove-query", {target: this.target, query: payload.asQuery(this.taxonomy.name)});
+    removeQuery(payload, taxonomyName) {
+      this.$emit("remove-query", {target: this.target, query: payload.asQuery(taxonomyName)});
     }
   }
 }
