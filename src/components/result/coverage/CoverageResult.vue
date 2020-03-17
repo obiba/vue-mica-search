@@ -6,7 +6,7 @@
           <thead>
             <tr>
               <th v-bind:rowspan="bucketStartsWithDce ? 1 : 2" v-bind:colspan="table.cols.colSpan">
-                {{'search.coverage-buckets.' + bucket}}
+                {{tr(`coverage-buckets-${bucketName}`)}}
               </th>
               <th v-for="(header, index) in table.vocabularyHeaders" v-bind:key="index" v-bind:colspan="header.termsCount">
                 <span uib-popover="{{header.entity.descriptions[0].value}}" popover-title="{{header.entity.titles[0].value}}" popover-placement="bottom"
@@ -14,36 +14,27 @@
                   {{header.entity.titles[0].value}}
                 </span>
                 <small>
-                  <a href ng-click="removeVocabulary(header)">
+                  <a href v-on:click="removeVocabulary($event, header)">
                     <i class="fa fa-times"></i>
                   </a>
                 </small>
               </th>
             </tr>
             <tr>
-              <th v-if="bucketStartsWithDce">search.coverage-dce-cols.study</th>
-              <th v-if="bucketStartsWithDce" colspan="1" >search.coverage-dce-cols.population</th>
-              <!-- <th ng-if="bucketStartsWithDce" colspan="{{choseHarmonization && !choseAll ? 2 : 1}}" translate>search.coverage-dce-cols.population</th> -->
-              <th v-if="bucketStartsWithDce">search.coverage-dce-cols.dce</th> 
+              <th v-if="bucketStartsWithDce">{{ tr("study") }}</th>
+              <th v-if="bucketStartsWithDce" colspan="1" >{{ tr("population") }}</th>
+              <th v-if="bucketStartsWithDce">{{ tr("dce") }}</th> 
 
               <th v-for="(header, index) in table.termHeaders" v-bind:key="index">
-                <!-- <span uib-popover="{{header.entity.descriptions[0].value}}" popover-title="{{header.entity.titles[0].value}}" popover-placement="bottom"
-                  popover-trigger="'mouseenter'">
-                  {{header.entity.titles[0].value}}
-                </span> -->
-                <!-- <small>
-                  <a ng-if="header.canRemove" href ng-click="removeTerm(header)">
-                    <i class="fa fa-times"></i>
-                  </a>
-                </small> -->
-                {{header.entity.titles[0].value}}
+                <!-- TODO popover -->
+                {{ localize(header.entity.titles) }}
               </th>
             </tr>
             <!-- <tr ng-show="totalOptions.showInHeader"> -->
             <tr>
               <th v-bind:colspan="table.cols.colSpan"></th>
               <th v-for="(header, index) in table.termHeaders" v-bind:key="index" v-bind:title="header.entity.descriptions[0].value">
-                <a href ng-click="updateCriteria(null, header, $index, 'variables')">
+                <a href v-on:click="updateQuery($event, null, header, $index, 'variables')">
                   <!-- <localized-number value="header.hits"></localized-number> -->
                   <span>{{header.hits}}</span>
                 </a>
@@ -76,7 +67,7 @@
                 </div>
               </td>
               <td v-for="(h, hindex) in table.termHeaders" v-bind:key="hindex">
-                <a href ng-click="updateCriteria(row.value, h, index, 'variables')">
+                <a href="" v-on:click="updateQuery($event, row.value, h, index, 'variables')">
                   <span class="badge badge-primary" v-show="row.hitsTitles[hindex]">{{row.hitsTitles[hindex]}}</span>
                 </a>
                 <span v-show="!row.hitsTitles[hindex]">0</span>
@@ -94,7 +85,7 @@
   </div>
 </template>
 <script>
-import DataTable from "datatables.net-dt"; // eslint-disable-line no-unused-vars
+import Query from 'rql/src/query';
 import CoverageResultParser from "libs/parsers/CoverageResultParser";
 
 export default {
@@ -111,20 +102,12 @@ export default {
       filteredRows: []
     };
   },
+  computed: {    
+    bucketName: function() { 
+      return this.bucket.replace(/Id$/,"");
+    }
+  },
   methods: {
-    // onAjaxCallback( data, callback, settings ) {
-    //   const totalRows = this.rows.length;
-    //   this.filteredRows = this.rows.slice(data.start, data.start+data.length);
-
-    //   setTimeout( () => {
-    //       callback( {
-    //           draw: data.draw,
-    //           data: out,
-    //           recordsTotal: totalRows,
-    //           recordsFiltered: totalRows
-    //       } );
-    //   }, 50 );
-    // },
     onResults(payload) {     
       console.log('On coverage result');
       
@@ -144,18 +127,30 @@ export default {
         this.dataTable.destroy();
         this.dataTable = null;
       }
+    },
+    updateQuery(event, id, term, idx, type) {
+      console.log(`Id: ${id} Term: ${term} Index: ${idx} Type: ${type}`);
 
-      // table and rows initialization
-      // this.dataTable = this.registerDataTable(`vosr-coverage-result`,  {
-      //   serverSide: true,
-      //   ordering: false,
-      //   searching: false,
-      //   ajax: this.onAjaxCallback.bind(this),
-      //   scrollY: 20,
-      //   scroller: {
-      //     loadingIndicator: true
-      //   }
-      // }
+      event.preventDefault();
+      const updates = [{
+        target: 'variable', 
+        query: new Query('in', [`${term.taxonomyName}.${term.vocabularyName}`, term.entity.name]),
+        operator: 'or'
+      }];
+
+      if (id !== null) {
+        const bucketTargetMap = {
+          studyId: {target: 'study', queryKey: 'Mica_study.id'},
+          datasetId: {target: 'dataset', queryKey: 'Mica_dataset.id'},
+          dceId: {target: 'variable', queryKey: 'Mica_variable.dceId'}
+        };
+        const targetData = bucketTargetMap[this.bucket];
+
+        updates.push({target: targetData.target, query: new Query('in', [targetData.queryKey,id])});      
+      }
+
+      this.getEventBus().$emit('query-type-updates-selection', {display: 'lists', type: `${type}`, updates});
+
     }
   },
   mounted() {
