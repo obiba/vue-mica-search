@@ -24,7 +24,7 @@
       </span>      
     </div>
     <div class="card-body">
-      <rql-panel-vocabulary v-bind:vocabulary="vocabulary" v-bind:query="getAssociatedQuery(vocabulary)" v-on:update-query="updateQuery"></rql-panel-vocabulary>
+      <rql-panel-vocabulary v-bind:vocabulary="vocabulary" v-bind:query="getAssociatedQuery(vocabulary)" v-bind:termsFilter="panelFilter" v-on:update-query="updateQuery"></rql-panel-vocabulary>
     </div>    
   </div>
   </template>
@@ -63,7 +63,16 @@ export default {
 
       return (this.taxonomy.vocabularies || [])
       .filter(vocabulary => {
-        return (!this.panelFilter || this.panelFilter.trim().length === 0) || vocabulary.name.toLowerCase().indexOf(this.panelFilter.toLowerCase()) > -1;
+        let found = (vocabulary.attributes || []).filter(attribute => attribute.key === "hidden").map(attribute => attribute.value);
+        return found.length === 0 || "true" !== found[0];
+      })
+      .filter(vocabulary => {
+        let passes = (!this.panelFilter || this.panelFilter.trim().length === 0);
+        let vocabularyPasses = passes || vocabulary.name.toLowerCase().indexOf(this.panelFilter.toLowerCase()) > -1;
+        if ("TERMS" !== Criterion.typeOfVocabulary(vocabulary) && vocabularyPasses) return true;
+
+        let foundTerms = (vocabulary.terms || []).filter(term => passes || term.name.toLowerCase().indexOf(this.panelFilter.toLowerCase()) > -1);
+        return vocabularyPasses || foundTerms.length > 0;
       });
     }
   },

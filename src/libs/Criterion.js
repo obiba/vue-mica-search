@@ -22,8 +22,9 @@ export default class Criterion {
 
   vocabulary = undefined;
   type = undefined;
-  operator = undefined;
+
   value = undefined;
+  _operator = undefined;
 
   static typeOfVocabulary(vocabulary) {
     let type = undefined;
@@ -88,6 +89,35 @@ export default class Criterion {
     this.type = Criterion.typeOfVocabulary(vocabulary);
   }
 
+  get operator() {
+    return this._operator;
+  }
+
+  set operator(value) {
+    this._operator - value;
+
+    switch(this.type) {
+      case "TERMS":
+        if (["missing", "exists"].indexOf(this.operator) > -1) {
+          this.value = [...this.terms];
+        } 
+
+        break;
+      case "NUMERIC":
+        if (["missing", "exists"].indexOf(this.operator) > -1) {
+          this.value = ["*", "*"];
+        }
+
+        break;
+      default:
+        if (["missing", "exists"].indexOf(this.operator) > -1) {
+          this.value = "*";
+        }
+
+        break;  
+    }
+  }
+
   get terms() {
     if (this.type === "TERMS") {
       return (this.vocabulary.terms || []).map(term => term.name);
@@ -97,7 +127,7 @@ export default class Criterion {
   }
 
   set query(input) {
-    this.operator = input.operator;
+    this._operator = input.operator;
 
     switch(this.type) {
       case "TERMS":
@@ -132,9 +162,11 @@ export default class Criterion {
 
         if (this.terms.length === this.value.length) {
           query.name = "exists";
+        } else {
+          query.name = "in";
         }
 
-        if (["missing", "exists"].indexOf(query.name) === -1) {
+        if (["missing", "exists"].indexOf(query.name) === -1 || this.terms.length < this.value.length) {
           query.push(this.value);
         }      
         
@@ -178,7 +210,7 @@ export default class Criterion {
 
   findTerm(termName) {
     const found = this.vocabulary.terms.filter(term => term.name === termName);
-    return found.length>0 ? found[0] : undefined;
+    return found.length > 0 ? found[0] : undefined;
   }
 
   toString() {
@@ -189,10 +221,13 @@ export default class Criterion {
     }
 
     if (this.type === "TERMS") {
+      if ((this.value || []).length > 5) return `${this.vocabulary.title[0].text}:...`;
+
       const text = (this.value || []).map(val => {
         const term = this.findTerm(val);
         return term ? term.title[0].text : val;
       }).join(" | ");
+
       return `${text}`;
     } else if (this.type === "NUMERIC") {
       let text = ""
@@ -205,13 +240,13 @@ export default class Criterion {
         text = `:[${this.value[0]},${this.value[1]}]`;
       }
 
-      return `${this.vocabulary.name}${text}`;
+      return `${this.vocabulary.title[0].text}${text}`;
     } else {
       let text = "";
       if (!stringIsNullOrEmpty(this.value)) {
         text = `:match(${this.value})`;
       }
-      return `${this.vocabulary.name}${text}`;
+      return `${this.vocabulary.title[0].text}${text}`;
     }
   }
 }

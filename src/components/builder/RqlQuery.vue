@@ -1,7 +1,7 @@
 <template>
 <div class="btn-group" role="group">
   <div class="btn-group">
-    <button type="button" class="btn btn-info btn-sm dropdown-toggle" data-toggle="dropdown">{{ criterion }}</button>
+    <button type="button" class="btn btn-info btn-sm dropdown-toggle" data-toggle="dropdown">{{ getCriterionAsString() }}</button>
     
     <div class="dropdown-menu" style="width: 25em;">
       <div class="container">{{ vocabulary.title | localize-string }}</div>
@@ -38,7 +38,7 @@
         <ul class="list-unstyled">
           <li v-for="term in terms" v-bind:key="term.name">
             <div class="form-check">
-              <input class="form-check-input" type="checkbox" v-bind:id="vocabulary.name + '-' + term.name" v-bind:value="term.name" v-model="criterion.value" v-on:change="onInput()">
+              <input class="form-check-input" type="checkbox" v-bind:id="vocabulary.name + '-' + term.name" v-bind:value="term.name" name="terms[]" v-model="criterion.value" v-on:change="onInput()">
               <label class="form-check-label" v-bind:for="vocabulary.name + '-' + term.name">{{ term.title | localize-string }}</label>
             </div>
           </li>
@@ -111,6 +111,9 @@ export default {
     }
   },
   methods: {
+    getCriterionAsString() {
+      return this.criterion.toString();
+    },
     onInput() {
       this.$emit("update-query", this.criterion);
     },
