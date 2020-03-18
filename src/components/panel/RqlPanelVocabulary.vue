@@ -2,14 +2,14 @@
 <div class="container">
   <template v-if="criterion.type === 'TERMS'">
 
-    <div class="row row-cols-4">
-      <span class="col" v-for="term in vocabulary.terms" v-bind:key="term.name">
+    <ul class="list-unstyled row">
+      <li class="list-item col-sm-3" v-for="term in vocabulary.terms" v-bind:key="term.name">
         <div class="form-check">
           <input class="form-check-input" type="checkbox" v-bind:id="vocabulary.name + '-' + term.name" v-bind:value="term.name" v-model="criterion.value" v-on:change="onInput()">
           <label class="form-check-label" v-bind:for="vocabulary.name + '-' + term.name">{{ term.title | localize-string }}</label>
         </div>
-      </span>
-    </div>  
+      </li>
+    </ul>  
 
   </template>
 
