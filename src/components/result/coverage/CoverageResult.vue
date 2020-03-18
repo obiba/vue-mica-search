@@ -9,10 +9,8 @@
                 {{tr(`coverage-buckets-${bucketName}`)}}
               </th>
               <th v-for="(header, index) in table.vocabularyHeaders" v-bind:key="index" v-bind:colspan="header.termsCount">
-                <span uib-popover="{{header.entity.descriptions[0].value}}" popover-title="{{header.entity.titles[0].value}}" popover-placement="bottom"
-                  popover-trigger="'mouseenter'">
-                  {{header.entity.titles[0].value}}
-                </span>
+                <!-- TODO popover -->
+                <span>{{ localize(header.entity.titles) }}</span>
                 <small>
                   <a href v-on:click="removeVocabulary($event, header)">
                     <i class="fa fa-times"></i>
@@ -27,16 +25,19 @@
 
               <th v-for="(header, index) in table.termHeaders" v-bind:key="index">
                 <!-- TODO popover -->
-                {{ localize(header.entity.titles) }}
+                <span>{{ localize(header.entity.titles) }}</span>
+                <small>
+                  <a ng-if="header.canRemove" href v-on:click="removeTerm($event, header)">
+                    <i class="fa fa-times"></i>
+                  </a>
+                </small>
               </th>
             </tr>
-            <!-- <tr ng-show="totalOptions.showInHeader"> -->
             <tr>
               <th v-bind:colspan="table.cols.colSpan"></th>
               <th v-for="(header, index) in table.termHeaders" v-bind:key="index" v-bind:title="header.entity.descriptions[0].value">
                 <a href v-on:click="updateQuery($event, null, header, $index, 'variables')">
-                  <!-- <localized-number value="header.hits"></localized-number> -->
-                  <span>{{header.hits}}</span>
+                  <span>{{header.hits.toLocaleString()}}</span>
                 </a>
               </th>
             </tr>
@@ -127,6 +128,17 @@ export default {
         this.dataTable.destroy();
         this.dataTable = null;
       }
+    },
+    removeVocabulary(event, vocabulary) {
+      console.log(`removeVocabulary ${vocabulary}`);
+      event.preventDefault();
+      this.getEventBus().$emit('query-type-delete', {target: 'variable', query: new Query('exists', [`${vocabulary.taxonomyName}.${vocabulary.entity.name}`])});
+    },
+    removeTerm(event, term) {
+      console.log(`removeVocabulary ${term}`);
+      event.preventDefault();
+      const payload = {target: 'variable', query: new Query('exists', [`${term.taxonomyName}.${term.vocabularyName}`]), args: [term.entity.name]};
+      this.getEventBus().$emit('query-type-delete-args', payload);
     },
     updateQuery(event, id, term, idx, type) {
       console.log(`Id: ${id} Term: ${term} Index: ${idx} Type: ${type}`);
