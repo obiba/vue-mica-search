@@ -1,6 +1,8 @@
 <template>
 <div>
-  <span class="badge badge-primary" v-show="vocabularies.length > 0">{{ target }}</span>  
+  <span class="float-left mr-2 text-muted" v-show="Array.isArray(taxonomy) || vocabularies.length > 0">
+    <h4><i class="io" v-bind:class="targetIcon"></i></h4>
+  </span>
   <ul class="list-inline">
     <li class="list-inline-item" v-for="vocabulary in vocabularies" v-bind:key="vocabulary.name">
       <rql-query v-bind:vocabulary="vocabulary" v-bind:query="getAssociatedQuery(vocabulary)" v-on:update-query="updateQuery($event, getAssociatedTaxonomyName(vocabulary))" v-on:remove-query="removeQuery($event, getAssociatedTaxonomyName(vocabulary))"></rql-query>
@@ -47,6 +49,9 @@ export default {
             return this.hasAssociatedQuery(vocabulary);
           });
       }
+    },
+    targetIcon() {
+      return "io-" + this.target;
     }
   },
   components: {

@@ -1,10 +1,10 @@
 <template>
 <div class="btn-group" role="group">
   <div class="btn-group">
-    <button type="button" class="btn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown">{{ criterion }}</button>
+    <button type="button" class="btn btn-info btn-sm dropdown-toggle" data-toggle="dropdown">{{ criterion }}</button>
     
     <div class="dropdown-menu" style="width: 25em;">
-      <div class="container">{{ vocabulary.name }}</div>
+      <div class="container">{{ vocabulary.title[0].text }}</div>
       <div class="dropdown-divider"></div>
 
       <template v-if="criterion.type === 'TERMS'">

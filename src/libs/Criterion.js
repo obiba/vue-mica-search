@@ -176,14 +176,23 @@ export default class Criterion {
     return query;
   }
 
+  findTerm(termName) {
+    const found = this.vocabulary.terms.filter(term => term.name === termName);
+    return found.length>0 ? found[0] : undefined;
+  }
+
   toString() {
     if (["missing", "exists"].indexOf(this.operator) > -1) {
-      let text = this.operator === "missing" ? "none" : "any";
-      return `${this.vocabulary.name}:${text}`;
+      const title = this.vocabulary.title[0].text;
+      const text = this.operator === "missing" ? "none" : "any";
+      return `${title}:${text}`;
     }
 
     if (this.type === "TERMS") {
-      let text = (this.value || []).join(" | ");
+      const text = (this.value || []).map(val => {
+        const term = this.findTerm(val);
+        return term ? term.title[0].text : val;
+      }).join(" | ");
       return `${text}`;
     } else if (this.type === "NUMERIC") {
       let text = ""
