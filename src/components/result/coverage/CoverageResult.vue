@@ -10,7 +10,7 @@
               </th>
               <th v-for="(header, index) in table.vocabularyHeaders" v-bind:key="index" v-bind:colspan="header.termsCount">
                 <!-- TODO popover -->
-                <span>{{ localize(header.entity.titles) }}</span>
+                <span>{{ localize(header.entity.titles) }} </span>
                 <small>
                   <a href v-on:click="removeVocabulary($event, header)">
                     <i class="fa fa-times"></i>
@@ -25,7 +25,7 @@
 
               <th v-for="(header, index) in table.termHeaders" v-bind:key="index">
                 <!-- TODO popover -->
-                <span>{{ localize(header.entity.titles) }}</span>
+                <span>{{ localize(header.entity.titles) }} </span>
                 <small>
                   <a ng-if="header.canRemove" href v-on:click="removeTerm($event, header)">
                     <i class="fa fa-times"></i>
@@ -137,8 +137,15 @@ export default {
     removeTerm(event, term) {
       console.log(`removeVocabulary ${term}`);
       event.preventDefault();
-      const payload = {target: 'variable', query: new Query('exists', [`${term.taxonomyName}.${term.vocabularyName}`]), args: [term.entity.name]};
-      this.getEventBus().$emit('query-type-delete-args', payload);
+
+      const index = this.table.termHeaders.indexOf(term);
+      this.table.termHeaders.splice(index, 1);
+      const argsToKeep = this.table.termHeaders.map(term => term.entity.name);
+      if (argsToKeep.length < 0) {
+        this.getEventBus().$emit('query-type-delete', {target: 'variable', query: new Query('exists', [`${term.taxonomyName}.${term.vocabularyName}`])});
+      } else {
+        this.getEventBus().$emit('query-type-update', {target: 'variable', query: new Query('in', [`${term.taxonomyName}.${term.vocabularyName}`, argsToKeep])});
+      }
     },
     updateQuery(event, id, term, idx, type) {
       console.log(`Id: ${id} Term: ${term} Index: ${idx} Type: ${type}`);
