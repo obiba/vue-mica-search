@@ -141,7 +141,7 @@ export default {
       const index = this.table.termHeaders.indexOf(term);
       this.table.termHeaders.splice(index, 1);
       const argsToKeep = this.table.termHeaders.map(term => term.entity.name);
-      if (argsToKeep.length < 0) {
+      if (argsToKeep.length < 1) {
         this.getEventBus().$emit('query-type-delete', {target: 'variable', query: new Query('exists', [`${term.taxonomyName}.${term.vocabularyName}`])});
       } else {
         this.getEventBus().$emit('query-type-update', {target: 'variable', query: new Query('in', [`${term.taxonomyName}.${term.vocabularyName}`, argsToKeep])});
