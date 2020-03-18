@@ -4,7 +4,7 @@
     <button type="button" class="btn btn-info btn-sm dropdown-toggle" data-toggle="dropdown">{{ criterion }}</button>
     
     <div class="dropdown-menu" style="width: 25em;">
-      <div class="container">{{ vocabulary.title[0].text }}</div>
+      <div class="container">{{ vocabulary.title | localize-string }}</div>
       <div class="dropdown-divider"></div>
 
       <template v-if="criterion.type === 'TERMS'">
@@ -12,19 +12,19 @@
       <div class="container">
         <div class="form-check">
           <input class="form-check-input" type="radio" v-bind:id="'radio-' + vocabulary.name + '-all'" name="terms-choice" value="exists" v-model="criterion.operator" v-on:change="onInput()">
-          <label class="form-check-label" v-bind:for="'radio-' + vocabulary.name + '-all'">all</label>
+          <label class="form-check-label" v-bind:for="'radio-' + vocabulary.name + '-all'">{{ "search.any" | translate }}</label>
         </div>
         <div class="form-check">
           <input class="form-check-input" type="radio" v-bind:id="'radio-' + vocabulary.name + '-none'" name="terms-choice" value="missing" v-model="criterion.operator" v-on:change="onInput()">
-          <label class="form-check-label" v-bind:for="'radio-' + vocabulary.name + '-none'">none</label>
+          <label class="form-check-label" v-bind:for="'radio-' + vocabulary.name + '-none'">{{ "search.none" | translate }}</label>
         </div>
         <div class="form-check">
           <input class="form-check-input" type="radio" v-bind:id="'radio-' + vocabulary.name + '-in'" name="terms-choice" value="in" v-model="criterion.operator" v-on:change="onInput()">
-          <label class="form-check-label" v-bind:for="'radio-' + vocabulary.name + '-in'">in</label>
+          <label class="form-check-label" v-bind:for="'radio-' + vocabulary.name + '-in'">{{ "search.in" | translate }}</label>
         </div>
         <div class="form-check">
           <input class="form-check-input" type="radio" v-bind:id="'radio-' + vocabulary.name + '-not-in'" name="terms-choice" value="out" v-model="criterion.operator" v-on:change="onInput()">
-          <label class="form-check-label" v-bind:for="'radio-' + vocabulary.name + '-not-in'">not in</label>
+          <label class="form-check-label" v-bind:for="'radio-' + vocabulary.name + '-not-in'">{{ "search.out" | translate }}</label>
         </div>
       </div>          
       <div class="dropdown-divider"></div>
@@ -32,14 +32,14 @@
         <div class="input-group">
           <input type="text" class="form-control" v-model="termsFilter">
           <div class="input-group-append">
-            <span class="input-group-text">Filter</span>
+            <span class="input-group-text">{{ "search.filter" | translate }}</span>
           </div>
         </div>
         <ul class="list-unstyled">
           <li v-for="term in terms" v-bind:key="term.name">
             <div class="form-check">
               <input class="form-check-input" type="checkbox" v-bind:id="vocabulary.name + '-' + term.name" v-bind:value="term.name" v-model="criterion.value" v-on:change="onInput()">
-              <label class="form-check-label" v-bind:for="vocabulary.name + '-' + term.name">{{ term.title[0].text }}</label>
+              <label class="form-check-label" v-bind:for="vocabulary.name + '-' + term.name">{{ term.title | localize-string }}</label>
             </div>
           </li>
         </ul>
@@ -51,11 +51,11 @@
 
       <div class="container">
         <div class="form-group">
-          <label v-bind:for="vocabulary.name + 'from'">from</label>
+          <label v-bind:for="vocabulary.name + 'from'">{{ "global.from" | translate }}</label>
           <input type="number" class="form-control" v-bind:id="vocabulary.name + '-from'" v-model="criterion.value[0]" v-on:input="onInput()">
         </div>
         <div class="form-group">
-          <label v-bind:for="vocabulary.name + 'to'">to</label>
+          <label v-bind:for="vocabulary.name + 'to'">{{ "global.to" | translate }}</label>
           <input type="number" class="form-control" v-bind:id="vocabulary.name + '-to'" v-model="criterion.value[1]" v-on:input="onInput()">
         </div>
       </div> 

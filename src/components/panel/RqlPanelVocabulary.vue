@@ -6,7 +6,7 @@
       <span class="col" v-for="term in vocabulary.terms" v-bind:key="term.name">
         <div class="form-check">
           <input class="form-check-input" type="checkbox" v-bind:id="vocabulary.name + '-' + term.name" v-bind:value="term.name" v-model="criterion.value" v-on:change="onInput()">
-          <label class="form-check-label" v-bind:for="vocabulary.name + '-' + term.name">{{ term.title[0].text }}</label>
+          <label class="form-check-label" v-bind:for="vocabulary.name + '-' + term.name">{{ term.title | localize-string }}</label>
         </div>
       </span>
     </div>  
@@ -16,11 +16,11 @@
   <template v-else-if="criterion.type === 'NUMERIC'">
 
     <div class="form-group">
-      <label v-bind:for="vocabulary.name + 'from'">from</label>
+      <label v-bind:for="vocabulary.name + 'from'">{{ "global.from" | translate }}</label>
       <input type="number" class="form-control" v-bind:id="vocabulary.name + '-from'" v-model="criterion.value[0]" v-on:input="onInput()">
     </div>
     <div class="form-group">
-      <label v-bind:for="vocabulary.name + 'to'">to</label>
+      <label v-bind:for="vocabulary.name + 'to'">{{ "global.to" | translate }}</label>
       <input type="number" class="form-control" v-bind:id="vocabulary.name + '-to'" v-model="criterion.value[1]" v-on:input="onInput()">
     </div>
 

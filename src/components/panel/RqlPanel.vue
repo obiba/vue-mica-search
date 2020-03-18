@@ -7,20 +7,20 @@
   </template>
 
   <template v-else>
-  <h4 v-if="taxonomy">{{ taxonomy.name }}</h4>  
+  <h4 v-if="taxonomy">{{ taxonomy.title | localize-string }}</h4>  
 
   <div class="input-group mb-4">
     <input type="text" class="form-control" v-model="panelFilter">
     <div class="input-group-append">
-      <span class="input-group-text">Filter</span>
+      <span class="input-group-text">{{ "search.filter" | translate }}</span>
     </div>
   </div>
   <div class="card mb-2" v-for="vocabulary in vocabularies" v-bind:key="vocabulary.name">
     <div class="card-header">
-      <span>{{ vocabulary.name }}</span>
+      <span>{{ vocabulary.title | localize-string }}</span>
       <span class="float-right">
-        <button type="button" class="btn btn-link btn-sm" v-if="canDoSelectAll(vocabulary)" v-on:click="selectAll(vocabulary)"><span aria-hidden="true">Select All</span></button>
-        <button type="button" class="btn btn-link btn-sm" v-if="hasAssociatedQuery(vocabulary)" v-on:click="clear(vocabulary)"><span aria-hidden="true">Clear</span></button>
+        <button type="button" class="btn btn-link btn-sm" v-if="canDoSelectAll(vocabulary)" v-on:click="selectAll(vocabulary)"><span aria-hidden="true">{{ "select-all" | translate }}</span></button>
+        <button type="button" class="btn btn-link btn-sm" v-if="hasAssociatedQuery(vocabulary)" v-on:click="clear(vocabulary)"><span aria-hidden="true">{{ "clear-selection" | translate }}</span></button>
       </span>      
     </div>
     <div class="card-body">
@@ -83,7 +83,7 @@ export default {
       if (type === "TERMS") {
         let query = this.getAssociatedQuery(vocabulary);
         if (query) {
-          return vocabulary.terms.length > query.args[1].length;
+          return vocabulary.terms.length > (query.args[1] || 0).length;
         }
         
         return true;
