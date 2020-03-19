@@ -1,7 +1,7 @@
 <template>
 <div>
   <span class="float-left mr-2 text-muted" v-show="Array.isArray(taxonomy) || vocabularies.length > 0">
-    <h4><i class="io" v-bind:class="targetIcon"></i></h4>
+    <h4><i class="align-middle io" v-bind:class="targetIcon"></i></h4>
   </span>
   <ul class="list-inline">
     <li class="list-inline-item" v-for="vocabulary in vocabularies" v-bind:key="vocabulary.name">

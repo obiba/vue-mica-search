@@ -12,6 +12,11 @@ function isMatchQuery(vocabulary) {
   return !Array.isArray(vocabulary.terms) && (vocabulary.attributes || []).filter(attribute => (attribute.key === "localized" && "true" === attribute.value) || (attribute.key === "type" && attribute.value === "string")).length > 0;
 }
 
+function findTerm(vocabulary, termName) {
+  const found = (vocabulary.terms || []).filter(term => term.name === termName);
+  return found.length > 0 ? found[0] : undefined;
+}
+
 function stringIsNullOrEmpty(str) {
   if (str === null || str === undefined) return true;
   if (typeof str === "string") return str.trim().length === 0;
@@ -208,11 +213,6 @@ export default class Criterion {
     return query;
   }
 
-  findTerm(termName) {
-    const found = this.vocabulary.terms.filter(term => term.name === termName);
-    return found.length > 0 ? found[0] : undefined;
-  }
-
   toString() {
     if (["missing", "exists"].indexOf(this.operator) > -1) {
       const title = this.vocabulary.title[0].text;
@@ -224,7 +224,7 @@ export default class Criterion {
       if ((this.value || []).length > 5) return `${this.vocabulary.title[0].text}:...`;
 
       const text = (this.value || []).map(val => {
-        const term = this.findTerm(val);
+        const term = findTerm(this.vocabulary, val);
         return term ? term.title[0].text : val;
       }).join(" | ");
 
