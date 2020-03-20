@@ -166,9 +166,9 @@ export default class Criterion {
         query.push(`${taxonomy}.${this.vocabulary.name}`);
 
         if (this.terms.length === this.value.length) {
-          query.name = "exists";
+          query.name = ["missing", "exists"].indexOf(this.operator) > -1 ? this.operator : "exists";
         } else {
-          query.name = "in";
+          query.name = ["in", "out"].indexOf(this.operator) > -1 ? this.operator : "in";
         }
 
         if (["missing", "exists"].indexOf(query.name) === -1 || this.terms.length < this.value.length) {
