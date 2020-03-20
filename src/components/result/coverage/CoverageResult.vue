@@ -154,7 +154,8 @@ export default {
       const updates = [{
         target: 'variable', 
         query: new Query('in', [`${term.taxonomyName}.${term.vocabularyName}`, term.entity.name]),
-        operator: 'or'
+        operator: 'or',
+        reduceKey: `${term.taxonomyName}.${term.vocabularyName}`
       }];
 
       if (id !== null) {
