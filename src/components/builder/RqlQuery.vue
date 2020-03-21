@@ -77,6 +77,7 @@
 
 <script>
 import Criterion from "../../libs/Criterion";
+import Vue from "vue";
 
 export default {
   props: {
@@ -96,6 +97,8 @@ export default {
       let output = null;
       if (this.vocabulary) {
         output = new Criterion(this.vocabulary);
+        const localizeStringFunction = Vue.filter("localize-string");
+        if (localizeStringFunction) output.localizeStringFunction = localizeStringFunction;
 
         if (this.query) {
           output.query = this.query;
