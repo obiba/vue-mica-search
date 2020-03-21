@@ -54,11 +54,11 @@ export default class Criterion {
       switch(type) {
         case "TERMS":
         case "NUMERIC":
-            found = input.args[0].indexOf(vocabulary.name) > -1;
+            found = input.args[0].endsWith(vocabulary.name);
           
           break;
         case "MATCH":
-          found = input.operator === "match" && input.args[1].indexOf(vocabulary.name) > -1;
+          found = input.operator === "match" && input.args[1].endsWith(vocabulary.name);
 
           break;    
       }
@@ -81,14 +81,14 @@ export default class Criterion {
     this.vocabulary = vocabulary;
 
     if (isTermsQuery(this.vocabulary)) {
-      this.operator = "in";
+      this._operator = "in";
       this.value = [];
     } else if (isNumericQuery(this.vocabulary)) {
-      this.operator = "between";
+      this._operator = "between";
       this.value = [];
     } else {
-      this.operator = "match";
-      this.value = null;
+      this._operator = "match";
+      this.value = "";
     }
 
     this.type = Criterion.typeOfVocabulary(vocabulary);
@@ -99,7 +99,7 @@ export default class Criterion {
   }
 
   set operator(value) {
-    this._operator - value;
+    this._operator = value;
 
     switch(this.type) {
       case "TERMS":
