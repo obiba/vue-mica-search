@@ -5,33 +5,33 @@
       <table id="vosr-networks-result" class="table table-striped" width="100%">       
         <thead v-if="withCollectedDatasets && withHarmonizedDatasets">
           <tr>
-            <th rowspan="2">{{ tr("acronym") }}</th>
-            <th rowspan="2">{{ tr("name") }}</th>
-            <th rowspan="2">{{ tr("studies") }}</th>
-            <th colspan="2">{{ tr("datasets") }}</th>
-            <th colspan="2">{{ tr("variables") }}</th>
+            <th rowspan="2">{{ "acronym" | translate }}</th>
+            <th rowspan="2">{{ "name" | translate }}</th>
+            <th rowspan="2">{{ "studies" | translate }}</th>
+            <th colspan="2">{{ "datasets" | translate }}</th>
+            <th colspan="2">{{ "variables" | translate }}</th>
           </tr>
           <tr>
-            <th v-if="withCollectedDatasets">{{ tr("collected") }}</th>
-            <th v-if="withHarmonizedDatasets">{{ tr("harmonized") }}</th>
-            <th v-if="withCollectedDatasets">{{ tr("collected") }}</th>
-            <th v-if="withHarmonizedDatasets">{{ tr("harmonized") }}</th>
+            <th v-if="withCollectedDatasets">{{ "collected" | translate }}</th>
+            <th v-if="withHarmonizedDatasets">{{ "harmonized" | translate }}</th>
+            <th v-if="withCollectedDatasets">{{ "collected" | translate }}</th>
+            <th v-if="withHarmonizedDatasets">{{ "harmonized" | translate }}</th>
           </tr>
         </thead>
         <thead v-else-if="withCollectedDatasets || withHarmonizedDatasets">
           <tr>
-            <th>{{ tr("acronym") }}</th>
-            <th>{{ tr("name") }}</th>
-            <th>{{ tr("studies") }}</th>
-            <th>{{ tr("datasets") }}</th>
-            <th>{{ tr("variables") }}</th>
+            <th>{{ "acronym" | translate }}</th>
+            <th>{{ "name" | translate }}</th>
+            <th>{{ "studies" | translate }}</th>
+            <th>{{ "datasets" | translate }}</th>
+            <th>{{ "variables" | translate }}</th>
           </tr>
         </thead>
         <thead v-else>
           <tr>
-            <th>{{ tr("acronym") }}</th>
-            <th>{{ tr("name") }}</th>
-            <th>{{ tr("studies") }}</th>
+            <th>{{ "acronym" | translate }}</th>
+            <th>{{ "name" | translate }}</th>
+            <th>{{ "studies" | translate }}</th>
           </tr>
         </thead> 
       </table>
@@ -43,7 +43,7 @@
   </div>
 
   <div v-show="!loading && !showResult">
-    <span>{{ tr("no-network-found") }}</span>
+    <span>{{ "no-network-found" | translate }}</span>
   </div>
 </div>
 </template>

@@ -5,12 +5,12 @@
       <table id="vosr-datasets-result" class="table table-striped" width="100%">
         <thead>
           <tr>
-            <th>{{ tr("acronym") }}</th>
-            <th>{{ tr("name") }}</th>
-            <th v-if="withCollectedDatasets && withHarmonizedDatasets">{{ tr("type") }}</th>
-            <th v-if="withNetworks">{{ tr("networks") }}</th>
-            <th v-if="withStudies">{{ tr("studies") }}</th>
-            <th>{{ tr("variables") }}</th>
+            <th>{{ "acronym" | translate }}</th>
+            <th>{{ "name" | translate }}</th>
+            <th v-if="withCollectedDatasets && withHarmonizedDatasets">{{ "type" | translate }}</th>
+            <th v-if="withNetworks">{{ "networks" | translate }}</th>
+            <th v-if="withStudies">{{ "studies" | translate }}</th>
+            <th>{{ "variables" | translate }}</th>
           </tr>
         </thead>
       </table>
@@ -22,7 +22,7 @@
   </div>
 
   <div v-show="!loading && !showResult">
-    <span>{{ tr("no-dataset-found") }}</span>
+    <span>{{ "no-dataset-found" | translate }}</span>
   </div>
 
 </div>

@@ -1,10 +1,13 @@
+import Vue from 'vue';
+
 export default class DatasetsResultParser {
 
   constructor() {
   }  
 
-  parse(data, micaConfig, tr) {
+  parse(data, micaConfig) {
     const datasetsResult = data.datasetResultDto;
+    const tr = Vue.filter('translate') || (value => value);
     
     if (!datasetsResult) {
       throw new Error("No dataset results available.");
