@@ -1,4 +1,4 @@
-import Query from "rql/src/query";
+import * as RQL from "rql";
 
 function isTermsQuery(vocabulary) {
   return Array.isArray(vocabulary.terms) && vocabulary.terms.length > 0;
@@ -161,7 +161,7 @@ export default class Criterion {
   }
 
   asQuery(taxonomy) {
-    let query = new Query(this.operator);
+    let query = new RQL.Query(this.operator);
 
     switch(this.type) {
       case "TERMS":
