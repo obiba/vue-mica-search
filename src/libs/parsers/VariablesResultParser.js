@@ -1,10 +1,14 @@
+import Vue from 'vue';
+
 export default class VariablesResultParser {
 
   constructor() {
   }  
 
-  parse(data, micaConfig, tr) {
+  parse(data, micaConfig) {
     const variablesResult = data.variableResultDto;
+    const tr = Vue.filter('translate') || (value => value);
+    const taxonomyTitle = Vue.filter('taxonomy-title') || (value => value);
 
     if (!variablesResult) {
       throw new Error("No variable results available.");
@@ -26,8 +30,8 @@ export default class VariablesResultParser {
     result.summaries.forEach(summary => {
       const annotations = (summary.annotations || []).reduce(
         (acc, annotation) =>
-          ("" !== acc ? `${acc}\n` : "") +
-          `${annotation.taxonomy}.${annotation.vocabulary}.${annotation.value}`,
+          ("" !== acc ? `${acc}<br>` : "") +
+          taxonomyTitle.apply(null, [`${annotation.taxonomy}.${annotation.vocabulary}.${annotation.value}`]),
         ""
       );
 

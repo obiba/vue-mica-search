@@ -5,25 +5,25 @@
       <table id="vosr-studies-result" class="table table-striped" width="100%">        
         <thead>
           <tr>
-            <th rowspan="2">{{ tr("acronym") }}</th>
-            <th rowspan="2">{{ tr("name") }}</th>
-            <th rowspan="2">{{ tr("type") }}</th>
-            <th rowspan="2">{{ tr("study-design") }}</th>
-            <th colspan="4">{{ tr("data-sources-available") }}</th>
-            <th rowspan="2">{{ tr("participants") }}</th>
-            <th rowspan="2" v-if="withNetworks">{{ tr("networks") }}</th>
-            <th colspan="2" v-if="withCollectedDatasets">{{ tr("individual") }}</th>
-            <th colspan="2" v-if="withHarmonizedDatasets">{{ tr("harmonization") }}</th>
+            <th rowspan="2">{{ "acronym"  | translate }}</th>
+            <th rowspan="2">{{ "name"  | translate }}</th>
+            <th rowspan="2">{{ "type"  | translate }}</th>
+            <th rowspan="2">{{ "study-design"  | translate }}</th>
+            <th colspan="4">{{ "data-sources-available"  | translate }}</th>
+            <th rowspan="2">{{ "participants"  | translate }}</th>
+            <th rowspan="2" v-if="withNetworks">{{ "networks"  | translate }}</th>
+            <th colspan="2" v-if="withCollectedDatasets">{{ "individual"  | translate }}</th>
+            <th colspan="2" v-if="withHarmonizedDatasets">{{ "harmonization"  | translate }}</th>
           </tr>
           <tr>
             <th><i class="fa fa-file-alt"></i></th>
             <th><i class="fa fa-stethoscope"></i></th>
             <th><i class="fa fa-flask"></i></th>
             <th><i class="far fa-plus-square"></i></th>
-            <th v-if="withCollectedDatasets">{{ tr("datasets") }}</th>
-            <th v-if="withCollectedDatasets">{{ tr("variables") }}</th>
-            <th v-if="withHarmonizedDatasets">{{ tr("datasets") }}</th>
-            <th v-if="withHarmonizedDatasets">{{ tr("variables") }}</th>
+            <th v-if="withCollectedDatasets">{{ "datasets"  | translate }}</th>
+            <th v-if="withCollectedDatasets">{{ "variables"  | translate }}</th>
+            <th v-if="withHarmonizedDatasets">{{ "datasets"  | translate }}</th>
+            <th v-if="withHarmonizedDatasets">{{ "variables"  | translate }}</th>
           </tr>
         </thead> 
       </table>
@@ -35,7 +35,7 @@
   </div>
 
   <div v-show="!loading && !showResult">
-    <span>{{ tr("no-study-found") }}</span>
+    <span>{{ "no-study-found"  | translate }}</span>
   </div>
 
 </div>

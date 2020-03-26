@@ -1,16 +1,17 @@
 <template>
-  <div>
-    <div class="row" v-show="showResult">
+<div>
+  <div v-show="showResult">
+    <div class="row">
       <div class="col">
         <table v-if="table" id="vosr-coverage-result" class="table table-striped" width="100%">
           <thead>
             <tr>
               <th v-bind:rowspan="bucketStartsWithDce ? 1 : 2" v-bind:colspan="table.cols.colSpan">
-                {{tr(`coverage-buckets-${bucketName}`)}}
+                {{ `coverage-buckets-${bucketName}` | translate}}
               </th>
               <th v-for="(header, index) in table.vocabularyHeaders" v-bind:key="index" v-bind:colspan="header.termsCount">
                 <!-- TODO popover -->
-                <span>{{ localize(header.entity.titles) }} </span>
+                <span>{{ header.entity.titles | localize-string }} </span>
                 <small>
                   <a href v-on:click="removeVocabulary($event, header)">
                     <i class="fa fa-times"></i>
@@ -19,13 +20,13 @@
               </th>
             </tr>
             <tr>
-              <th v-if="bucketStartsWithDce">{{ tr("study") }}</th>
-              <th v-if="bucketStartsWithDce" colspan="1" >{{ tr("population") }}</th>
-              <th v-if="bucketStartsWithDce">{{ tr("dce") }}</th> 
+              <th v-if="bucketStartsWithDce">{{ "study" | translate }}</th>
+              <th v-if="bucketStartsWithDce" colspan="1" >{{ "population" | translate }}</th>
+              <th v-if="bucketStartsWithDce">{{ "dce" | translate }}</th> 
 
               <th v-for="(header, index) in table.termHeaders" v-bind:key="index">
                 <!-- TODO popover -->
-                <span>{{ localize(header.entity.titles) }} </span>
+                <span>{{ header.entity.titles | localize-string }} </span>
                 <small>
                   <a ng-if="header.canRemove" href v-on:click="removeTerm($event, header)">
                     <i class="fa fa-times"></i>
@@ -36,7 +37,7 @@
             <tr>
               <th v-bind:colspan="table.cols.colSpan"></th>
               <th v-for="(header, index) in table.termHeaders" v-bind:key="index" v-bind:title="header.entity.descriptions[0].value">
-                <a href v-on:click="updateQuery($event, null, header, $index, 'variables')">
+                <a href v-on:click="updateQuery($event, null, header, 'variables')">
                   <span>{{header.hits.toLocaleString()}}</span>
                 </a>
               </th>
@@ -51,10 +52,10 @@
                 <div style="text-align: center" v-show="col.start && bucketStartsWithDce">
                   <div>
                     <small class="help-block no-margin" v-show="col.end">
-                      {{col.start}} {{'to' }} {{col.end}}
+                      {{col.start}} {{'to' | translate }} {{col.end}}
                     </small>
                     <small class="help-block no-margin" v-show="!col.end">
-                      {{col.start}}, {{'search.coverage-end-date-ongoing'}}
+                      {{col.start}}, {{'coverage-end-date-ongoing' | translate}}
                     </small>
                   </div>
                   <div class="progress no-margin">
@@ -67,8 +68,8 @@
                   </div>
                 </div>
               </td>
-              <td v-for="(h, hindex) in table.termHeaders" v-bind:key="hindex">
-                <a href="" v-on:click="updateQuery($event, row.value, h, index, 'variables')">
+              <td v-for="(h, hindex) in table.termHeaders" v-bind:key="'h'+hindex">
+                <a href="" v-on:click="updateQuery($event, row.value, h, 'variables')">
                   <span class="badge badge-primary" v-show="row.hitsTitles[hindex]">{{row.hitsTitles[hindex]}}</span>
                 </a>
                 <span v-show="!row.hitsTitles[hindex]">0</span>
@@ -79,11 +80,11 @@
         </table>
       </div>
     </div>
-
-    <div v-show="!showResult">
-      <span>No coverage available</span>
-    </div>
   </div>
+  <div v-show="!showResult">
+    <span>{{ "no-coverage-available" | translate }}</span>
+  </div>
+</div>
 </template>
 <script>
 import Query from 'rql/src/query';
@@ -95,18 +96,13 @@ export default {
     return {
       dataTable: null,
       ajaxCallback: null,
-      parser: new CoverageResultParser(),
+      parser: new CoverageResultParser(this.getMicaConfig(), this.getLocale),
       table: null, 
       vocabulariesTermsMap: null,
       bucketStartsWithDce: false,
       showResult: false,
       filteredRows: []
     };
-  },
-  computed: {    
-    bucketName: function() { 
-      return this.bucket.replace(/Id$/,"");
-    }
   },
   methods: {
     onResults(payload) {     
@@ -119,6 +115,7 @@ export default {
       this.rows = payload.response.rows;
       this.filteredRows = this.rows;
       this.bucket = payload.bucket;
+      this.bucketName = this.bucket.replace(/Id$/,"");
       this.bucketStartsWithDce = payload.bucket.startsWith('dce')
       let headersData = this.parser.parseHeaders(payload.bucket, payload.response);
       this.table = headersData.table;
@@ -147,8 +144,8 @@ export default {
         this.getEventBus().$emit('query-type-update', {target: 'variable', query: new Query('in', [`${term.taxonomyName}.${term.vocabularyName}`, argsToKeep])});
       }
     },
-    updateQuery(event, id, term, idx, type) {
-      console.log(`Id: ${id} Term: ${term} Index: ${idx} Type: ${type}`);
+    updateQuery(event, id, term, type) {
+      console.log(`Id: ${id} Term: ${term} Type: ${type}`);
 
       event.preventDefault();
       const updates = [{

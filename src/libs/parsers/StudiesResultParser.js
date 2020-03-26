@@ -1,3 +1,4 @@
+import Vue from 'vue';
 export default class StudiesResultParser {
 
   constructor() {
@@ -35,6 +36,7 @@ export default class StudiesResultParser {
       totalHits: studiesResult.totalHits
     }
 
+    const taxonomyFilter = Vue.filter('taxonomy-title') || (title => title);
     const checkIcon = `<i class="fa fa-check">`;
 
     result.summaries.forEach(summary => {
@@ -43,6 +45,7 @@ export default class StudiesResultParser {
       const content = JSON.parse(summary.content);
       const dataSources = summary.dataSources || [];
       const hasDatasource = (dataSources, id) => dataSources.indexOf(id) > -1;
+      const design = summary.design ? taxonomyFilter.apply(null, [`Mica_study.methods-design.${summary.design}`]) : '-';
       let anchor = (type, value, studyType) =>
         `<a href="" class="query-anchor" data-study-type="${studyType}" data-target="study" data-target-id="${summary.id}" data-type="${type}">${value}</a>`;
       
@@ -50,7 +53,7 @@ export default class StudiesResultParser {
         `<a href="/study/${summary.id}">${summary.acronym[0].value}</a>`,
         summary.name[0].value,
         type,
-        summary.design || "-",
+        design,
         hasDatasource(dataSources, "questionnaires") ? checkIcon : "-",
         hasDatasource(dataSources, "physical_measures") ? checkIcon : "-",
         hasDatasource(dataSources, "biological_samples") ? checkIcon : "-",

@@ -5,12 +5,12 @@
       <table id="vosr-variables-result" class="table table-striped" width="100%">
         <thead>
           <tr>
-            <th>{{ tr("name") }}</th>
-            <th>{{ tr("label") }}</th>
-            <th>{{ tr("annotations") }}</th>
-            <th v-if="withCollectedDatasets && withHarmonizedDatasets">{{ tr("type") }}</th>
-            <th v-if="withStudies">{{ tr("study") }}</th>
-            <th>{{ tr("dataset") }}</th>
+            <th>{{ "name" | translate }}</th>
+            <th>{{ "label"  | translate }}</th>
+            <th>{{ "annotations" | translate }}</th>
+            <th v-if="withCollectedDatasets && withHarmonizedDatasets">{{ "type" | translate }}</th>
+            <th v-if="withStudies">{{ "study" | translate }}</th>
+            <th>{{ "dataset" | translate }}</th>
           </tr>
         </thead>
       </table>
@@ -22,7 +22,7 @@
   </div>
 
   <div v-show="!loading && !showResult">
-    <span>{{ tr("no-variable-found") }}</span>
+    <span>{{ "no-variable-found" | translate }}</span>
   </div>
 
 </div>

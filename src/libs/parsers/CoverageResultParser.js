@@ -1,43 +1,7 @@
 const BUCKET_TYPES = {
-  NETWORK: 'network',
-  STUDY: 'study',
-  STUDY_INDIVIDUAL: 'study-individual',
-  STUDY_HARMONIZATION: 'study-harmonization',
-  DCE: 'dce',
-  DCE_INDIVIDUAL: 'dce-individual',
-  DCE_HARMONIZATION: 'dce-harmonization',
-  DATASET: 'dataset',
-  DATASET_COLLECTED: 'dataset-collected',
-  DATASET_HARMONIZED: 'dataset-harmonized',
-  DATASCHEMA: 'dataschema'
-}
-
-function getBucketUrl(bucket, id) {
-  switch (bucket) {
-    case BUCKET_TYPES.STUDY:
-    case BUCKET_TYPES.STUDY_INDIVIDUAL:
-    case BUCKET_TYPES.DCE:
-    case BUCKET_TYPES.DCE_INDIVIDUAL:
-      // TODO return PageUrlService.studyPage(id, 'individual');
-      return 'individual ' + id;
-    case BUCKET_TYPES.STUDY_HARMONIZATION:
-    case BUCKET_TYPES.DCE_HARMONIZATION:
-      // return PageUrlService.studyPage(id, 'harmonization');
-      return 'harmonization ' + id;
-    case BUCKET_TYPES.NETWORK:
-      // TODO return PageUrlService.networkPage(id);
-      return 'network ' + id;
-    case BUCKET_TYPES.DATASCHEMA:
-    case BUCKET_TYPES.DATASET_HARMONIZED:
-      // TODO return PageUrlService.datasetPage(id, 'harmonized');
-      return ' dataset harmonized ' + id;
-    case BUCKET_TYPES.DATASET:
-    case BUCKET_TYPES.DATASET_COLLECTED:
-      // TODO return PageUrlService.datasetPage(id, 'collected');
-      return 'dataset collected ' + id;
-  }
-
-  return '';
+  STUDY: 'studyId',
+  DCE: 'dceId',
+  DATASET: 'datasetId',
 }
 
 class IdSplitter {
@@ -49,10 +13,22 @@ class IdSplitter {
     this.currentYear = new Date().getFullYear();
     this.currentMonth = new Date().getMonth() + 1;
     this.currentYearMonth = this.currentYear + '-' + this.currentMonth;    
-    this.currentDate = this.toTime(this.currentYearMonth, true);
+    this.currentDate = this.__toTime(this.currentYearMonth, true);
   }
 
-  appendRowSpan(id) {
+  __getBucketUrl(bucket, id) {
+    switch (bucket) {
+      case BUCKET_TYPES.STUDY:
+      case BUCKET_TYPES.DCE:
+        return `/study/${id}`;
+      case BUCKET_TYPES.DATASET:
+        return `/dataset/${id}`
+    }
+
+    return '';
+  }
+
+  __appendRowSpan(id) {
     let rowSpan;
     if (!this.rowSpans[id]) {
       rowSpan = 1;
@@ -64,7 +40,7 @@ class IdSplitter {
     return rowSpan;
   }
 
-  appendMinMax(id, start, end) {
+  __appendMinMax(id, start, end) {
     if (this.minMax[id]) {
       if (start < this.minMax[id][0]) {
         this.minMax[id][0] = start;
@@ -77,7 +53,7 @@ class IdSplitter {
     }
   }
 
-  toTime(yearMonth, start) {
+  __toTime(yearMonth, start) {
     let res;
     if (yearMonth) {
       if (yearMonth.indexOf('-') > 0) {
@@ -100,9 +76,9 @@ class IdSplitter {
     return res;
   }
 
-  getProgress(startYearMonth, endYearMonth) {
-    let start = this.toTime(startYearMonth, true);
-    let end = endYearMonth ? this.toTime(endYearMonth, false) : this.currentDate;
+  __getProgress(startYearMonth, endYearMonth) {
+    let start = this.__toTime(startYearMonth, true);
+    let end = endYearMonth ? this.__toTime(endYearMonth, false) : this.currentDate;
     let current = end < this.currentDate ? end : this.currentDate;
     if (end === start) {
       return 100;
@@ -111,11 +87,10 @@ class IdSplitter {
     }
   }
 
-  splitIds() {
+  splitIds(micaConfig, locale) {
 
     let cols = {
-      // TODO colSpan: this.bucket.startsWith('dce') ? (CoverageGroupByService.isSingleStudy() ? 2 : 3) : 1,
-      colSpan: this.bucket.startsWith('dce') ?  3 : 1,
+      colSpan: this.bucket.startsWith('dce') ? (micaConfig.micaConfig.isSingleStudyEnabled ? 2 : 3) : 1,
       ids: {}
     };
 
@@ -124,8 +99,7 @@ class IdSplitter {
     
     this.result.rows.forEach((row, i) => {
       row.hitsTitles = row.hits.map(function (hit) {
-        // TODO return LocalizedValues.formatNumber(hit);
-        return hit+"";
+        return hit.toLocaleString(locale);
       });
       cols.ids[row.value] = [];
       if (this.bucket.startsWith('dce')) {
@@ -144,13 +118,11 @@ class IdSplitter {
           odd = !odd;
           groupId = id;
         }
-        rowSpan = this.appendRowSpan(id);
-        this.appendMinMax(id, row.start || this.currentYearMonth, row.end || this.currentYearMonth);
+        rowSpan = this.__appendRowSpan(id);
+        this.__appendMinMax(id, row.start || this.currentYearMonth, row.end || this.currentYearMonth);
         cols.ids[row.value].push({
-          // TODO id: CoverageGroupByService.isSingleStudy() ? '-' : id,
           id: id,
-          // TODO url: PageUrlService.studyPage(id, isHarmo ? 'harmonization' : 'individual'),
-          url: 'studyPage URL',
+          url: this.__getBucketUrl(this.bucket, id),
           title: titles[0],
           description: descriptions[0],
           rowSpan: rowSpan,
@@ -159,11 +131,10 @@ class IdSplitter {
 
         // population
         id = ids[0] + ':' + ids[1];
-        rowSpan = this.appendRowSpan(id);
+        rowSpan = this.__appendRowSpan(id);
         cols.ids[row.value].push({
           id: id,
-          // TODO url: PageUrlService.studyPopulationPage(ids[0], isHarmo ? 'harmonization' : 'individual', ids[1]),
-          url: 'populateUrl',
+          url: this.__getBucketUrl(this.bucket, id),
           title: titles[1],
           description: descriptions[1],
           rowSpan: rowSpan,
@@ -179,23 +150,14 @@ class IdSplitter {
           current: this.currentYearMonth,
           end: row.end,
           progressClass: odd ? 'info' : 'warning',
-          // TODO url: PageUrlService.StudyDcePage(ids[0], isHarmo ? 'harmonization' : 'individual', row.value),
-          url: 'dceUrl page',
+          url: this.__getBucketUrl(this.bucket, id),
           rowSpan: 1,
           index: i++
         });
-      } else {
-        let parts = this.bucket.split('-');
-        let itemBucket = parts[0];
-        if (itemBucket === BUCKET_TYPES.DATASET) {
-          itemBucket = itemBucket + (row.className.indexOf('Harmonization') > -1 ? '-harmonized' : '-collected');
-        } else {
-          itemBucket = itemBucket + (row.className.indexOf('Harmonization') > -1 ? '-harmonization' : '-individual');
-        }
-
+      } else {       
         cols.ids[row.value].push({
           id: row.value,
-          url: getBucketUrl(itemBucket, row.value),
+          url: this.__getBucketUrl(this.bucket, row.value),
           title: row.title,
           description: row.description,
           min: row.start,
@@ -204,7 +166,7 @@ class IdSplitter {
           end: row.end,
           max: row.end,
           progressStart: 0,
-          progress: this.getProgress(row.start ? row.start + '-01' : this.currentYearMonth, row.end ? row.end + '-12' : this.currentYearMonth),
+          progress: this.__getProgress(row.start ? row.start + '-01' : this.currentYearMonth, row.end ? row.end + '-12' : this.currentYearMonth),
           progressClass: odd ? 'info' : 'warning',
           rowSpan: 1,
           index: i++
@@ -217,8 +179,7 @@ class IdSplitter {
     if (this.bucket.startsWith('dce')) {
       this.result.rows.forEach((row, i) => {
         row.hitsTitles = row.hits.map(function (hit) {
-          // TODO return LocalizedValues.formatNumber(hit);
-          return hit;
+          return hit.toLocaleString(locale);
         });
         if (cols.ids[row.value][0].rowSpan > 0) {
           cols.ids[row.value][0].rowSpan = this.rowSpans[cols.ids[row.value][0].id];
@@ -232,13 +193,13 @@ class IdSplitter {
           let max = this.minMax[ids[0]][1];
           let start = cols.ids[row.value][2].start || this.currentYearMonth;
           let end = cols.ids[row.value][2].end || this.currentYearMonth;
-          let diff = this.toTime(max, false) - this.toTime(min, true);
+          let diff = this.__toTime(max, false) - this.__toTime(min, true);
           // set the DCE min and max dates of the study
           cols.ids[row.value][2].min = min;
           cols.ids[row.value][2].max = max;
           // compute the progress
-          cols.ids[row.value][2].progressStart = 100 * (this.toTime(start, true) - this.toTime(min, true)) / diff;
-          cols.ids[row.value][2].progress = 100 * (this.toTime(end, false) - this.toTime(start, true)) / diff;
+          cols.ids[row.value][2].progressStart = 100 * (this.__toTime(start, true) - this.__toTime(min, true)) / diff;
+          cols.ids[row.value][2].progress = 100 * (this.__toTime(end, false) - this.__toTime(start, true)) / diff;
           cols.ids[row.value].index = i;
         }
       });
@@ -252,7 +213,9 @@ class IdSplitter {
 
 export default class CoverageResultParser {
 
-  constructor() {
+  constructor(micaConfig, locale) {
+    this.micaConfig = micaConfig;
+    this.locale = locale;
   }
 
   decorateVocabularyHeaders(headers, vocabularyHeaders) {
@@ -292,7 +255,7 @@ export default class CoverageResultParser {
 
     if (result && result.rows) {
       var tableTmp = result;
-      tableTmp.cols = new IdSplitter(bucket, result).splitIds();
+      tableTmp.cols = new IdSplitter(bucket, result).splitIds(this.micaConfig, this, this.locale);
       table = tableTmp;
 
       // TODO let filteredRows = [];
