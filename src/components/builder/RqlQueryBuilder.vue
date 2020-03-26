@@ -4,7 +4,7 @@
     <h4><i class="align-middle io" v-bind:class="targetIcon"></i></h4>
   </span>
   <ul class="list-inline">
-    <li class="list-inline-item" v-for="vocabulary in vocabularies" v-bind:key="vocabulary.name">
+    <li class="list-inline-item mb-2" v-for="vocabulary in vocabularies" v-bind:key="vocabulary.name">
       <rql-query v-bind:vocabulary="vocabulary" v-bind:query="getAssociatedQuery(vocabulary)" v-on:update-query="updateQuery($event, getAssociatedTaxonomyName(vocabulary))" v-on:remove-query="removeQuery($event, getAssociatedTaxonomyName(vocabulary))"></rql-query>
     </li>
   </ul>
