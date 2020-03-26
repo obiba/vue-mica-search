@@ -112,7 +112,7 @@ export default class Criterion {
         break;
       case "NUMERIC":
         if (["missing", "exists"].indexOf(this.operator) > -1) {
-          this.value = ["*", "*"];
+          this.value = [];
         }
 
         break;
@@ -182,7 +182,7 @@ export default class Criterion {
         query.push(`${taxonomy}.${this.vocabulary.name}`);
 
         if (["missing", "exists"].indexOf(this.operator) > -1) {
-          this.value = ["*", "*"];
+          this.value = [];
         } else {
           if (stringIsNullOrEmpty(this.value[0]) && stringIsNullOrEmpty(this.value[1])) {
             this.value = [];

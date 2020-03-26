@@ -36,6 +36,8 @@
 import RqlPanelVocabulary from "./RqlPanelVocabulary.vue";
 import Criterion from "../../libs/Criterion";
 
+import Vue from "vue";
+
 export default {
   name: "rql-panel",
   props: {
@@ -59,7 +61,9 @@ export default {
       return Criterion.splitQuery(this.query);
     },
     vocabularies() {
-      if (!this.taxonomy) return [];      
+      if (!this.taxonomy) return [];  
+      
+      const localizeStringFunction = Vue.filter("localize-string") || ((val) => val[0].text);
 
       return (this.taxonomy.vocabularies || [])
       .filter(vocabulary => {
@@ -68,10 +72,10 @@ export default {
       })
       .filter(vocabulary => {
         let passes = (!this.panelFilter || this.panelFilter.trim().length === 0);
-        let vocabularyPasses = passes || vocabulary.name.toLowerCase().indexOf(this.panelFilter.toLowerCase()) > -1;
+        let vocabularyPasses = passes || localizeStringFunction(vocabulary.title).toLowerCase().indexOf(this.panelFilter.toLowerCase()) > -1;
         if ("TERMS" !== Criterion.typeOfVocabulary(vocabulary) && vocabularyPasses) return true;
 
-        let foundTerms = (vocabulary.terms || []).filter(term => passes || term.name.toLowerCase().indexOf(this.panelFilter.toLowerCase()) > -1);
+        let foundTerms = (vocabulary.terms || []).filter(term => passes || localizeStringFunction(term.title).toLowerCase().indexOf(this.panelFilter.toLowerCase()) > -1);
         return vocabularyPasses || foundTerms.length > 0;
       });
     }
@@ -116,7 +120,7 @@ export default {
     },
     updateQuery(payload) {
       if (payload instanceof Criterion) {
-        if (["missing", "exists"].indexOf(payload.operator) === -1 && (!Array.isArray(payload.value) || payload.value.length === 0)) {
+        if ((["missing", "exists"].indexOf(payload.operator) === -1 && (!Array.isArray(payload.value) && payload.value.length === 0)) || (payload.type === "NUMERIC" && payload.value.length === 0)) {
           this.$emit("remove-query", {target: this.target, query: payload.asQuery(this.taxonomy.name)});
         } else {
           this.$emit("update-query", {target: this.target, query: payload.asQuery(this.taxonomy.name)});

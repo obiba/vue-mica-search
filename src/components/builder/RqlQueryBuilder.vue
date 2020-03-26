@@ -85,7 +85,7 @@ export default {
       return this.getAssociatedQuery(vocabulary) && true;
     },
     updateQuery(payload, taxonomyName) {
-      if (["missing", "exists"].indexOf(payload.operator) === -1 && (!Array.isArray(payload.value) || payload.value.length === 0)) {
+      if ((["missing", "exists"].indexOf(payload.operator) === -1 && (!Array.isArray(payload.value) && payload.value.length === 0)) || (payload.type === "NUMERIC" && payload.value.length === 0)) {
         this.$emit("remove-query", {target: this.target, query: payload.asQuery(taxonomyName)});
       } else {
         this.$emit("update-query", {target: this.target, query: payload.asQuery(taxonomyName)});

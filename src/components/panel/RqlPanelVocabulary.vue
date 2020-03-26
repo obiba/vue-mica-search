@@ -37,6 +37,8 @@
 <script>
 import Criterion from "../../libs/Criterion";
 
+import Vue from "vue";
+
 export default {
   props: {
     vocabulary: {
@@ -62,8 +64,10 @@ export default {
     terms() {
       if (this.criterion.type !== "TERMS") return [];
 
+      const localizeStringFunction = Vue.filter("localize-string") || ((val) => val[0].text);
+
       return (this.vocabulary.terms || []).filter(term => {
-        return (!this.termsFilter || this.termsFilter.trim().length === 0) || term.name.toLowerCase().indexOf(this.termsFilter.toLowerCase()) > -1;
+        return (!this.termsFilter || this.termsFilter.trim().length === 0) || localizeStringFunction(term.title).toLowerCase().indexOf(this.termsFilter.toLowerCase()) > -1;
       });
     }
   },
