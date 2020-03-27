@@ -21,7 +21,7 @@
     <img src="/assets/images/loading.gif">
   </div>
 
-  <div v-show="!loading && !showResult">
+  <div v-show="!loading && !showResult" class="text-muted">
     <span>{{ "no-dataset-found" | translate }}</span>
   </div>
 
