@@ -120,10 +120,12 @@ export default {
     },
     updateQuery(payload) {
       if (payload instanceof Criterion) {
-        if ((["missing", "exists"].indexOf(payload.operator) === -1 && (!Array.isArray(payload.value) && payload.value.length === 0)) || (payload.type === "NUMERIC" && payload.value.length === 0)) {
-          this.$emit("remove-query", {target: this.target, query: payload.asQuery(this.taxonomy.name)});
+        const query = payload.asQuery(this.taxonomy.name);
+
+        if ((["missing", "exists"].indexOf(payload.operator) === -1 && (!Array.isArray(payload.value) && payload.value.length === 0)) || (payload.type === "NUMERIC" && query.args[1].length === 0)) {
+          this.$emit("remove-query", {target: this.target, query});
         } else {
-          this.$emit("update-query", {target: this.target, query: payload.asQuery(this.taxonomy.name)});
+          this.$emit("update-query", {target: this.target, query});
         }
       } else {
         this.$emit("update-query", payload);

@@ -146,8 +146,10 @@ export default class Criterion {
 
         break;
       case "NUMERIC":
-        if (this.operator === "ge" || this.operator === "le") {
+        if (this.operator === "ge") {
           this.value = [input.args[1]];
+        } else if (this.operator === "le") {
+          this.value = ["", input.args[1]];
         } else if (input.operator === "between") {
           this.value = [input.args[1][0], input.args[1][1]];
         }
@@ -188,12 +190,13 @@ export default class Criterion {
             this.value = [];
           } else if (!stringIsNullOrEmpty(this.value[0]) && stringIsNullOrEmpty(this.value[1])) {
             query.name = "ge";
-            this.value = [this.value[0]];
+            this.value = parseInt(this.value[0]);
           } else if (stringIsNullOrEmpty(this.value[0]) && !stringIsNullOrEmpty(this.value[1])) {
             query.name = "le";
-            this.value = [this.value[1]];
+            this.value = parseInt(this.value[1]);
           } else if (!stringIsNullOrEmpty(this.value[0]) && !stringIsNullOrEmpty(this.value[1])) {
             query.name = "between";
+            this.value = this.value.map(val => parseInt(val));
           }
         }        
 
@@ -201,9 +204,7 @@ export default class Criterion {
 
         break;
       default: 
-        if (stringIsNullOrEmpty(this.value)) {
-          query.push("");
-        } else {
+        if (!stringIsNullOrEmpty(this.value)) {
           query.push(this.value);
         }
         
