@@ -56,11 +56,11 @@ export default class Criterion {
       switch(type) {
         case "TERMS":
         case "NUMERIC":
-            found = input.args[0].endsWith(vocabulary.name);
+          found = (input.args[0] || "").split(/\./)[1] === vocabulary.name;
           
           break;
         case "MATCH":
-          found = input.operator === "match" && input.args[1].endsWith(vocabulary.name);
+          found = input.operator === "match" && (input.args[1] || "").split(/\./)[1] === vocabulary.name;
 
           break;    
       }
@@ -206,6 +206,8 @@ export default class Criterion {
       default: 
         if (!stringIsNullOrEmpty(this.value)) {
           query.push(this.value);
+        } else {
+          query.push("");
         }
         
         query.push(`${taxonomy}.${this.vocabulary.name}`);        
