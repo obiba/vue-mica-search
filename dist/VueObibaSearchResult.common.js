@@ -29718,7 +29718,7 @@ var Criterion = /*#__PURE__*/function () {
 
         var _text = (this.value || []).map(function (val) {
           var term = findTerm(_this.vocabulary, val);
-          return term ? term.title[0].text : val;
+          return term ? localizeStringFunction(term.title) : val;
         }).join(" | ");
 
         return "".concat(_text);
