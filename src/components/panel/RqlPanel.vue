@@ -7,7 +7,7 @@
   </template>
 
   <template v-else>
-  <h4 v-if="taxonomy">{{ taxonomy.title | localize-string }}</h4>  
+  <h4 v-if="taxonomy" v-bind:title="taxonomy.description | localize-string">{{ taxonomy.title | localize-string }}</h4>
 
   <div class="input-group mb-4">
     <input type="text" class="form-control" v-model="panelFilter">
@@ -17,7 +17,7 @@
   </div>
   <div class="card mb-2" v-for="vocabulary in vocabularies" v-bind:key="vocabulary.name">
     <div class="card-header">
-      <span>{{ vocabulary.title | localize-string }}</span>
+      <span v-bind:title="vocabulary.description | localize-string">{{ vocabulary.title | localize-string }}</span>
       <span class="float-right">
         <button type="button" class="btn btn-link btn-sm" v-if="canDoSelectAll(vocabulary)" v-on:click="selectAll(vocabulary)"><span aria-hidden="true">{{ "select-all" | translate }}</span></button>
         <button type="button" class="btn btn-link btn-sm" v-if="hasAssociatedQuery(vocabulary)" v-on:click="clear(vocabulary)"><span aria-hidden="true">{{ "clear-selection" | translate }}</span></button>

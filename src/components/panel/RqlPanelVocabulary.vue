@@ -3,7 +3,7 @@
   <template v-if="criterion.type === 'TERMS'">
 
     <ul class="list-unstyled row">
-      <li class="list-item col-sm-3" v-for="term in terms" v-bind:key="term.name">
+      <li class="list-item col-sm-3" v-for="term in terms" v-bind:key="term.name" v-bind:title="term.description | localize-string">
         <div class="form-check">
           <input class="form-check-input" type="checkbox" v-bind:id="vocabulary.name + '-' + term.name" v-bind:value="term.name" v-model="criterion.value" v-on:change="onInput()">
           <label class="form-check-label" v-bind:for="vocabulary.name + '-' + term.name">{{ term.title | localize-string }}</label>
