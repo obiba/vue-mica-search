@@ -97,8 +97,6 @@ export default {
       let output = null;
       if (this.vocabulary) {
         output = new Criterion(this.vocabulary);
-        const localizeStringFunction = Vue.filter("localize-string");
-        if (localizeStringFunction) output.localizeStringFunction = localizeStringFunction;
 
         if (this.query) {
           output.query = this.query;
@@ -117,7 +115,8 @@ export default {
   },
   methods: {
     getCriterionAsString() {
-      return this.criterion.toString();
+      const localizeStringFunction = Vue.filter("localize-string") || ((val) => val[0].text);
+      return this.criterion.asString(localizeStringFunction);
     },
     onInput() {
       this.$emit("update-query", this.criterion);

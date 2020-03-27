@@ -31,8 +31,6 @@ export default class Criterion {
   value = undefined;
   _operator = undefined;
 
-  localizeStringFunction = (val) => val[0].text;
-
   static typeOfVocabulary(vocabulary) {
     let type = undefined;
 
@@ -218,14 +216,14 @@ export default class Criterion {
     return query;
   }
 
-  toString() {
+  asString(localizeStringFunction) {
     if (["missing", "exists"].indexOf(this.operator) > -1) {
       const text = this.operator === "missing" ? "none" : "any";
-      return `${this.localizeStringFunction(this.vocabulary.title)}:${text}`;
+      return `${localizeStringFunction(this.vocabulary.title)}:${text}`;
     }
 
     if (this.type === "TERMS") {
-      if ((this.value || []).length > 5) return `${this.localizeStringFunction(this.vocabulary.title)}:...`;
+      if ((this.value || []).length > 5) return `${localizeStringFunction(this.vocabulary.title)}:...`;
 
       const text = (this.value || []).map(val => {
         const term = findTerm(this.vocabulary, val);
@@ -244,13 +242,13 @@ export default class Criterion {
         text = `:[${this.value[0]},${this.value[1]}]`;
       }
 
-      return `${this.localizeStringFunction(this.vocabulary.title)}${text}`;
+      return `${localizeStringFunction(this.vocabulary.title)}${text}`;
     } else {
       let text = "";
       if (!stringIsNullOrEmpty(this.value)) {
         text = `:match(${this.value})`;
       }
-      return `${this.localizeStringFunction(this.vocabulary.title)}${text}`;
+      return `${localizeStringFunction(this.vocabulary.title)}${text}`;
     }
   }
 }
