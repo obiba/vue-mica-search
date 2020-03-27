@@ -227,7 +227,7 @@ export default class Criterion {
 
       const text = (this.value || []).map(val => {
         const term = findTerm(this.vocabulary, val);
-        return term ? term.title[0].text : val;
+        return term ? localizeStringFunction(term.title) : val;
       }).join(" | ");
 
       return `${text}`;
