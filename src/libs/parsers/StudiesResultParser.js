@@ -40,7 +40,10 @@ export default class StudiesResultParser {
     const checkIcon = `<i class="fa fa-check">`;
 
     result.summaries.forEach(summary => {
-      const type = summary.variableType === 'Dataschema' ? 'Harmonized' : 'Collected';
+      const type = summary.studyResourcePath === 'harmonization-study'
+        ? taxonomyFilter.apply(null, ['Mica_study.className.HarmonizationStudy'])
+        : taxonomyFilter.apply(null, ['Mica_study.className.Study']) ;
+
       const stats = summary['obiba.mica.CountStatsDto.studyCountStats'] || {};
       const content = JSON.parse(summary.content);
       const dataSources = summary.dataSources || [];

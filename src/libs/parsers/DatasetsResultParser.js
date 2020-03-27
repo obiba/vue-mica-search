@@ -8,6 +8,7 @@ export default class DatasetsResultParser {
   parse(data, micaConfig) {
     const datasetsResult = data.datasetResultDto;
     const tr = Vue.filter('translate') || (value => value);
+    const taxonomyFilter = Vue.filter('taxonomy-title') || (value => value);
     
     if (!datasetsResult) {
       throw new Error("No dataset results available.");
@@ -24,10 +25,13 @@ export default class DatasetsResultParser {
     let parsed = {
       data: [],
       totalHits: datasetsResult.totalHits
-    }
+    }    
 
     result.datasets.forEach(dataset => {
-      const type = dataset.variableType === 'Dataschema' ? 'Harmonized' : 'Collected';
+      const type = dataset.variableType === 'Dataschema' 
+        ? taxonomyFilter.apply(null, ['Mica_dataset.className.HarmonizationDataset'])
+        : taxonomyFilter.apply(null, ['Mica_dataset.className.StudyDataset']) ;
+
       const stats = dataset['obiba.mica.CountStatsDto.datasetCountStats'] || {};
       let anchor = (type, value) => `<a href="" class="query-anchor" data-target="dataset" data-target-id="${dataset.id}" data-type="${type}">${value}</a>`;
       
