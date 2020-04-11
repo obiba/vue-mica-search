@@ -58,7 +58,7 @@ export default {
   },
   methods: {    
     onAnchorClicked(event) {
-      console.log('Study onAnchorClicked');
+      console.debug('Study onAnchorClicked');
       event.preventDefault();
       const anchor = $(event.target);
       const target = anchor.attr('data-target');
@@ -76,7 +76,7 @@ export default {
     }
   },
   mounted() {
-    console.log('Studies Result Mounted...');
+    console.debug('Studies Result Mounted...');
     this.registerTable(); 
      
     $('#vosr-studies-result').on('click', 'a.query-anchor', this.onAnchorClicked);

@@ -58,7 +58,7 @@
                       {{col.start}}, {{'coverage-end-date-ongoing' | translate}}
                     </small>
                   </div>
-                  <div class="progress no-margin">
+                  <div class="progress no-margin" style="height: 0.5em">
                     <div class="progress-bar progress-bar-transparent progress-bar-thin" role="progressbar" aria-valuenow="{{::col.start}}" aria-valuemin="{{::col.min}}"
                       aria-valuemax="{{::col.start}}" v-bind:style="{'width': col.progressStart + '%'}">
                     </div>
@@ -106,7 +106,7 @@ export default {
   },
   methods: {
     onResults(payload) {     
-      console.log('On coverage result');
+      console.debug('On coverage result');
       
       // Header initialization
       this.showResult = (payload.response.rows || []).length > 0;
@@ -127,12 +127,12 @@ export default {
       }
     },
     removeVocabulary(event, vocabulary) {
-      console.log(`removeVocabulary ${vocabulary}`);
+      console.debug(`removeVocabulary ${vocabulary}`);
       event.preventDefault();
       this.getEventBus().$emit('query-type-delete', {target: 'variable', query: new Query('exists', [`${vocabulary.taxonomyName}.${vocabulary.entity.name}`])});
     },
     removeTerm(event, term) {
-      console.log(`removeVocabulary ${term}`);
+      console.debug(`removeVocabulary ${term}`);
       event.preventDefault();
 
       const index = this.table.termHeaders.indexOf(term);
@@ -145,7 +145,7 @@ export default {
       }
     },
     updateQuery(event, id, term, type) {
-      console.log(`Id: ${id} Term: ${term} Type: ${type}`);
+      console.debug(`Id: ${id} Term: ${term} Type: ${type}`);
 
       event.preventDefault();
       const updates = [{
@@ -171,7 +171,7 @@ export default {
     }
   },
   mounted() {
-    console.log('Mounted CoverageResult');
+    console.debug('Mounted CoverageResult');
     this.getEventBus().register('coverage-results',this.onResults.bind(this));
   },
   beforeDestroy() {

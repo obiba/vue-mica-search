@@ -92,7 +92,7 @@ export default {
     }
   },
   mounted() {
-    console.log(`${this.type} result table mounted...`);
+    console.debug(`${this.type} result table mounted...`);
     this.getEventBus().register(`${this.type}-results`,this.onResults.bind(this));
   },
   beforeDestroy() {

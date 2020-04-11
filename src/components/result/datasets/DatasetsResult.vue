@@ -59,11 +59,11 @@ export default {
           query          
         });
 
-      console.log(`${anchor.attr('data-target')} - ${anchor.attr('data-target-id')}`);
+      console.debug(`${anchor.attr('data-target')} - ${anchor.attr('data-target-id')}`);
     }
   },
   mounted() {
-    console.log('Datasets Result Mounted...');
+    console.debug('Datasets Result Mounted...');
     this.registerTable();
     $('#vosr-datasets-result').on('click', 'a.query-anchor', this.onAnchorClicked);
   }
