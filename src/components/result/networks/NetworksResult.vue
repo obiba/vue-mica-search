@@ -67,7 +67,7 @@ export default {
   methods: {
     
     onAnchorClicked(event) {
-      console.log('Network onAnchorClicked');
+      console.debug('Network onAnchorClicked');
       event.preventDefault();
       const anchor = $(event.target);
       const target = anchor.attr('data-target');
@@ -85,7 +85,7 @@ export default {
     }
   },
   mounted() {
-    console.log('Networks Result Mounted...');
+    console.debug('Networks Result Mounted...');
     this.registerTable();  
     $('#vosr-networks-result').on('click', 'a.query-anchor', this.onAnchorClicked);
   }

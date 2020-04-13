@@ -90,7 +90,7 @@ class IdSplitter {
   splitIds(micaConfig, locale) {
 
     let cols = {
-      colSpan: this.bucket.startsWith('dce') ? (micaConfig.micaConfig.isSingleStudyEnabled ? 2 : 3) : 1,
+      colSpan: this.bucket.startsWith('dce') ? (micaConfig.isSingleStudyEnabled ? 2 : 3) : 1,
       ids: {}
     };
 
