@@ -22,7 +22,7 @@
             <tr>
               <th v-if="bucketStartsWithDce">{{ "study" | translate }}</th>
               <th v-if="bucketStartsWithDce" colspan="1" >{{ "population" | translate }}</th>
-              <th v-if="bucketStartsWithDce">{{ "dce" | translate }}</th> 
+              <th v-if="bucketStartsWithDce">{{ "data-collection-event" | translate }}</th> 
 
               <th v-for="(header, index) in table.termHeaders" v-bind:key="index">
                 <!-- TODO popover -->
