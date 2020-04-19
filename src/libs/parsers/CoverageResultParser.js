@@ -120,9 +120,11 @@ class IdSplitter {
         }
         rowSpan = this.__appendRowSpan(id);
         this.__appendMinMax(id, row.start || this.currentYearMonth, row.end || this.currentYearMonth);
+        const studyUrl = this.__getBucketUrl(this.bucket, id);
+        
         cols.ids[row.value].push({
           id: id,
-          url: this.__getBucketUrl(this.bucket, id),
+          url: studyUrl,
           title: titles[0],
           description: descriptions[0],
           rowSpan: rowSpan,
@@ -134,7 +136,7 @@ class IdSplitter {
         rowSpan = this.__appendRowSpan(id);
         cols.ids[row.value].push({
           id: id,
-          url: this.__getBucketUrl(this.bucket, id),
+          url: studyUrl,
           title: titles[1],
           description: descriptions[1],
           rowSpan: rowSpan,
@@ -150,7 +152,7 @@ class IdSplitter {
           current: this.currentYearMonth,
           end: row.end,
           progressClass: odd ? 'info' : 'warning',
-          url: this.__getBucketUrl(this.bucket, id),
+          url: studyUrl,
           rowSpan: 1,
           index: i++
         });

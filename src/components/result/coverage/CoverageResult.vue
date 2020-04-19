@@ -21,8 +21,8 @@
             </tr>
             <tr>
               <th v-if="bucketStartsWithDce">{{ "study" | translate }}</th>
-              <th v-if="bucketStartsWithDce" colspan="1" >{{ "population" | translate }}</th>
-              <th v-if="bucketStartsWithDce">{{ "data-collection-event" | translate }}</th> 
+              <th v-if="bucketStartsWithDce" v-bind:colspan="studyTypeSelection.harmonization ? 2 : 1" >{{ "population" | translate }}</th>
+              <th v-if="bucketStartsWithDce" v-show="!studyTypeSelection.harmonization">{{ "data-collection-event" | translate }}</th> 
 
               <th v-for="(header, index) in table.termHeaders" v-bind:key="index">
                 <!-- TODO popover -->
@@ -46,7 +46,11 @@
 
           <tbody>
             <tr v-for="(row, rindex) in filteredRows" v-bind:key="rindex" v-show="table.termHeaders.length == row.hits.length">
-              <td v-for="(col, cindex) in table.cols.ids[row.value]" v-bind:key="cindex" colspan="1" v-show="col.id !== '-'">
+              <td v-for="(col, cindex) in table.cols.ids[row.value]" 
+                v-bind:key="cindex" 
+                v-bind:colspan="cindex > 0 && studyTypeSelection.harmonization ? 2 : 1" 
+                v-show="!(col.id === '-' && (isSingleStudyEnabled || studyTypeSelection.harmonization))">
+
                 <span v-show="col.id === '-'">-</span>
                 <a v-show="col.rowSpan !== 0  && col.id !== '-'" v-bind:href="col.url">{{col.title}}</a>
                 <div style="text-align: center" v-show="col.start && bucketStartsWithDce">
@@ -94,6 +98,8 @@ export default {
   name: "CoverageResult",  
   data() {
     return {
+      studyTypeSelection: {all: true},
+      isSingleStudyEnabled: false,
       dataTable: null,
       ajaxCallback: null,
       parser: new CoverageResultParser(this.getMicaConfig(), this.getLocale),
@@ -111,7 +117,8 @@ export default {
       // Header initialization
       this.showResult = (payload.response.rows || []).length > 0;
       if (!this.showResult) return;
-
+      this.isSingleStudyEnabled = this.getMicaConfig().isSingleStudyEnabled;
+      this.studyTypeSelection = payload.studyTypeSelection;
       this.rows = payload.response.rows;
       this.filteredRows = this.rows;
       this.bucket = payload.bucket;
