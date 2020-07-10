@@ -2,8 +2,9 @@ import Vue from 'vue';
 
 export default class VariablesResultParser {
 
-  constructor() {
-  }  
+  constructor(normalizePath) {
+    this.normalizePath = normalizePath;
+  }
 
   parse(data, micaConfig) {
     const variablesResult = data.variableResultDto;
@@ -35,8 +36,9 @@ export default class VariablesResultParser {
         ""
       );
 
+      let path = this.normalizePath(`/variable/${summary.id}`);
       let row = [
-        `<a href="/variable/${summary.id}">${summary.name}</a>`,
+        `<a href="${path}">${summary.name}</a>`,
         summary.variableLabel[0].value,
         `${annotations}`
       ];
@@ -46,10 +48,12 @@ export default class VariablesResultParser {
       }
 
       if (!micaConfig.isSingleStudyEnabled) {
-        row.push(`<a href="/study/${summary.studyId}">${summary.studyAcronym[0].value}</a>`);
+        path = this.normalizePath(`/study/${summary.studyId}`);
+        row.push(`<a href="${path}">${summary.studyAcronym[0].value}</a>`);
       }
 
-      row.push(`<a href="/dataset/${summary.datasetId}">${summary.datasetAcronym[0].value}</a>`);
+      path = this.normalizePath(`/dataset/${summary.datasetId}`);  
+      row.push(`<a href="${path}">${summary.datasetAcronym[0].value}</a>`);
 
       parsed.data.push(row);
     });

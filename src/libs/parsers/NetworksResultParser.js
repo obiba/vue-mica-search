@@ -1,7 +1,8 @@
 export default class NetworksResultParser {
 
-  constructor() {
-  }  
+  constructor(normalizePath) {
+    this.normalizePath = normalizePath;
+  }
 
   parse(data, micaConfig) {
     const networksResult = data.networkResultDto;
@@ -27,8 +28,9 @@ export default class NetworksResultParser {
       const stats = network['obiba.mica.CountStatsDto.networkCountStats'] || {};
       let anchor = (type, value, studyType) => `<a href="" class="query-anchor" data-study-type="${studyType}" data-target="network" data-target-id="${network.id}" data-type="${type}">${value}</a>`;
 
+      let path = this.normalizePath(`/network/${network.id}`);
       let row = [
-        `<a href="/network/${network.id}">${network.acronym[0].value}</a>`,
+        `<a href="${path}">${network.acronym[0].value}</a>`,
         network.name[0].value,
         stats.studies ? anchor('studies', stats.studies, "") : '-'
       ];

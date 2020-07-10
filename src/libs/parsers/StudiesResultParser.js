@@ -1,8 +1,9 @@
 import Vue from 'vue';
 export default class StudiesResultParser {
 
-  constructor() {
-  }  
+  constructor(normalizePath) {
+    this.normalizePath = normalizePath;
+  }
 
   __getNumberOfParticipants(content) {
      const numberOfParticipants = content['numberOfParticipants'];
@@ -52,8 +53,9 @@ export default class StudiesResultParser {
       let anchor = (type, value, studyType) =>
         `<a href="" class="query-anchor" data-study-type="${studyType}" data-target="study" data-target-id="${summary.id}" data-type="${type}">${value}</a>`;
       
+      let path = this.normalizePath(`/study/${summary.id}`);
       let row = [
-        `<a href="/study/${summary.id}">${summary.acronym[0].value}</a>`,
+        `<a href="${path}">${summary.acronym[0].value}</a>`,
         summary.name[0].value,
         type,
         design,
