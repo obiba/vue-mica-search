@@ -19,7 +19,7 @@
     "datatables.net-dt": "^1.10.20",
     "eslint": "^5.16.0",
     "eslint-plugin-vue": "^5.0.0",
-    "rql": "https://github.com/epigeny/rql.git#master",
+    "rql": "https://github.com/epigeny/rql.git#1.0.1",
     "vue": "^2.6.10",
     "vue-template-compiler": "^2.6.10"
   },
