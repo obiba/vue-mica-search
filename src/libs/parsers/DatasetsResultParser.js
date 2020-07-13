@@ -2,8 +2,9 @@ import Vue from 'vue';
 
 export default class DatasetsResultParser {
 
-  constructor() {
-  }  
+  constructor(normalizePath) {
+    this.normalizePath = normalizePath;
+  }
 
   parse(data, micaConfig) {
     const datasetsResult = data.datasetResultDto;
@@ -35,8 +36,9 @@ export default class DatasetsResultParser {
       const stats = dataset['obiba.mica.CountStatsDto.datasetCountStats'] || {};
       let anchor = (type, value) => `<a href="" class="query-anchor" data-target="dataset" data-target-id="${dataset.id}" data-type="${type}">${value}</a>`;
       
+      let path = this.normalizePath(`/dataset/${dataset.id}`);
       let row = [
-        `<a href="/dataset/${dataset.id}">${dataset.acronym[0].value}</a>`,
+        `<a href="${path}">${dataset.acronym[0].value}</a>`,
         dataset.name[0].value
       ];
 

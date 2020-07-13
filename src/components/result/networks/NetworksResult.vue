@@ -39,7 +39,7 @@
   </div>
 
   <div v-show="loading">
-    <img src="/assets/images/loading.gif">
+    <img :src="normalizePath('/assets/images/loading.gif')">
   </div>
 
   <div v-show="!loading && !showResult" class="text-muted">
@@ -59,7 +59,7 @@ export default {
   data () {
     return {
       dataTable: null,
-      parser: new NetworksResultParser(),
+      parser: new NetworksResultParser(this.normalizePath),
       type: "networks",
       target: "network"
     }

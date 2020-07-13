@@ -102,7 +102,7 @@ export default {
       isSingleStudyEnabled: false,
       dataTable: null,
       ajaxCallback: null,
-      parser: new CoverageResultParser(this.getMicaConfig(), this.getLocale),
+      parser: new CoverageResultParser(this.getMicaConfig(), this.getLocale, this.normalizePath),
       table: null, 
       vocabulariesTermsMap: null,
       bucketStartsWithDce: false,

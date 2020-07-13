@@ -5,9 +5,10 @@ const BUCKET_TYPES = {
 }
 
 class IdSplitter {
-  constructor(bucket, result) {
+  constructor(bucket, result, normalizePath) {
     this.bucket = bucket;
     this.result = result;
+    this.normalizePath = normalizePath;
     this.rowSpans = {};
     this.minMax = {};
     this.currentYear = new Date().getFullYear();
@@ -20,12 +21,12 @@ class IdSplitter {
     switch (bucket) {
       case BUCKET_TYPES.STUDY:
       case BUCKET_TYPES.DCE:
-        return `/study/${id}`;
+        return this.normalizePath(`/study/${id}`);
       case BUCKET_TYPES.DATASET:
-        return `/dataset/${id}`
+        return this.normalizePath(`/dataset/${id}`)
     }
 
-    return '';
+    return this.normalizePath('');
   }
 
   __appendRowSpan(id) {
@@ -215,9 +216,10 @@ class IdSplitter {
 
 export default class CoverageResultParser {
 
-  constructor(micaConfig, locale) {
+  constructor(micaConfig, locale, normalizePath) {
     this.micaConfig = micaConfig;
     this.locale = locale;
+    this.normalizePath = normalizePath;
   }
 
   decorateVocabularyHeaders(headers, vocabularyHeaders) {
@@ -257,7 +259,7 @@ export default class CoverageResultParser {
 
     if (result && result.rows) {
       var tableTmp = result;
-      tableTmp.cols = new IdSplitter(bucket, result).splitIds(this.micaConfig, this, this.locale);
+      tableTmp.cols = new IdSplitter(bucket, result, this.normalizePath).splitIds(this.micaConfig, this, this.locale);
       table = tableTmp;
 
       // TODO let filteredRows = [];

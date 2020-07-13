@@ -18,7 +18,7 @@
   </div>
 
   <div v-show="loading">
-    <img src="/assets/images/loading.gif">
+    <img :src="normalizePath('/assets/images/loading.gif')">
   </div>
 
   <div v-show="!loading && !showResult" class="text-muted">
@@ -38,7 +38,7 @@ export default {
   extends: EntityResult,
   data () {
     return {
-      parser: new DatasetsResultParser(),
+      parser: new DatasetsResultParser(this.normalizePath),
       type: "datasets",
       target: "dataset"
     }
