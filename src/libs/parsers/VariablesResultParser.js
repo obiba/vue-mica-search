@@ -6,7 +6,7 @@ export default class VariablesResultParser {
     this.normalizePath = normalizePath;
   }
 
-  parse(data, micaConfig) {
+  parse(data, micaConfig, localize) {
     const variablesResult = data.variableResultDto;
     const tr = Vue.filter('translate') || (value => value);
     const taxonomyTitle = Vue.filter('taxonomy-title') || (value => value);
@@ -39,7 +39,7 @@ export default class VariablesResultParser {
       let path = this.normalizePath(`/variable/${summary.id}`);
       let row = [
         `<a href="${path}">${summary.name}</a>`,
-        summary.variableLabel[0].value,
+        localize(summary.variableLabel),
         `${annotations}`
       ];
 
@@ -49,11 +49,11 @@ export default class VariablesResultParser {
 
       if (!micaConfig.isSingleStudyEnabled) {
         path = this.normalizePath(`/study/${summary.studyId}`);
-        row.push(`<a href="${path}">${summary.studyAcronym[0].value}</a>`);
+        row.push(`<a href="${path}">${localize(summary.studyAcronym)}</a>`);
       }
 
       path = this.normalizePath(`/dataset/${summary.datasetId}`);  
-      row.push(`<a href="${path}">${summary.datasetAcronym[0].value}</a>`);
+      row.push(`<a href="${path}">${localize(summary.datasetAcronym)}</a>`);
 
       parsed.data.push(row);
     });

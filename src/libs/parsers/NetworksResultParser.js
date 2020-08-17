@@ -4,7 +4,7 @@ export default class NetworksResultParser {
     this.normalizePath = normalizePath;
   }
 
-  parse(data, micaConfig) {
+  parse(data, micaConfig, localize) {
     const networksResult = data.networkResultDto;
     
     if (!networksResult) {
@@ -30,8 +30,8 @@ export default class NetworksResultParser {
 
       let path = this.normalizePath(`/network/${network.id}`);
       let row = [
-        `<a href="${path}">${network.acronym[0].value}</a>`,
-        network.name[0].value,
+        `<a href="${path}">${localize(network.acronym)}</a>`,
+        localize(network.name),
         stats.studies ? anchor('studies', stats.studies, "") : '-'
       ];
   

@@ -6,7 +6,7 @@ export default class DatasetsResultParser {
     this.normalizePath = normalizePath;
   }
 
-  parse(data, micaConfig) {
+  parse(data, micaConfig, localize) {
     const datasetsResult = data.datasetResultDto;
     const tr = Vue.filter('translate') || (value => value);
     const taxonomyFilter = Vue.filter('taxonomy-title') || (value => value);
@@ -38,8 +38,8 @@ export default class DatasetsResultParser {
       
       let path = this.normalizePath(`/dataset/${dataset.id}`);
       let row = [
-        `<a href="${path}">${dataset.acronym[0].value}</a>`,
-        dataset.name[0].value
+        `<a href="${path}">${localize(dataset.acronym)}</a>`,
+        localize(dataset.name)
       ];
 
       if (micaConfig.isCollectedDatasetEnabled && micaConfig.isHarmonizedDatasetEnabled) {

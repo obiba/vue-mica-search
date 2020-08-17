@@ -17,7 +17,7 @@ export default class StudiesResultParser {
      return '-';
   }
 
-  parse(data, micaConfig) {
+  parse(data, micaConfig, localize) {
     const studiesResult = data.studyResultDto;
     
     if (!studiesResult) {
@@ -55,8 +55,8 @@ export default class StudiesResultParser {
       
       let path = this.normalizePath(`/study/${summary.id}`);
       let row = [
-        `<a href="${path}">${summary.acronym[0].value}</a>`,
-        summary.name[0].value,
+        `<a href="${path}">${localize(summary.acronym)}</a>`,
+        localize(summary.name),
         type,
         design,
         hasDatasource(dataSources, "questionnaires") ? checkIcon : "-",
