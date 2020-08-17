@@ -33,7 +33,7 @@ export default {
     onResults(payload) {
       if (!this.dataTable) return;
       const pageInfo = this.dataTable.page.info();
-      var parsed = this.parser.parse(payload.response, this.getMicaConfig(), this.tr);
+      var parsed = this.parser.parse(payload.response, this.getMicaConfig(), this.localize);
       this.showResult = parsed.totalHits > 0;
       this.loading = false;
       if (!this.showResult) return; 
