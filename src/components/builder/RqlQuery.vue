@@ -3,7 +3,7 @@
   <div class="btn-group">
     <button type="button" class="btn btn-info btn-sm dropdown-toggle" data-toggle="dropdown">{{ getCriterionAsString() }}</button>
     
-    <div class="dropdown-menu" style="width: 25em;">
+    <div ref="menu" class="dropdown-menu" style="width: 25em;">
       <div class="container" v-bind:title="vocabulary.description | localize-string">{{ vocabulary.title | localize-string }}</div>
       <div class="dropdown-divider"></div>
 
@@ -124,6 +124,9 @@ export default {
     onRemove() {
       this.$emit("remove-query", this.criterion);
     }
+  },
+  mounted() {
+    this.$refs.menu.addEventListener("click", event => event.stopPropagation());
   }
 }
 </script>
