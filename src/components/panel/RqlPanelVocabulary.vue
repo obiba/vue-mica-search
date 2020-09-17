@@ -9,7 +9,14 @@
           <label class="form-check-label" v-bind:for="vocabulary.name + '-' + term.name">{{ term.title | localize-string }}</label>
         </div>
       </li>
-    </ul>  
+    </ul>
+
+    <div v-if="showMoreLess()" class="float-right">
+      <button type="button" class="btn btn-link btn-sm" v-on:click="switchMoreLess()">
+        <span v-if="!showAll" aria-hidden="true"><i class="fas fa-caret-down"></i> {{ "more" | translate }}</span>
+        <span v-if="showAll" aria-hidden="true"><i class="fas fa-caret-up"></i> {{ "less" | translate }}</span>
+      </button>
+    </div>
 
   </template>
 
@@ -48,6 +55,11 @@ export default {
     query: Object,
     termsFilter: String
   },
+  data: function () {
+    return {
+      showAll: false
+    }
+  },
   computed: {
     criterion() {
       let output = null;
@@ -61,7 +73,7 @@ export default {
 
       return output;
     },
-    terms() {
+    filteredTerms() {
       if (this.criterion.type !== "TERMS") return [];
 
       const localizeStringFunction = Vue.filter("localize-string") || ((val) => val[0].text);
@@ -69,6 +81,15 @@ export default {
       return (this.vocabulary.terms || []).filter(term => {
         return (!this.termsFilter || this.termsFilter.trim().length === 0) || localizeStringFunction(term.title).toLowerCase().indexOf(this.termsFilter.toLowerCase()) > -1;
       });
+    },
+    terms() {
+      let terms = this.filteredTerms;
+
+      if (!this.showAll && terms.length > 12) {
+        terms = terms.slice(0,12);
+      }
+
+      return terms;
     }
   },
   watch: {
@@ -79,6 +100,12 @@ export default {
   methods: {
     onInput() {
       this.$emit("update-query", this.criterion);
+    },
+    switchMoreLess() {
+      this.showAll = !this.showAll;
+    },
+    showMoreLess() {
+      return this.filteredTerms.length > 12;
     }
   }
 }
