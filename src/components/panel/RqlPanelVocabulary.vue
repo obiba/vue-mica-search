@@ -1,5 +1,5 @@
 <template>
-<div class="container">
+<div>
   <template v-if="criterion.type === 'TERMS'">
 
     <ul class="list-unstyled row">

@@ -7,7 +7,9 @@
   </template>
 
   <template v-else>
-  <h4 v-if="taxonomy" v-bind:title="taxonomy.description | localize-string">{{ taxonomy.title | localize-string }}</h4>
+  <div v-if="taxonomy.description" class="text-muted mb-2">
+    {{ taxonomy.description | localize-string }}
+  </div>
 
   <div class="input-group mb-4">
     <input type="text" class="form-control" v-model="panelFilter">
@@ -17,13 +19,16 @@
   </div>
   <div class="card mb-2" v-for="vocabulary in vocabularies" v-bind:key="vocabulary.name">
     <div class="card-header">
-      <span v-bind:title="vocabulary.description | localize-string">{{ vocabulary.title | localize-string }}</span>
+      <span>{{ vocabulary.title | localize-string }}</span>
       <span class="float-right">
         <button type="button" class="btn btn-link btn-sm" v-if="canDoSelectAll(vocabulary)" v-on:click="selectAll(vocabulary)"><span aria-hidden="true">{{ "select-all" | translate }}</span></button>
         <button type="button" class="btn btn-link btn-sm" v-if="hasAssociatedQuery(vocabulary)" v-on:click="clear(vocabulary)"><span aria-hidden="true">{{ "clear-selection" | translate }}</span></button>
       </span>      
     </div>
     <div class="card-body">
+      <div v-if="vocabulary.description" class="text-muted mb-4">
+        {{ vocabulary.description | localize-string }}
+      </div>
       <rql-panel-vocabulary v-bind:vocabulary="vocabulary" v-bind:query="getAssociatedQuery(vocabulary)" v-bind:termsFilter="panelFilter" v-on:update-query="updateQuery"></rql-panel-vocabulary>
     </div>    
   </div>
