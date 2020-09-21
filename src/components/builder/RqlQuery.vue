@@ -1,6 +1,6 @@
 <template>
 <div class="btn-group" role="group">
-  <div class="btn-group">
+  <div class="dropdown">
     <button type="button" class="btn btn-info btn-sm dropdown-toggle" data-toggle="dropdown">{{ getCriterionAsString() }}</button>
     
     <div ref="menu" class="dropdown-menu" style="width: 25em;">

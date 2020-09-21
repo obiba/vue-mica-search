@@ -1,23 +1,35 @@
 <template>
 <div>
-  <span class="float-left mr-2 text-muted" v-show="vocabularies.length > 0">
+  <span class="float-left mr-2 text-muted" v-show="items.length > 0">
     <h4><i class="align-middle io" v-bind:class="targetIcon"></i></h4>
   </span>
+  
+  <template v-if="!advancedMode">
   <ul class="list-inline">
-    <li class="list-inline-item mb-2" v-for="vocabulary in vocabularies" v-bind:key="vocabulary.name">
-      <rql-query v-bind:vocabulary="vocabulary" v-bind:query="getAssociatedQuery(vocabulary)" v-on:update-query="updateQuery($event, getAssociatedTaxonomyName(vocabulary))" v-on:remove-query="removeQuery($event, getAssociatedTaxonomyName(vocabulary))"></rql-query>
+    <li class="list-inline-item mb-2" v-for="item in items" v-bind:key="item.name">
+      <rql-query v-bind:vocabulary="item.vocabulary" v-bind:query="item.associatedQuery" v-on:update-query="updateQuery($event, item.taxonomyName)" v-on:remove-query="removeQuery($event, item.taxonomyName)"></rql-query>
     </li>
   </ul>
+  </template>
+
+  <template v-else>
+  <rql-node v-for="(arg, index) in query.args" v-bind:key="index" v-bind:name="arg.name" v-bind:args="arg.args" v-bind:taxonomy="taxonomy" v-on:update-node="updateNode($event)" v-on:update-query="updateQuery($event)" v-on:remove-query="removeQuery($event)"></rql-node>
+  </template>
 </div>    
 </template>
 
 <script>
 import RqlQuery from "./RqlQuery.vue";
+import RqlNode from "./RqlNode.vue";
 import Criterion from "../../libs/Criterion";
 
 export default {
   name: "rql-query-builder",
   props: {
+    advancedMode: {
+      type: Boolean,
+      default: false
+    },
     target: {
       type: String,
       required: true
@@ -29,50 +41,36 @@ export default {
     inputs() {
       return Criterion.splitQuery(this.query);
     },
-    vocabularies() {
-      if (!this.taxonomy) return [];
-      if (Array.isArray(this.taxonomy)) {
-        let result = [];
-        this.taxonomy.forEach((t) => {
-          let found = (t.vocabularies || [])
-          .filter(vocabulary => {
-            return this.hasAssociatedQuery(vocabulary);
-          });
+    items() {
+      if (!this.taxonomy || !this.query) return [];
 
+      let result = [];
+
+      if (Array.isArray(this.taxonomy)) {
+        this.taxonomy.forEach((t) => {
+          let found = (t.vocabularies || []).filter(vocabulary => this.hasAssociatedQuery(vocabulary));
           result = result.concat(found);  
         });
-
-        return result;
       } else {
-        return (this.taxonomy.vocabularies || [])
-          .filter(vocabulary => {
-            return this.hasAssociatedQuery(vocabulary);
-          });
+        result = (this.taxonomy.vocabularies || []).filter(vocabulary => this.hasAssociatedQuery(vocabulary));
       }
+
+      return result.map(vocabulary => {
+        let associatedQuery = this.getAssociatedQuery(vocabulary);
+        return {name: vocabulary.name, taxonomyName: this.getAssociatedTaxonomyName(vocabulary), vocabulary, associatedQuery};
+      });
     },
     targetIcon() {
       return "io-" + this.target;
     }
   },
   components: {
-    RqlQuery
+    RqlQuery,
+    RqlNode
   },
   methods: {
     getAssociatedTaxonomyName(test) {
-      if (Array.isArray(this.taxonomy)) {
-        let result = this.taxonomy.filter((t) => {
-          let found = (t.vocabularies || [])
-          .filter(vocabulary => {
-            return vocabulary.name === test.name;
-          });
-
-          return found.length > 0;
-        })[0];
-
-        return result ? result.name : undefined;
-      } else {
-        return this.taxonomy.name;
-      }
+      return Criterion.associatedTaxonomyName(this.taxonomy, test);
     },
     getAssociatedQuery(vocabulary) {
       if (this.query) {
@@ -95,6 +93,15 @@ export default {
     },
     removeQuery(payload, taxonomyName) {
       this.$emit("remove-query", {target: this.target, query: payload.asQuery(taxonomyName)});
+    },
+    updateNodeQuery(payload) {
+      this.updateQuery(payload.data, payload.taxonomyName);
+    },
+    removeNodeQuery(payload) {
+      this.removeQuery(payload.data, payload.taxonomyName);
+    },
+    updateNode(payload) {
+      this.$emit("update-node", {payload, target: this.target});
     }
   }
 }
