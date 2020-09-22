@@ -31,6 +31,8 @@ export default class Criterion {
   value = undefined;
   _operator = undefined;
 
+  static NODE_NAMES = ["and", "or"];
+
   static typeOfVocabulary(vocabulary) {
     let type = undefined;
 
@@ -65,6 +67,39 @@ export default class Criterion {
 
       return found;
     })[0];
+  }
+
+  static associatedTaxonomyName(taxonomy, testVocabulary) {
+    if (Array.isArray(taxonomy)) {
+      let result = taxonomy.filter((t) => {
+        let found = (t.vocabularies || []).filter((vocabulary) => {
+          return vocabulary.name === testVocabulary.name;
+        });
+
+        return found.length > 0;
+      })[0];
+
+      return result ? result.name : undefined;
+    } else {
+      return taxonomy.name;
+    }
+  }
+
+  static associatedVocabulary(taxonomy, input) {
+    if (Array.isArray(taxonomy)) {
+      let result = undefined;
+
+      taxonomy.forEach(t => {
+        let found = (t.vocabularies || []).filter((vocabulary) => Criterion.associatedQuery(vocabulary, [input]))[0];
+        if (found) {
+          result = found;
+        }
+      });
+
+      return result;
+    } else {
+      return (taxonomy.vocabularies || []).filter(vocabulary => Criterion.associatedQuery(vocabulary, [input]))[0];
+    }
   }
 
   static splitQuery(query) {
