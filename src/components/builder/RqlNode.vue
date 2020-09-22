@@ -48,26 +48,29 @@ export default {
     taxonomy: [Object, Array]
   },
   computed: {
-    forNode() {
-      return Criterion.NODE_NAMES.indexOf(this.name) > -1;
-    },
     firstArg() {
-      const arg = this.args.slice(0, 1)[0];
-      if (this.isNode(arg)) {
-        return arg;
+      if (this.isNode()) {
+        const arg = this.args.slice(0, 1)[0];
+        return this.isNode(arg) ? arg : this.asInput(arg);
       } else {
-        return this.asInput(arg);
+        const query = new RQL.Query(this.name);
+        query.args = this.args;
+        return this.asInput(query);
       }
     },
     otherArgs() {
-      const others = this.args.slice(1);      
-      return others.map(other => {
-        if (this.isNode(other)) {
-          return other;
-        } else {
-          return this.asInput(other);
-        }
-      });
+      if (this.isNode()) {
+        const others = this.args.slice(1);      
+        return others.map(other => {
+          if (this.isNode(other)) {
+            return this.isNode(other) ? other : this.asInput(other);
+          } else {
+            return this.asInput(other);
+          }
+        });
+      } else {
+        return [];
+      }  
     }
   },
   components: {
@@ -75,7 +78,7 @@ export default {
   },
   methods: {
     isNode(arg) {
-      return Criterion.NODE_NAMES.indexOf(arg.name) > -1;
+      return Criterion.NODE_NAMES.indexOf(arg || this.name) > -1;
     },
     asInput(arg) {
       const vocabulary = Criterion.associatedVocabulary(this.taxonomy, arg);
