@@ -101,7 +101,7 @@ export default {
       this.removeQuery(payload.data, payload.taxonomyName);
     },
     updateNode(payload) {
-      this.$emit("update-node", {payload, target: this.target});
+      this.$emit("update-node", {query: payload.query, newName: payload.newName, target: this.target});
     }
   }
 }

@@ -16,8 +16,8 @@
         <button type="button" class="btn btn-info btn-sm dropdown-toggle" data-toggle="dropdown">{{ "search." + name | translate }}</button>
         
         <div class="dropdown-menu">
-          <a class="dropdown-item" href="#" v-if="name !== 'and'" v-on:click="updateNodeName('and')">{{ "search.and" | translate }}</a>
-          <a class="dropdown-item" href="#" v-if="name !== 'or'" v-on:click="updateNodeName('or')">{{ "search.or" | translate }}</a>
+          <button class="dropdown-item" type="button" v-if="name !== 'and'" v-on:click="updateNodeName('and')">{{ "search.and" | translate }}</button>
+          <button class="dropdown-item" type="button" v-if="name !== 'or'" v-on:click="updateNodeName('or')">{{ "search.or" | translate }}</button>
         </div>
       </div>
     </li>
