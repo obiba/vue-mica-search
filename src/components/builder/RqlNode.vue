@@ -11,7 +11,7 @@
       </template>
     </li>
 
-    <li class="list-inline-item mb-2">
+    <li v-if="otherArgs.length > 0" class="list-inline-item mb-2">
       <div class="dropdown">
         <button type="button" class="btn btn-info btn-sm dropdown-toggle" data-toggle="dropdown">{{ "search." + name | translate }}</button>
         
@@ -78,7 +78,7 @@ export default {
   },
   methods: {
     isNode(arg) {
-      return Criterion.NODE_NAMES.indexOf(arg || this.name) > -1;
+      return Criterion.NODE_NAMES.indexOf((arg || this).name) > -1;
     },
     asInput(arg) {
       const vocabulary = Criterion.associatedVocabulary(this.taxonomy, arg);
@@ -90,10 +90,10 @@ export default {
       return undefined;
     },
     updateQuery(payload, taxonomyName) {
-      this.$emit("update-query", { data: payload, taxonomyName });
+      this.$emit("update-query", { data: (payload.data || payload), taxonomyName: (payload.taxonomyName || taxonomyName) });
     },
     removeQuery(payload, taxonomyName) {
-      this.$emit("remove-query", { data: payload, taxonomyName });
+      this.$emit("remove-query", { data: (payload.data || payload), taxonomyName: (payload.taxonomyName || taxonomyName) });
     },
     onUpdateNode(payload) {
       this.$emit("update-node", payload);

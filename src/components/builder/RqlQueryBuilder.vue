@@ -13,7 +13,7 @@
   </template>
 
   <template v-else>
-  <rql-node v-for="(arg, index) in query.args" v-bind:key="index" v-bind:name="arg.name" v-bind:args="arg.args" v-bind:taxonomy="taxonomy" v-on:update-node="updateNode($event)" v-on:update-query="updateQuery($event)" v-on:remove-query="removeQuery($event)"></rql-node>
+  <rql-node v-for="(arg, index) in query.args" v-bind:key="index" v-bind:name="arg.name" v-bind:args="arg.args" v-bind:taxonomy="taxonomy" v-on:update-node="updateNode($event)" v-on:update-query="updateNodeQuery($event)" v-on:remove-query="removeNodeQuery($event)"></rql-node>
   </template>
 </div>    
 </template>
@@ -28,7 +28,7 @@ export default {
   props: {
     advancedMode: {
       type: Boolean,
-      default: false
+      default: true
     },
     target: {
       type: String,
