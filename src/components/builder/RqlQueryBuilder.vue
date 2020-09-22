@@ -28,7 +28,7 @@ export default {
   props: {
     advancedMode: {
       type: Boolean,
-      default: true
+      default: false
     },
     target: {
       type: String,
