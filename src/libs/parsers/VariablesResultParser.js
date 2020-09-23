@@ -31,8 +31,8 @@ export default class VariablesResultParser {
     result.summaries.forEach(summary => {
       const annotations = (summary.annotations || []).reduce(
         (acc, annotation) =>
-          ("" !== acc ? `${acc}<br>` : "") +
-          taxonomyTitle.apply(null, [`${annotation.taxonomy}.${annotation.vocabulary}.${annotation.value}`]),
+          ("" !== acc ? `${acc}<br>` : "") + "<span class='small'><i class='fa fa-tag text-muted'></i> " +
+          taxonomyTitle.apply(null, [`${annotation.taxonomy}.${annotation.vocabulary}.${annotation.value}`]) + "</span>",
         ""
       );
 
