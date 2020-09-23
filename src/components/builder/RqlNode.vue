@@ -13,7 +13,7 @@
 
     <li v-if="otherArgs.length > 0" class="list-inline-item mb-2">
       <div class="dropdown">
-        <button type="button" class="btn btn-info btn-sm dropdown-toggle" data-toggle="dropdown">{{ "search." + name | translate }}</button>
+        <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown">{{ "search." + name | translate }}</button>
         
         <div class="dropdown-menu">
           <button class="dropdown-item" type="button" v-if="name !== 'and'" v-on:click="updateNodeName('and')">{{ "search.and" | translate }}</button>
