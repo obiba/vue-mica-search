@@ -31807,7 +31807,7 @@ var VariablesResultParser = /*#__PURE__*/function () {
       };
       result.summaries.forEach(function (summary) {
         var annotations = (summary.annotations || []).reduce(function (acc, annotation) {
-          return ("" !== acc ? "".concat(acc, "<br>") : "") + taxonomyTitle.apply(null, ["".concat(annotation.taxonomy, ".").concat(annotation.vocabulary, ".").concat(annotation.value)]);
+          return ("" !== acc ? "".concat(acc, "<br>") : "") + "<span class='small'><i class='fa fa-tag text-muted'></i> " + taxonomyTitle.apply(null, ["".concat(annotation.taxonomy, ".").concat(annotation.vocabulary, ".").concat(annotation.value)]) + "</span>";
         }, "");
 
         var path = _this.normalizePath("/variable/".concat(summary.id));
