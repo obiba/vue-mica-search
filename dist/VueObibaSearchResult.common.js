@@ -30467,6 +30467,7 @@ var Criterion = /*#__PURE__*/function () {
     key: "query",
     set: function set(input) {
       this._operator = input.operator;
+      if (!this._operator) this.operator = input.name;
 
       switch (this.type) {
         case "TERMS":
