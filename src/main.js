@@ -3,6 +3,7 @@ import DatasetsResult from 'components/result/datasets/DatasetsResult.vue'
 import StudiesResult from 'components/result/studies/StudiesResult.vue'
 import NetworksResult from 'components/result/networks/NetworksResult.vue'
 import CoverageResult from 'components/result/coverage/CoverageResult.vue'
+import GraphicsResult from 'components/result/graphics/GraphicsResult.vue'
 
 import RqlQueryBuilder from 'components/builder/RqlQueryBuilder.vue'
 import RqlPanel from 'components/panel/RqlPanel.vue'
@@ -28,6 +29,9 @@ function install(Vue, options) {
 
   RqlPanel.mixins = [options.mixin];
   Vue.component('rql-panel', RqlPanel);
+  
+  GraphicsResult.mixins = [options.mixin];
+  Vue.component(GraphicsResult.name, GraphicsResult);
 }
 
 export default install;

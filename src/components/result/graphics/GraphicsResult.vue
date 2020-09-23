@@ -1,0 +1,57 @@
+<template>
+  <div>  
+    <div v-for="(chartDataset, index) in chartDatasets" v-bind:key="index">
+      <graphic-result v-bind:chart-dataset="chartDataset" v-bind:total-hits="totalHits" v-bind:position="index"></graphic-result>
+    </div>
+    <div id="vosr-charts-container">    
+    </div>
+  </div>
+</template>
+
+<script>
+import GraphicsResultParser from "libs/parsers/GraphicsResultParser";
+import GraphicResult from "./GraphicResult.vue";
+
+export default {
+  name: "GraphicsResult",  
+  props: {
+    chartOptions: Array
+  },
+  components: {
+    GraphicResult
+  },
+  data() {   
+    return {      
+      totalHits: 0,
+      chartDatasets: null,
+      parser: new GraphicsResultParser(this.normalizePath),
+    }
+  },
+  methods: {
+    onResults(payload) {
+      console.debug(`**** onGraphics ${payload}`);
+
+      this.chartDatasets = []
+      // TODO make sure any resultDto can be used
+      const studyResult = payload.response.studyResultDto;
+      this.totalHits = studyResult.totalHits;
+      this.chartOptions.forEach((options) => {
+        const aggData = studyResult.aggs.filter((item => item.aggregation === options.agg)).pop();
+        const [canvasData, tableRows] = this.parser.parse(aggData, options);
+        this.chartDatasets.push({canvasData, options, tableRows});
+      });
+    }
+  },
+  mounted() {
+    console.debug(`Prop ${this.options} AGGS ${this.aggs}`);
+    this.getEventBus().register('query-type-graphics-results',this.onResults.bind(this));
+
+
+
+  },
+  beforeDestroy() {
+    this.getEventBus().unregister('query-type-graphics-results', this.onResults);
+  }
+}
+
+</script>
