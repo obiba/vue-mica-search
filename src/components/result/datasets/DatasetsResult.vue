@@ -18,7 +18,7 @@
   </div>
 
   <div v-show="loading">
-    <img :src="normalizePath('/assets/images/loading.gif')">
+    <div class="spinner-border spinner-border-sm" role="status"></div>
   </div>
 
   <div v-show="!loading && !showResult" class="text-muted">
