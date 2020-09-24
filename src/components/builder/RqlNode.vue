@@ -63,7 +63,7 @@ export default {
         const others = this.args.slice(1);      
         return others.map(other => {
           if (this.isNode(other)) {
-            return this.isNode(other) ? other : this.asInput(other);
+            return other;
           } else {
             return this.asInput(other);
           }
@@ -87,7 +87,7 @@ export default {
         return {name: vocabulary.name, taxonomyName, vocabulary, associatedQuery: arg};
       }
 
-      return undefined;
+      return arg;
     },
     updateQuery(payload, taxonomyName) {
       this.$emit("update-query", { data: (payload.data || payload), taxonomyName: (payload.taxonomyName || taxonomyName) });
