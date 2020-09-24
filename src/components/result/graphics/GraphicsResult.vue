@@ -33,13 +33,16 @@ export default {
 
       this.chartDatasets = []
       // TODO make sure any resultDto can be used
-      const studyResult = payload.response.studyResultDto;
+      const studyResult = payload.response.studyResultDto;      
       this.totalHits = studyResult.totalHits;
-      this.chartOptions.forEach((options) => {
-        const aggData = studyResult.aggs.filter((item => item.aggregation === options.agg)).pop();
-        const [canvasData, tableRows] = this.parser.parse(aggData, options);
-        this.chartDatasets.push({canvasData, options, tableRows});
-      });
+
+      if (this.totalHits > 0) {
+        this.chartOptions.forEach((options) => {
+          const aggData = studyResult.aggs.filter((item => item.aggregation === options.agg)).pop();
+          const [canvasData, tableData] = this.parser.parse(aggData, options);
+          this.chartDatasets.push({canvasData, tableData, options});
+        });
+      }
     }
   },
   mounted() {

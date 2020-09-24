@@ -17,15 +17,15 @@
         <div v-bind:id="tableContainerId" class="col-6">
           <table id="vosr-datasets-result" class="table table-striped" width="100%">
             <thead>
-              <tr>
-                <th>{{ "value" | translate }}</th>
-                <th>{{ "frequency" | translate }}</th>
+              <tr class="row">
+                <th class="col-6" v-for="(col, index) in chartDataset.tableData.cols" v-bind:key="index">{{ col }}</th>
               </tr>          
             </thead>
             <tbody>
-                <tr v-for="(row, index) in chartDataset.tableRows" v-bind:key="index">
-                  <td>{{row.title}}</td>
-                  <td>{{row.count}}</td>
+                <tr  class="row" v-for="(row, index) in chartDataset.tableData.rows" v-bind:key="index">
+                  <td class="col-6">{{row.title}}</td>                  
+                  <td class="col-6" v-if="row.count > 0"><a href="" v-on:click="onCountClick($event,row.vocabulary, row.key)" class="query-anchor">{{row.count}}</a></td>
+                  <td class="col-6" v-if="row.count === 0">{{row.count}}</td>
                 </tr>
             </tbody>
           </table>
@@ -38,6 +38,7 @@
 <script>
 import Chart from 'chart.js';
 import $ from 'jquery';
+import Query from 'rql/src/query';
 
 export default {
   props: {
@@ -55,21 +56,35 @@ export default {
     }
   },
   methods: {
-    renderCanvasAndTable() {      
+    renderCanvas() {      
       const chartContainer = $(`#${this.chartContainerId}`);
       chartContainer.children().remove();
       chartContainer.append(`<canvas id="${this.canvasId}" class="mb-4"></canvas>`);
       const chartCanvas = $(`#${this.canvasId}`).get(0).getContext('2d');
 
       new Chart(chartCanvas, this.chartDataset.canvasData);
+    },
+    onCountClick(event, vocabulary, term) {
+      event.preventDefault();
+      console.debug(`onCountClicked ${vocabulary}, ${term}`);
+
+      const updates = [{
+        target: 'study', 
+        query: new Query('in', ['Mica_study.className', 'Study']),
+        operator: 'and'
+      }];
+
+      updates.push({target:'study', query: new Query('in', [`Mica_study.${vocabulary}`, `${term}`])});
+
+      this.getEventBus().$emit('query-type-updates-selection', {display: 'lists', type: `studies`, updates});
     }
   },
   mounted() {
-    this.renderCanvasAndTable();
+    this.renderCanvas();
   },
    watch: {
     chartDataset(val) {
-      if (val) this.renderCanvasAndTable();
+      if (val) this.renderCanvas();
     }  
   }
 }

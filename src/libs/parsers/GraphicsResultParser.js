@@ -17,9 +17,11 @@ export default class GraphicsResultParser {
     return [labels, data];
   }
 
-  __parseForTable(chartData) {
+  __parseForTable(vocabulary, chartData) {
     return chartData.map(term => {
       let row = {
+        vocabulary: vocabulary.replace(/model-/, ""),
+        key: term.key,
         title: term.title,
         count: term.count        
       };
@@ -34,17 +36,18 @@ export default class GraphicsResultParser {
     }
 
     const tr = Vue.filter('translate') || (value => value);
+    const labelStudies = tr('studies');
     const aggData = chartData[chartOptions.dataKey];
     const [labels, data] = this.__parseForChart(aggData);
-    const tableRows = this.__parseForTable(aggData);
+    const tableCols = [chartOptions.title, labelStudies];
+    const tableRows = this.__parseForTable(chartOptions.vocabulary, aggData);
 
-    // console.debug(chartData['obiba.mica.TermsAggregationResultDto.terms']);
     const canvasData = {
       type: chartOptions.type,
       data: {
         labels: labels,
         datasets: [{
-          label: tr('studies'),
+          label: labelStudies,
           data: data,
           backgroundColor: chartOptions.backgroundColor
         }]
@@ -68,7 +71,7 @@ export default class GraphicsResultParser {
       }
     };
 
-    return [canvasData, tableRows];
+    return [canvasData, {cols: tableCols, rows: tableRows}];
 
   }
 
