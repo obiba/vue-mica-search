@@ -1,5 +1,5 @@
 <template>
- <div class="card card-primary card-outline">
+ <div v-bind:id="cardId" class="card card-primary card-outline">
   <div class="card-header">
     <h3 class="card-title">{{chartDataset.options.title | translate}}</h3>
     <div class="card-tools float-right">
@@ -50,6 +50,7 @@ export default {
   data: function() {
     const agg = this.chartDataset.options.agg;
     return {
+      cardId: this.chartDataset.options.id,
       containerId: `vosrs-charts-container-${this.position}`,
       chartContainerId: `vosrs-charts-${agg}-${this.position}`,
       tableContainerId: `vosrs-charts-${agg}-${this.position}-table`,
