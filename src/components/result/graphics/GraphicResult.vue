@@ -14,7 +14,7 @@
         <div v-bind:id="chartContainerId" class="col-sm-6">
           <!-- canvas element -->
         </div>
-        <div v-bind:id="tableContainerId" class="col-sm-6">
+        <div v-bind:id="tableContainerId" class="col-sm-6 overflow-auto" style="max-height: 30em">
           <table id="vosr-datasets-result" class="table table-striped" width="100%">
             <thead>
               <tr class="row">
