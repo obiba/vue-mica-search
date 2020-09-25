@@ -14,7 +14,7 @@ export default class GraphicsResultParser {
       data.push(term.count);
     });
 
-    return [labels, data];
+    return [labels, { data: data }];
   }
 
   __parseForTable(vocabulary, chartData) {
@@ -38,37 +38,41 @@ export default class GraphicsResultParser {
     const tr = Vue.filter('translate') || (value => value);
     const labelStudies = tr('studies');
     const aggData = chartData[chartOptions.dataKey];
-    const [labels, data] = this.__parseForChart(aggData);
+    let [labels, dataset] = typeof chartOptions.parseForChart === 'function' ? chartOptions.parseForChart(aggData) : this.__parseForChart(aggData);
     const tableCols = [chartOptions.title, labelStudies];
-    const tableRows = this.__parseForTable(chartOptions.vocabulary, aggData);
+    const tableRows = typeof chartOptions.parseForTable === 'function' ? chartOptions.parseForTable(chartOptions.vocabulary, aggData) : this.__parseForTable(chartOptions.vocabulary, aggData);
+
+    if (!dataset.label) {
+      dataset.label = labelStudies;
+    }
+    if (!dataset.backgroundColor) {
+      dataset.backgroundColor = chartOptions.backgroundColor;
+    }
+
+    const options = chartOptions.options ? chartOptions.options : {
+      indexAxis: 'y',
+      // Elements options apply to all of the options unless overridden in a dataset
+      // In this case, we are setting the border of each horizontal bar to be 2px wide
+      elements: {
+        rectangle: {
+          borderWidth: 2,
+        }
+      },
+      aspectRatio: 2,
+      // maintainAspectRatio: false,
+      responsive: true,
+      legend: {
+        ...{ display: false }, ...(chartOptions.legend || {})
+      }
+    };
 
     const canvasData = {
       type: chartOptions.type,
       data: {
         labels: labels,
-        datasets: [{
-          label: labelStudies,
-          data: data,
-          backgroundColor: chartOptions.backgroundColor
-        }]
+        datasets: [dataset]
       },
-      options: {
-        indexAxis: 'y',
-        // Elements options apply to all of the options unless overridden in a dataset
-        // In this case, we are setting the border of each horizontal bar to be 2px wide
-        elements: {
-          rectangle: {
-            borderWidth: 2,
-          }
-        },
-        aspectRatio: 2,
-        // maintainAspectRatio: false,
-        responsive: true,
-        legend: {
-          ...{ display: false }, ...(chartOptions.legend || {})
-        }
-        
-      }
+      options: options
     };
 
     return [canvasData, {cols: tableCols, rows: tableRows}];

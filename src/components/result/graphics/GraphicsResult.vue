@@ -29,8 +29,6 @@ export default {
   },
   methods: {
     onResults(payload) {
-      console.debug(`**** onGraphics ${payload}`);
-
       this.chartDatasets = []
       // TODO make sure any resultDto can be used
       const studyResult = payload.response.studyResultDto;      
