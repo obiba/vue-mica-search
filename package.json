@@ -10,7 +10,8 @@
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
-    "chart.js": "^2.9.3"
+    "chart.js": "^2.9.3",
+    "jqvmap": "git+https://github.com/10bestdesign/jqvmap.git#v1.5.1"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^4.5.6",
