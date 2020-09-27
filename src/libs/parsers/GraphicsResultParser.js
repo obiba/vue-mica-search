@@ -9,7 +9,7 @@ export default class GraphicsResultParser {
     let labels = [];
     let data = [];
 
-    chartData.forEach(term => {
+    chartData.filter(term => term.count>0).forEach(term => {
       labels.push(term.title);
       data.push(term.count);
     });
@@ -18,7 +18,7 @@ export default class GraphicsResultParser {
   }
 
   __parseForTable(vocabulary, chartData) {
-    return chartData.map(term => {
+    return chartData.filter(term => term.count>0).map(term => {
       let row = {
         vocabulary: vocabulary.replace(/model-/, ""),
         key: term.key,

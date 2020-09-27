@@ -38,7 +38,9 @@ export default {
         this.chartOptions.forEach((options) => {
           const aggData = studyResult.aggs.filter((item => item.aggregation === options.agg)).pop();
           const [canvasData, tableData] = this.parser.parse(aggData, options);
-          this.chartDatasets.push({canvasData, tableData, options});
+          if (tableData.rows.length>0) {
+            this.chartDatasets.push({canvasData, tableData, options});
+          }
         });
       }
     }
