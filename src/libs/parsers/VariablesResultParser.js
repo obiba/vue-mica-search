@@ -1,4 +1,5 @@
 import Vue from 'vue';
+import marked from 'marked';
 
 export default class VariablesResultParser {
 
@@ -37,9 +38,15 @@ export default class VariablesResultParser {
       );
 
       let path = this.normalizePath(`/variable/${summary.id}`);
+      let labelElem = marked(localize(summary.variableLabel));
+      if (summary.description) {
+        labelElem =  "<i class='fa fa-info-circle text-muted float-left mr-2 mt-1' data-toggle='tooltip' data-html='true' title='" + marked(localize(summary.description)) + "'></i> " + labelElem;
+      }
+
       let row = [
         `<a href="${path}">${summary.name}</a>`,
-        localize(summary.variableLabel),
+        labelElem,
+        tr(summary.valueType + '-type'),
         `${annotations}`
       ];
 

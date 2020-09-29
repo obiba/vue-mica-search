@@ -7,6 +7,7 @@
           <tr>
             <th>{{ "name" | translate }}</th>
             <th>{{ "label"  | translate }}</th>
+            <th>{{ "valueType"  | translate }}</th>
             <th>{{ "annotations" | translate }}</th>
             <th v-if="withCollectedDatasets && withHarmonizedDatasets">{{ "type" | translate }}</th>
             <th v-if="withStudies">{{ "study" | translate }}</th>
