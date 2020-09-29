@@ -24,6 +24,18 @@ export default {
     },
     withHarmonizedDatasets: function() {
       return this.getMicaConfig().isHarmonizedDatasetEnabled;
+    },
+    variableColumnNames: function() {
+      return this.getDisplayOptions().variableColumns
+        .filter(col => {
+          if (col === 'type') {
+            return this.withCollectedDatasets && this.withHarmonizedDatasets;
+          } else if (col === 'study') {
+            return this.withStudies;
+          }
+          return true;
+        })
+        .map(col => col === 'label+description' ? 'label' : col);
     }
   },
   methods: {
@@ -33,7 +45,7 @@ export default {
     onResults(payload) {
       if (!this.dataTable) return;
       const pageInfo = this.dataTable.page.info();
-      var parsed = this.parser.parse(payload.response, this.getMicaConfig(), this.localize);
+      var parsed = this.parser.parse(payload.response, this.getMicaConfig(), this.localize, this.getDisplayOptions());
       this.showResult = parsed.totalHits > 0;
       this.loading = false;
       if (!this.showResult) return; 

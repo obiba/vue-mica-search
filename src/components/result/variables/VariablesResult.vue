@@ -6,12 +6,7 @@
         <thead>
           <tr>
             <th>{{ "name" | translate }}</th>
-            <th>{{ "label"  | translate }}</th>
-            <th>{{ "valueType"  | translate }}</th>
-            <th>{{ "annotations" | translate }}</th>
-            <th v-if="withCollectedDatasets && withHarmonizedDatasets">{{ "type" | translate }}</th>
-            <th v-if="withStudies">{{ "study" | translate }}</th>
-            <th>{{ "dataset" | translate }}</th>
+            <th v-for="column in variableColumnNames" :key="column">{{ column | translate }}</th>
           </tr>
         </thead>
       </table>
