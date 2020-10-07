@@ -6,24 +6,19 @@
         <thead>
           <tr>
             <th rowspan="2">{{ "acronym"  | translate }}</th>
-            <th rowspan="2">{{ "name"  | translate }}</th>
-            <th rowspan="2">{{ "type"  | translate }}</th>
-            <th rowspan="2">{{ "study-design"  | translate }}</th>
-            <th colspan="4">{{ "data-sources-available"  | translate }}</th>
-            <th rowspan="2">{{ "participants"  | translate }}</th>
-            <th rowspan="2" v-if="withNetworks">{{ "networks"  | translate }}</th>
-            <th colspan="2" v-if="withCollectedDatasets">{{ "individual"  | translate }}</th>
-            <th colspan="2" v-if="withHarmonizedDatasets">{{ "harmonization"  | translate }}</th>
+            <th v-for="item in studyColumnItems" :key="item.name" 
+              :rowspan="item.rowspan" 
+              :colspan="item.colspan">
+              {{ item.name | translate }}
+            </th>
           </tr>
           <tr>
-            <th :title="'Mica_study.populations-dataCollectionEvents-dataSources.questionnaires' | taxonomy-title"><i class="fa fa-file-alt"></i></th>
-            <th :title="'Mica_study.populations-dataCollectionEvents-dataSources.physical_measures' | taxonomy-title"><i class="fa fa-stethoscope"></i></th>
-            <th :title="'Mica_study.populations-dataCollectionEvents-dataSources.biological_samples' | taxonomy-title"><i class="fa fa-flask"></i></th>
-            <th :title="'Mica_study.populations-dataCollectionEvents-dataSources.others' | taxonomy-title"><i class="far fa-plus-square"></i></th>
-            <th v-if="withCollectedDatasets">{{ "datasets"  | translate }}</th>
-            <th v-if="withCollectedDatasets">{{ "variables"  | translate }}</th>
-            <th v-if="withHarmonizedDatasets">{{ "datasets"  | translate }}</th>
-            <th v-if="withHarmonizedDatasets">{{ "variables"  | translate }}</th>
+            <th v-for="item in studyColumnItems2" :key="item.id" :title="item.title | taxonomy-title">
+             <span> 
+              <i v-if="item.icon" :class="item.icon"></i>
+              {{ item.name | translate }}
+             </span>
+            </th>
           </tr>
         </thead> 
       </table>

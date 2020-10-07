@@ -6,32 +6,22 @@
         <thead v-if="withCollectedDatasets && withHarmonizedDatasets">
           <tr>
             <th rowspan="2">{{ "acronym" | translate }}</th>
-            <th rowspan="2">{{ "name" | translate }}</th>
-            <th rowspan="2">{{ "studies" | translate }}</th>
-            <th colspan="2">{{ "datasets" | translate }}</th>
-            <th colspan="2">{{ "variables" | translate }}</th>
+            <th v-for="item in networkColumnItems" :key="item.name" 
+              :rowspan="item.rowspan" 
+              :colspan="item.colspan">
+              {{ item.name | translate }}
+            </th>
           </tr>
-          <tr>
-            <th v-if="withCollectedDatasets">{{ "collected" | translate }}</th>
-            <th v-if="withHarmonizedDatasets">{{ "harmonized" | translate }}</th>
-            <th v-if="withCollectedDatasets">{{ "collected" | translate }}</th>
-            <th v-if="withHarmonizedDatasets">{{ "harmonized" | translate }}</th>
-          </tr>
-        </thead>
-        <thead v-else-if="withCollectedDatasets || withHarmonizedDatasets">
-          <tr>
-            <th>{{ "acronym" | translate }}</th>
-            <th>{{ "name" | translate }}</th>
-            <th>{{ "studies" | translate }}</th>
-            <th>{{ "datasets" | translate }}</th>
-            <th>{{ "variables" | translate }}</th>
+          <tr v-if="withCollectedDatasets || withHarmonizedDatasets">
+            <th v-for="item in networkColumnItems2" :key="item.name">
+              {{ item.name | translate }}
+            </th>
           </tr>
         </thead>
         <thead v-else>
           <tr>
             <th>{{ "acronym" | translate }}</th>
-            <th>{{ "name" | translate }}</th>
-            <th>{{ "studies" | translate }}</th>
+            <th v-for="column in networkColumnNames" :key="column">{{ column | translate }}</th>
           </tr>
         </thead> 
       </table>

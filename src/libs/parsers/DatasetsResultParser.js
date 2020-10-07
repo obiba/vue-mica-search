@@ -6,7 +6,7 @@ export default class DatasetsResultParser {
     this.normalizePath = normalizePath;
   }
 
-  parse(data, micaConfig, localize) {
+  parse(data, micaConfig, localize, displayOptions) {
     const datasetsResult = data.datasetResultDto;
     const tr = Vue.filter('translate') || (value => value);
     const taxonomyFilter = Vue.filter('taxonomy-title') || (value => value);
@@ -29,32 +29,47 @@ export default class DatasetsResultParser {
     }    
 
     result.datasets.forEach(dataset => {
+
+      let path = this.normalizePath(`/dataset/${dataset.id}`);
+      let row = [`<a href="${path}">${localize(dataset.acronym)}</a>`];
       const type = dataset.variableType === 'Dataschema' 
         ? taxonomyFilter.apply(null, ['Mica_dataset.className.HarmonizationDataset'])
         : taxonomyFilter.apply(null, ['Mica_dataset.className.StudyDataset']) ;
-
       const stats = dataset['obiba.mica.CountStatsDto.datasetCountStats'] || {};
       let anchor = (type, value) => `<a href="" class="query-anchor" data-target="dataset" data-target-id="${dataset.id}" data-type="${type}">${value}</a>`;
-      
-      let path = this.normalizePath(`/dataset/${dataset.id}`);
-      let row = [
-        `<a href="${path}">${localize(dataset.acronym)}</a>`,
-        localize(dataset.name)
-      ];
-
-      if (micaConfig.isCollectedDatasetEnabled && micaConfig.isHarmonizedDatasetEnabled) {
-        row.push(tr(type.toLowerCase()));
-      }
-
-      if (micaConfig.isNetworkEnabled && !micaConfig.isSingleNetworkEnabled) {
-        row.push(stats.networks ? anchor('networks', stats.networks) : '-');
-      }
-
-      if (!micaConfig.isSingleStudyEnabled) {
-        row.push(stats.studies ? anchor('studies', stats.studies) : '-');
-      }
-
-      row.push(stats.variables ? anchor('variables', stats.variables) : '-');
+  
+      displayOptions.datasetColumns.forEach(column => {
+        switch (column) {
+          case 'name': {
+            row.push(localize(dataset.name));
+            break;
+          }
+          case 'type': {
+            if (micaConfig.isCollectedDatasetEnabled && micaConfig.isHarmonizedDatasetEnabled) {
+              row.push(tr(type.toLowerCase()));
+            }
+            break;
+          }
+          case 'networks': {
+            if (micaConfig.isNetworkEnabled && !micaConfig.isSingleNetworkEnabled) {
+              row.push(stats.networks ? anchor('networks', stats.networks) : '-');
+            }
+            break;
+          }
+          case 'studies': {
+            if (!micaConfig.isSingleStudyEnabled) {
+              row.push(stats.studies ? anchor('studies', stats.studies) : '-');
+            }
+            break;
+          }
+          case 'variables': {
+            row.push(stats.variables ? anchor('variables', stats.variables) : '-');
+            break;
+          }
+          default:
+            console.debug('Wrong dataset table column: ' + column);
+        }
+      });
 
       parsed.data.push(row);
     });

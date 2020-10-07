@@ -60,7 +60,7 @@ export default class VariablesResultParser {
             break;
           }
           case 'type': {
-              if (micaConfig.isCollectedDatasetEnabled && micaConfig.isHarmonizedDatasetEnabled) {
+            if (micaConfig.isCollectedDatasetEnabled && micaConfig.isHarmonizedDatasetEnabled) {
               row.push(tr(summary.variableType.toLowerCase()));
             }
             break;
@@ -78,7 +78,7 @@ export default class VariablesResultParser {
             break;
           }
           default:
-            console.debug('Wrong variable table column: ' + column);                
+            console.debug('Wrong variable table column: ' + column);
         }
       });
 

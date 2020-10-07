@@ -6,11 +6,7 @@
         <thead>
           <tr>
             <th>{{ "acronym" | translate }}</th>
-            <th>{{ "name" | translate }}</th>
-            <th v-if="withCollectedDatasets && withHarmonizedDatasets">{{ "type" | translate }}</th>
-            <th v-if="withNetworks">{{ "networks" | translate }}</th>
-            <th v-if="withStudies">{{ "studies" | translate }}</th>
-            <th>{{ "variables" | translate }}</th>
+            <th v-for="column in datasetColumnNames" :key="column">{{ column | translate }}</th>
           </tr>
         </thead>
       </table>

@@ -25,6 +25,7 @@ export default {
     withHarmonizedDatasets: function() {
       return this.getMicaConfig().isHarmonizedDatasetEnabled;
     },
+    // table headers
     variableColumnNames: function() {
       return this.getDisplayOptions().variableColumns
         .filter(col => {
@@ -36,6 +37,130 @@ export default {
           return true;
         })
         .map(col => col === 'label+description' ? 'label' : col);
+    },
+    // dataset headers
+    datasetColumnNames: function() {
+      return this.getDisplayOptions().datasetColumns
+        .filter(col => {
+          if (col === 'type') {
+            return this.withCollectedDatasets && this.withHarmonizedDatasets;
+          } else if (col === 'networks') {
+            return this.withNetworks;
+          } else if (col === 'studies') {
+            return this.withStudies;
+          }
+          return true;
+        });
+    },
+    // study headers, 1st row
+    studyColumnItems: function() {
+      return this.getDisplayOptions().studyColumns
+        .filter(col => {
+          if (col === 'type') {
+            return this.withCollectedDatasets && this.withHarmonizedDatasets;
+          } else if (col === 'networks') {
+            return this.withNetworks;
+          } else if (col === 'individual') {
+            return this.withCollectedDatasets;
+          } else if (col === 'harmonization') {
+            return this.withHarmonizedDatasets;
+          }
+          return true;
+        })
+        .map(col => {
+          return {
+            name: col,
+            rowspan: (['name', 'type', 'study-design', 'participants', 'networks'].includes(col) ? 2 : 1), 
+            colspan: (['name', 'type', 'study-design', 'participants', 'networks'].includes(col) ? 1 : (col === 'data-sources-available' ? 4 : 2))
+          }
+        });
+    },
+    // study headers, 2nd row
+    studyColumnItems2: function() {
+      const items2 = [];
+      this.getDisplayOptions().studyColumns
+        .filter(col => {
+          if (col === 'individual') {
+            return this.withCollectedDatasets;
+          } else if (col === 'harmonization') {
+            return this.withHarmonizedDatasets;
+          }
+          return col === 'data-sources-available';
+        })
+        .forEach((col, id) => {
+          if (['individual', 'harmonization'].includes(col)) {
+            items2.push({id: id, name: 'datasets', title: ''});
+            items2.push({id: id, name: 'variables', title: ''});  
+          } else if (col === 'data-sources-available') {
+            items2.push({
+              id: id,
+              title: 'Mica_study.populations-dataCollectionEvents-dataSources.questionnaires',
+              icon: 'fa fa-file-alt'
+              });
+            items2.push({
+              id: id,
+              title: 'Mica_study.populations-dataCollectionEvents-dataSources.physical_measures',
+              icon: 'fa fa-stethoscope'
+              });
+            items2.push({
+              id: id,
+              title: 'Mica_study.populations-dataCollectionEvents-dataSources.biological_samples',
+              icon: 'fa fa-flask'
+              });
+            items2.push({
+              id: id,
+              title: 'Mica_study.populations-dataCollectionEvents-dataSources.others',
+              icon: 'far fa-plus-square'
+              });
+          }
+        });
+      return items2;
+    },
+    // network headers, 1st row
+    networkColumnItems: function() {
+      return this.getDisplayOptions().networkColumns
+        .filter(col => {
+          if (col === 'type') {
+            return this.withCollectedDatasets && this.withHarmonizedDatasets;
+          } else if (col === 'studies') {
+            return this.withStudies;
+          } else if (col === 'datasets') {
+            return this.withCollectedDatasets || this.withHarmonizedDatasets;
+          } else if (col === 'variables') {
+            return this.withCollectedDatasets || this.withHarmonizedDatasets;
+          }
+          return true;
+        })
+        .map(col => {
+          return {
+            name: col,
+            rowspan: (['name', 'studies'].includes(col) ? 2 : 1), 
+            colspan: (['name', 'studies'].includes(col) ? 1 : 2)
+          }
+        });
+    },
+    // network headers, 2nd row
+    networkColumnItems2: function() {
+      const items2 = [];
+      this.getDisplayOptions().networkColumns
+        .filter(col => {
+          if (col === 'datasets') {
+            return this.withCollectedDatasets || this.withHarmonizedDatasets;
+          } else if (col === 'variables') {
+            return this.withCollectedDatasets || this.withHarmonizedDatasets;
+          }
+          return false;
+        })
+        .forEach(col => {
+          if (col === 'datasets') {
+            items2.push({ name: 'collected'});
+            items2.push({ name: 'harmonized'});  
+          } else if (col === 'variables') {
+            items2.push({ name: 'collected'});
+            items2.push({ name: 'harmonized'});
+          }
+        });
+      return items2;
     }
   },
   methods: {

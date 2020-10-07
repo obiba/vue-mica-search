@@ -17,7 +17,7 @@ export default class StudiesResultParser {
      return '-';
   }
 
-  parse(data, micaConfig, localize) {
+  parse(data, micaConfig, localize, displayOptions) {
     const studiesResult = data.studyResultDto;
     
     if (!studiesResult) {
@@ -41,6 +41,7 @@ export default class StudiesResultParser {
     const checkIcon = `<i class="fa fa-check">`;
 
     result.summaries.forEach(summary => {
+
       const type = summary.studyResourcePath === 'harmonization-study'
         ? taxonomyFilter.apply(null, ['Mica_study.className.HarmonizationStudy'])
         : taxonomyFilter.apply(null, ['Mica_study.className.Study']) ;
@@ -54,39 +55,72 @@ export default class StudiesResultParser {
         `<a href="" class="query-anchor" data-study-type="${studyType}" data-target="study" data-target-id="${summary.id}" data-type="${type}">${value}</a>`;
       
       let path = this.normalizePath(`/study/${summary.id}`);
-      let row = [
-        `<a href="${path}">${localize(summary.acronym)}</a>`,
-        localize(summary.name),
-        type,
-        design,
-        hasDatasource(dataSources, "questionnaires") ? checkIcon : "-",
-        hasDatasource(dataSources, "physical_measures") ? checkIcon : "-",
-        hasDatasource(dataSources, "biological_samples") ? checkIcon : "-",
-        hasDatasource(dataSources, "others") ? checkIcon : "-",
-        this.__getNumberOfParticipants(content),
-      ];
+      let row = [`<a href="${path}">${localize(summary.acronym)}</a>`];
+      
+      displayOptions.studyColumns.forEach(column => {
+        switch (column) {
+          case 'name': {
+            row.push(localize(summary.name));
+            break;
+          }
+          case 'type': {
+            if (micaConfig.isCollectedDatasetEnabled && micaConfig.isHarmonizedDatasetEnabled) {
+              row.push(type);
+            }
+            break;
+          }
+          case 'study-design': {
+            row.push(design);
+            break;
+          }
+          case 'data-sources-available': {
+            row.push(hasDatasource(dataSources, "questionnaires") ? checkIcon : "-");
+            row.push(hasDatasource(dataSources, "physical_measures") ? checkIcon : "-");
+            row.push(hasDatasource(dataSources, "biological_samples") ? checkIcon : "-");
+            row.push(hasDatasource(dataSources, "others") ? checkIcon : "-");
+            break;
+          }
+          case 'participants': {
+            row.push(this.__getNumberOfParticipants(content));    
+            break;
+          }
+          case 'networks': {
+            if (micaConfig.isNetworkEnabled && !micaConfig.isSingleNetworkEnabled) {
+              row.push(stats.networks ? anchor("networks", stats.networks, "") : "-");
+            }
+            break;
+          }
+          case 'individual': {
+            if (micaConfig.isCollectedDatasetEnabled) {
+              row.push(stats.studyDatasets
+                ? anchor("datasets", stats.studyDatasets, "Study")
+                : "-");
+              row.push(stats.studyVariables
+                ? anchor("variables", stats.studyVariables, "Study")
+                : "-");
+            }
+            break;
+          }
+          case 'harmonization': {
+            if (micaConfig.isHarmonizedDatasetEnabled) {
+              row.push(stats.harmonizationDatasets
+                ? anchor("datasets", stats.harmonizationDatasets, "HarmonizationStudy")
+                : "-");
+              row.push(stats.dataschemaVariables
+                ? anchor("variables", stats.dataschemaVariables, "HarmonizationStudy")
+                : "-");
+            }
+            break;
+          }
+          default:
+            console.debug('Wrong study table column: ' + column);
+        }
+      });
 
-      if (micaConfig.isNetworkEnabled && !micaConfig.isSingleNetworkEnabled) {
-        row.push(stats.networks ? anchor("networks", stats.networks, "") : "-");
-      }
+      
+      
 
-      if (micaConfig.isCollectedDatasetEnabled) {
-        row.push(stats.studyDatasets
-          ? anchor("datasets", stats.studyDatasets, "Study")
-          : "-");
-        row.push(stats.studyVariables
-          ? anchor("variables", stats.studyVariables, "Study")
-          : "-");
-      }
-
-      if (micaConfig.isHarmonizedDatasetEnabled) {
-        row.push(stats.harmonizationDatasets
-          ? anchor("datasets", stats.harmonizationDatasets, "HarmonizationStudy")
-          : "-");
-        row.push(stats.dataschemaVariables
-          ? anchor("variables", stats.dataschemaVariables, "HarmonizationStudy")
-          : "-");
-      }
+      
 
       parsed.data.push(row);
     });
