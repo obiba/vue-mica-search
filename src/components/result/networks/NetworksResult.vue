@@ -6,14 +6,14 @@
         <thead v-if="withCollectedDatasets && withHarmonizedDatasets">
           <tr>
             <th rowspan="2">{{ "acronym" | translate }}</th>
-            <th v-for="item in networkColumnItems" :key="item.name" 
+            <th v-for="(item, index) in networkColumnItems" :key="index" 
               :rowspan="item.rowspan" 
               :colspan="item.colspan">
               {{ item.name | translate }}
             </th>
           </tr>
           <tr v-if="withCollectedDatasets || withHarmonizedDatasets">
-            <th v-for="item in networkColumnItems2" :key="item.name">
+            <th v-for="(item, index) in networkColumnItems2" :key="index">
               {{ item.name | translate }}
             </th>
           </tr>
@@ -21,7 +21,7 @@
         <thead v-else>
           <tr>
             <th>{{ "acronym" | translate }}</th>
-            <th v-for="column in networkColumnNames" :key="column">{{ column | translate }}</th>
+            <th v-for="(column, index) in networkColumnNames" :key="index">{{ column | translate }}</th>
           </tr>
         </thead> 
       </table>
@@ -54,8 +54,55 @@ export default {
       target: "network"
     }
   },
-  methods: {
-    
+  computed: {
+    // network headers, 1st row
+    networkColumnItems: function() {
+      return this.getDisplayOptions().networkColumns
+        .filter(col => {
+          if (col === 'type') {
+            return this.withCollectedDatasets && this.withHarmonizedDatasets;
+          } else if (col === 'studies') {
+            return this.withStudies;
+          } else if (col === 'datasets') {
+            return this.withCollectedDatasets || this.withHarmonizedDatasets;
+          } else if (col === 'variables') {
+            return this.withCollectedDatasets || this.withHarmonizedDatasets;
+          }
+          return true;
+        })
+        .map(col => {
+          return {
+            name: col,
+            rowspan: (['name', 'studies'].includes(col) ? 2 : 1), 
+            colspan: (['name', 'studies'].includes(col) ? 1 : 2)
+          }
+        });
+    },
+    // network headers, 2nd row
+    networkColumnItems2: function() {
+      const items2 = [];
+      this.getDisplayOptions().networkColumns
+        .filter(col => {
+          if (col === 'datasets') {
+            return this.withCollectedDatasets || this.withHarmonizedDatasets;
+          } else if (col === 'variables') {
+            return this.withCollectedDatasets || this.withHarmonizedDatasets;
+          }
+          return false;
+        })
+        .forEach(col => {
+          if (col === 'datasets') {
+            items2.push({ name: 'collected'});
+            items2.push({ name: 'harmonized'});  
+          } else if (col === 'variables') {
+            items2.push({ name: 'collected'});
+            items2.push({ name: 'harmonized'});
+          }
+        });
+      return items2;
+    }
+  },
+  methods: {    
     onAnchorClicked(event) {
       console.debug('Network onAnchorClicked');
       event.preventDefault();

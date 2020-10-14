@@ -6,7 +6,7 @@
         <thead>
           <tr>
             <th>{{ "name" | translate }}</th>
-            <th v-for="column in variableColumnNames" :key="column">{{ column | translate }}</th>
+            <th v-for="(column, index) in variableColumnNames" :key="index">{{ column | translate }}</th>
           </tr>
         </thead>
       </table>
@@ -35,6 +35,21 @@ export default {
       parser: new VariablesResultParser(this.normalizePath),
       type: "variables",
       target: "variable" 
+    }
+  },
+  computed: {
+    // table headers
+    variableColumnNames: function() {
+      return this.getDisplayOptions().variableColumns
+        .filter(col => {
+          if (col === 'type') {
+            return this.withCollectedDatasets && this.withHarmonizedDatasets;
+          } else if (col === 'study') {
+            return this.withStudies;
+          }
+          return true;
+        })
+        .map(col => col === 'label+description' ? 'label' : col);
     }
   },
   mounted() {
