@@ -6,7 +6,7 @@
         <thead>
           <tr>
             <th>{{ "acronym" | translate }}</th>
-            <th v-for="column in datasetColumnNames" :key="column">{{ column | translate }}</th>
+            <th v-for="(column, index) in datasetColumnNames" :key="index">{{ column | translate }}</th>
           </tr>
         </thead>
       </table>
@@ -41,6 +41,22 @@ export default {
   },
   props: {
     micaConfig: String
+  },
+  computed: {
+    // dataset headers
+    datasetColumnNames: function() {
+      return this.getDisplayOptions().datasetColumns
+        .filter(col => {
+          if (col === 'type') {
+            return this.withCollectedDatasets && this.withHarmonizedDatasets;
+          } else if (col === 'networks') {
+            return this.withNetworks;
+          } else if (col === 'studies') {
+            return this.withStudies;
+          }
+          return true;
+        });
+    },
   },
   methods: {
      onAnchorClicked(event) {
