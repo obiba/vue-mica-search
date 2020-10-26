@@ -1,22 +1,27 @@
 <template>
 <div>
-  <template v-if="Array.isArray(taxonomy)">
-  <div v-for="sub in taxonomy" v-bind:key="sub.name">
-    <rql-panel v-bind:target="target" v-bind:taxonomy="sub" v-bind:query="query" v-on:update-query="updateQuery" v-on:remove-query="removeQuery"></rql-panel>
-  </div>
-  </template>
-
-  <template v-else>
-  <div v-if="taxonomy.description" class="text-muted mb-2">
-    {{ taxonomy.description | localize-string }}
-  </div>
-
+  <template v-if="!hasExternalFilter">
   <div class="input-group mb-4">
     <input type="text" class="form-control" v-model="panelFilter">
     <div class="input-group-append">
       <span class="input-group-text">{{ "search.filter" | translate }}</span>
     </div>
   </div>
+  </template>
+
+  <template v-if="Array.isArray(taxonomy)">
+  <div v-for="sub in taxonomy" v-bind:key="sub.name">
+    <rql-panel v-bind:target="target" v-bind:taxonomy="sub" v-bind:query="query" v-on:update-query="updateQuery" v-on:remove-query="removeQuery" v-bind:external-filter="panelFilter" v-bind:has-external-filter="true"></rql-panel>
+  </div>
+  </template>
+
+  <template v-else>
+  <blockquote class="blockquote mb-2" v-if="taxonomy.description">
+    <div class="text-muted">
+      {{ taxonomy.description | localize-string }}
+    </div>
+  </blockquote>  
+
   <div class="card mb-2" v-for="vocabulary in vocabularies" v-bind:key="vocabulary.name">
     <div class="card-header">
       <span>{{ vocabulary.title | localize-string }}</span>
@@ -29,7 +34,7 @@
       <div v-if="vocabulary.description" class="text-muted mb-4">
         {{ vocabulary.description | localize-string }}
       </div>
-      <rql-panel-vocabulary v-bind:vocabulary="vocabulary" v-bind:query="getAssociatedQuery(vocabulary)" v-bind:termsFilter="panelFilter" v-on:update-query="updateQuery"></rql-panel-vocabulary>
+      <rql-panel-vocabulary v-bind:vocabulary="vocabulary" v-bind:query="getAssociatedQuery(vocabulary)" v-bind:termsFilter="theFilter" v-on:update-query="updateQuery"></rql-panel-vocabulary>
     </div>    
   </div>
   </template>
@@ -50,6 +55,8 @@ export default {
       type: String,
       required: true
     },
+    hasExternalFilter: Boolean,
+    externalFilter: String,
     query: Object,
     taxonomy: [Object, Array]    
   },
@@ -76,13 +83,16 @@ export default {
         return found.length === 0 || "true" !== found[0];
       })
       .filter(vocabulary => {
-        let passes = (!this.panelFilter || this.panelFilter.trim().length === 0);
-        let vocabularyPasses = passes || localizeStringFunction(vocabulary.title).toLowerCase().indexOf(this.panelFilter.toLowerCase()) > -1;
+        let passes = (!this.theFilter || this.theFilter.trim().length === 0);
+        let vocabularyPasses = passes || localizeStringFunction(vocabulary.title).toLowerCase().indexOf(this.theFilter.toLowerCase()) > -1;
         if ("TERMS" !== Criterion.typeOfVocabulary(vocabulary) && vocabularyPasses) return true;
 
-        let foundTerms = (vocabulary.terms || []).filter(term => passes || localizeStringFunction(term.title).toLowerCase().indexOf(this.panelFilter.toLowerCase()) > -1);
+        let foundTerms = (vocabulary.terms || []).filter(term => passes || localizeStringFunction(term.title).toLowerCase().indexOf(this.theFilter.toLowerCase()) > -1);
         return vocabularyPasses || foundTerms.length > 0;
       });
+    },
+    theFilter() {
+      return this.hasExternalFilter ? this.externalFilter : this.panelFilter;
     }
   },
   methods: {
