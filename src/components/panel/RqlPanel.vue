@@ -16,11 +16,9 @@
   </template>
 
   <template v-else>
-  <blockquote class="blockquote mb-2" v-if="taxonomy.description">
-    <div class="text-muted">
-      {{ taxonomy.description | localize-string }}
-    </div>
-  </blockquote>  
+  <div class="p-3 mb-2 bg-info rounded">
+    {{ taxonomy.description | localize-string }}
+  </div>
 
   <div class="card mb-2" v-for="vocabulary in vocabularies" v-bind:key="vocabulary.name">
     <div class="card-header">
