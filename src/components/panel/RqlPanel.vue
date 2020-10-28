@@ -16,9 +16,11 @@
   </template>
 
   <template v-else>
-  <div class="p-3 mb-2 bg-info rounded">
-    {{ taxonomy.description | localize-string }}
-  </div>
+  <h4 class="mt-3">
+    {{ taxonomy.title | localize-string }}
+  </h4>
+
+  <p class="text-muted">{{ taxonomy.description | localize-string }}</p>
 
   <div class="card mb-2" v-for="vocabulary in vocabularies" v-bind:key="vocabulary.name">
     <div class="card-header">
