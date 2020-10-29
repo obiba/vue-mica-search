@@ -1,8 +1,8 @@
-# vue-obiba-search-result
+# vue-mica-search
 
 ## Installing tools
 ```
-npm install -g @vue/cli 
+npm install -g @vue/cli
 npm install -g yarn # if you don't have it
 ```
 
@@ -12,7 +12,7 @@ yarn install
 vue create <component-name-folder>
 ```
 
-> See this projects `package.json` and `vue.config.js` for build rules and config. I chose a component library name all in CamelCase because in Mica components are only available thru this object: `Vue.use(Vue.use(VueObibaSearchResult.VariablesResult, ...)`. CamelCase looks more like a namespace, hence this naming convention.
+> See this projects `package.json` and `vue.config.js` for build rules and config. I chose a component library name all in CamelCase because in Mica components are only available thru this object: `Vue.use(Vue.use(VueMicaSearch.VariablesResult, ...)`. CamelCase looks more like a namespace, hence this naming convention.
 
 
 ### Compiles and hot-reloads for development

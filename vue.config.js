@@ -12,7 +12,7 @@ module.exports = {
       mode: 'development',
       output: {
         globalObject: 'this',
-        library: 'VueObibaSearchResult',
+        library: 'VueMicaSearch',
         libraryExport: 'default',
         libraryTarget: 'umd',
       }
