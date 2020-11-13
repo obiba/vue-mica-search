@@ -1,7 +1,10 @@
 <template>
 <div class="btn-group" role="group">
   <div class="dropdown">
-    <button type="button" class="btn btn-info btn-sm dropdown-toggle" data-toggle="dropdown">{{ getCriterionAsString() }}</button>
+    <button type="button" class="btn btn-info btn-sm dropdown-toggle" data-toggle="dropdown">
+      <i class="fa fa-info-circle" v-bind:title="vocabulary.title | localize-string"></i>
+      <span class="pl-1">{{ getCriterionAsString() }}</span>
+    </button>
     
     <div ref="menu" class="dropdown-menu" style="width: 25em;">
       <div class="container" v-bind:title="vocabulary.description | localize-string">{{ vocabulary.title | localize-string }}</div>
