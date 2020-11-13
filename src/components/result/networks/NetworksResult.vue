@@ -21,7 +21,9 @@
         <thead v-else>
           <tr>
             <th>{{ "acronym" | translate }}</th>
-            <th v-for="(column, index) in networkColumnNames" :key="index">{{ column | translate }}</th>
+            <th v-for="(item, index) in networkColumnItems" :key="index">
+              {{ item.name | translate }}
+            </th>
           </tr>
         </thead> 
       </table>
