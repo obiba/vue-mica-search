@@ -5,6 +5,8 @@
       <table id="vosr-variables-result" class="table table-striped" width="100%">
         <thead>
           <tr>
+            <th><i class="far fa-square"></i></th>
+            <th></th>
             <th>{{ "name" | translate }}</th>
             <th v-for="(column, index) in variableColumnNames" :key="index">{{ column | translate }}</th>
           </tr>
@@ -35,6 +37,32 @@ export default {
       parser: new VariablesResultParser(this.normalizePath),
       type: "variables",
       target: "variable" 
+    }
+  },
+  methods: {
+    registerTable() { // override registerTable to add checkbox specific options
+      this.dataTable = this.registerDataTable(`vosr-${this.type}-result`, {
+        processing: true,
+        serverSide: true,
+        ajax: this.onAjaxCallback.bind(this),
+        fixedHeader: true,
+        isSelected: this.isSelected.bind(this),
+        onSelectionChanged: this.onSelectionChanged.bind(this),
+        columnDefs: [{ // the checkbox
+          orderable: false,
+          className: 'select-checkbox',
+          targets: 0
+        }, { // the ID
+            visible: false,
+            searchable: false,
+            targets: 1
+        }],
+        select: {
+          style: 'multi',
+          selector: 'td:first-child',
+          info: false
+        }
+      });
     }
   },
   computed: {

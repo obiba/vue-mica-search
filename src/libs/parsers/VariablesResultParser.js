@@ -32,7 +32,7 @@ export default class VariablesResultParser {
     result.summaries.forEach(summary => {
 
       let path = this.normalizePath(`/variable/${summary.id}`);
-      let row = [`<a href="${path}">${summary.name}</a>`];
+      let row = ['<i class="far fa-square"></i>', summary.id, `<a href="${path}">${summary.name}</a>`,];
 
       displayOptions.variableColumns.forEach(column => {
         switch (column) {
