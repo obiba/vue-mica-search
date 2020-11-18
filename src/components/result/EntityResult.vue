@@ -9,7 +9,8 @@ export default {
       type: null,
       target: null,
       showResult: false,
-      loading: true
+      loading: true,
+      selections: []
     };
   },
   computed: {
@@ -89,15 +90,47 @@ export default {
         ajax: this.onAjaxCallback.bind(this),
         fixedHeader: true
       });
+    },
+    clearSelections() {
+      this.selections = [];
+    },
+    isSelected(id) {
+      return this.selections && this.selections.includes(id)
+    },
+    onSelectionChanged(ids, selected) {
+      if (selected) {
+        if (Array.isArray(ids)) {
+          ids.forEach(id => {
+            if (!this.selections.includes(id)) {
+              this.selections.push(id);
+            }
+          });
+        }
+      } else {
+        if (Array.isArray(ids)) {
+          ids.forEach(id => {
+            const idx = this.selections.indexOf(id);
+            if (idx > -1) {
+              this.selections.splice(idx, 1);
+            }
+          });
+        } else {
+          this.selections = [];
+        }
+      }
+
+      this.getEventBus().$emit(`${this.type}-selections-updated`, {selections: this.selections});
     }
   },
   mounted() {
     console.debug(`${this.type} result table mounted...`);
     this.getEventBus().register(`${this.type}-results`,this.onResults.bind(this));
+    this.getEventBus().register("clear-results-selections", this.clearSelections.bind(this));
   },
   beforeDestroy() {
     this.dataTable = null;
     this.getEventBus().unregister(`${this.type}-results`, this.onResults);
+    this.getEventBus().unregister("clear-results-selections", this.clearSelections);
   }
 };
 </script>
