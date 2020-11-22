@@ -2,7 +2,7 @@
 <div>
   <div v-show="showResult">
     <div class="row">
-      <div class="col">
+      <div class="col table-responsive">
         <table v-if="table" id="vosr-coverage-result" class="table table-striped" width="100%">
           <thead>
             <tr>
