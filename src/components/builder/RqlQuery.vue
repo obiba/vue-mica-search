@@ -38,7 +38,7 @@
             <span class="input-group-text">{{ "search.filter" | translate }}</span>
           </div>
         </div>
-        <ul class="list-unstyled">
+        <ul class="list-unstyled" style="max-height: 24em; overflow-y: auto;">
           <li v-for="term in terms" v-bind:key="term.name">
             <div class="form-check">
               <input class="form-check-input" type="checkbox" v-bind:id="vocabulary.name + '-' + term.name" v-bind:value="term.name" name="terms[]" v-model="criterion.value" v-on:change="onInput()">
