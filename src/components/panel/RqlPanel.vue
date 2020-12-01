@@ -23,7 +23,7 @@
   <p class="text-muted">{{ taxonomy.description | localize-string }}</p>
 
   <div class="row d-flex align-items-stretch">
-    <div class="col-12 col-sm-12 col-md-6 d-flex align-items-stretch" v-for="vocabulary in vocabularies" v-bind:key="vocabulary.name">
+    <div class="col-12 d-flex align-items-stretch" v-for="vocabulary in vocabularies" v-bind:key="vocabulary.name">
       <div class="card mb-2 w-100">
         <div class="card-header bg-light">
           <span>{{ vocabulary.title | localize-string }}</span>
