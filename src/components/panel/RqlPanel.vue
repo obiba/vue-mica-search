@@ -2,7 +2,7 @@
 <div>
   <template v-if="!hasExternalFilter">
   <div class="input-group mb-4">
-    <input type="text" class="form-control" v-model="panelFilter">
+    <input type="text" class="form-control" :placeholder="'search.filter-help' | translate" v-model="panelFilter">
     <div class="input-group-append">
       <span class="input-group-text">{{ "search.filter" | translate }}</span>
     </div>
