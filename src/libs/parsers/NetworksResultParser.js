@@ -60,6 +60,7 @@ export default class NetworksResultParser {
             break;
           }
           default:
+            row.push('');
             console.debug('Wrong network table column: ' + column);
         }
       });

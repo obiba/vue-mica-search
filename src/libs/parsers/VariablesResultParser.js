@@ -72,12 +72,28 @@ export default class VariablesResultParser {
             }
             break;
           }
+          case 'population': {
+            path = this.normalizePath(`/study/${summary.studyId}`);
+            row.push(`<a href="${path}#populations">${localize(summary.populationName)}</a>`);
+            break;
+          }
+          case 'dce':
+          case 'data-collection-event': {
+            path = this.normalizePath(`/study/${summary.studyId}`);
+            if (summary.dceName) {
+              row.push(`<a href="${path}#populations  ">${localize(summary.dceName)}</a>`);
+            } else {
+              row.push('-');
+            }
+            break;
+          }
           case 'dataset': {
             path = this.normalizePath(`/dataset/${summary.datasetId}`);  
             row.push(`<a href="${path}">${localize(summary.datasetAcronym)}</a>`);
             break;
           }
           default:
+            row.push('');
             console.debug('Wrong variable table column: ' + column);
         }
       });

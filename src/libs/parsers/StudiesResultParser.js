@@ -113,6 +113,7 @@ export default class StudiesResultParser {
             break;
           }
           default:
+            row.push('');
             console.debug('Wrong study table column: ' + column);
         }
       });

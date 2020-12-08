@@ -67,6 +67,7 @@ export default class DatasetsResultParser {
             break;
           }
           default:
+            row.push('');
             console.debug('Wrong dataset table column: ' + column);
         }
       });
