@@ -25,7 +25,7 @@
                 <tr  class="row" v-for="(row, index) in chartDataset.tableData.rows" v-bind:key="index">
                   <td class="col-6">{{row.title}}</td>                  
                   <td class="col-6" v-if="row.count > 0"><a href="" v-on:click="onCountClick($event,row.vocabulary, row.key)" class="query-anchor">{{row.count}}</a></td>
-                  <td class="col-6" v-if="row.count === 0">{{row.count}}</td>
+                  <td class="col-6" v-if="row.count === 0"><span class="text-muted">{{row.count}}</span></td>
                 </tr>
             </tbody>
           </table>
