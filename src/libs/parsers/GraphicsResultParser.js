@@ -17,7 +17,7 @@ export default class GraphicsResultParser {
     return [labels, { data: data }];
   }
 
-  __parseForTable(vocabulary, chartData) {
+  __parseForTable(vocabulary, chartData, forSubAggData) {
     return chartData.filter(term => term.count>0).map(term => {
       let row = {
         vocabulary: vocabulary.replace(/model-/, ""),
@@ -25,6 +25,11 @@ export default class GraphicsResultParser {
         title: term.title,
         count: term.count        
       };
+
+      if (forSubAggData) {
+        const subAgg = term.aggs.filter((agg) => agg.aggregation === forSubAggData.agg)[0];
+        row.subAgg = (subAgg[forSubAggData.dataKey] || {data: {}}).data[forSubAggData.data] || 0;
+      }
 
       return row;
     });
@@ -40,7 +45,12 @@ export default class GraphicsResultParser {
     const aggData = chartData[chartOptions.dataKey];
     let [labels, dataset] = typeof chartOptions.parseForChart === 'function' ? chartOptions.parseForChart(aggData) : this.__parseForChart(aggData);
     const tableCols = [chartOptions.title, labelStudies];
-    const tableRows = typeof chartOptions.parseForTable === 'function' ? chartOptions.parseForTable(chartOptions.vocabulary, aggData) : this.__parseForTable(chartOptions.vocabulary, aggData);
+
+    if (chartOptions.subAgg) {
+      tableCols.push(chartOptions.subAgg.title);
+    }
+
+    const tableRows = typeof chartOptions.parseForTable === 'function' ? chartOptions.parseForTable(chartOptions.vocabulary, aggData, chartOptions.subAgg) : this.__parseForTable(chartOptions.vocabulary, aggData, chartOptions.subAgg);
 
     if (!dataset.label) {
       dataset.label = labelStudies;
