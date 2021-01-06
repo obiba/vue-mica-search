@@ -18,14 +18,15 @@
           <table id="vosr-datasets-result" class="table table-striped" width="100%">
             <thead>
               <tr class="row">
-                <th class="col-6" v-for="(col, index) in chartDataset.tableData.cols" v-bind:key="index">{{ col }}</th>
+                <th class="col" v-for="(col, index) in chartDataset.tableData.cols" v-bind:key="index">{{ col }}</th>
               </tr>          
             </thead>
             <tbody>
                 <tr  class="row" v-for="(row, index) in chartDataset.tableData.rows" v-bind:key="index">
-                  <td class="col-6">{{row.title}}</td>                  
-                  <td class="col-6" v-if="row.count > 0"><a href="" v-on:click="onCountClick($event,row.vocabulary, row.key)" class="query-anchor">{{row.count}}</a></td>
-                  <td class="col-6" v-if="row.count === 0"><span class="text-muted">{{row.count}}</span></td>
+                  <td class="col">{{row.title}}</td>                  
+                  <td class="col" v-if="row.count > 0"><a href="" v-on:click="onCountClick($event,row.vocabulary, row.key)" class="query-anchor">{{row.count}}</a></td>
+                  <td class="col" v-if="row.count === 0"><span class="text-muted">{{row.count}}</span></td>
+                  <td class="col" v-if="row.subAgg !== undefined">{{row.subAgg}}</td>
                 </tr>
             </tbody>
           </table>
