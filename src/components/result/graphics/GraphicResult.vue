@@ -22,13 +22,20 @@
               </tr>          
             </thead>
             <tbody>
-                <tr  class="row" v-for="(row, index) in chartDataset.tableData.rows" v-bind:key="index">
+                <tr class="row" v-for="(row, index) in chartDataset.tableData.rows" v-bind:key="index">
                   <td class="col">{{row.title}}</td>                  
-                  <td class="col text-right" v-if="row.count > 0"><a href="" v-on:click="onCountClick($event,row.vocabulary, row.key)" class="query-anchor">{{row.count}}</a></td>
-                  <td class="col text-right" v-if="row.count === 0"><span class="text-muted">{{row.count}}</span></td>
-                  <td class="col text-right" v-if="row.subAgg !== undefined">{{row.subAgg}}</td>
+                  <td class="col text-right" v-bind:title="(100 * row.count/totals.countTotal) + '%'" v-if="row.count > 0"><a href="" v-on:click="onCountClick($event,row.vocabulary, row.key)" class="query-anchor">{{row.count}}</a></td>
+                  <td class="col text-right" v-bind:title="(100 * row.count/totals.countTotal) + '%'" v-if="row.count === 0"><span class="text-muted">{{row.count}}</span></td>
+                  <td class="col text-right" v-bind:title="(100 * row.subAgg/totals.subAggTotal) + '%'" v-if="row.subAgg !== undefined">{{row.subAgg.toLocaleString()}}</td>
                 </tr>
             </tbody>
+            <tfoot>
+              <tr class="row">
+                  <th class="col">{{ 'graphics.total' | translate }}</th>
+                  <th class="col text-right">{{totals.countTotal.toLocaleString()}}</th>
+                  <th class="col text-right" v-if="totals.subAggTotal !== undefined">{{totals.subAggTotal.toLocaleString()}}</th>
+                </tr>
+            </tfoot>
           </table>
         </div>
       </div>
@@ -50,12 +57,25 @@ export default {
   },
   data: function() {
     const agg = this.chartDataset.options.agg;
+
+    const totals = {countTotal: 0, subAggTotal: 0};
+
+    this.chartDataset.tableData.rows.forEach(row => {
+      totals.countTotal += row.count;
+      if (row.subAgg !== undefined) {
+        totals.subAggTotal += row.subAgg;
+      } else {
+        totals.subAggTotal = undefined;
+      }
+    });
+
     return {
       cardId: this.chartDataset.options.id,
       containerId: `vosrs-charts-container-${this.position}`,
       chartContainerId: `vosrs-charts-${agg}-${this.position}`,
       tableContainerId: `vosrs-charts-${agg}-${this.position}-table`,
       canvasId: `vosrs-charts-${agg}-${this.position}-canvas`,
+      totals: totals
     }
   },
   methods: {
