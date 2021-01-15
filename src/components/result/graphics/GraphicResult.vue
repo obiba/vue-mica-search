@@ -24,9 +24,9 @@
             <tbody>
                 <tr class="row" v-for="(row, index) in chartDataset.tableData.rows" v-bind:key="index">
                   <td class="col">{{row.title}}</td>                  
-                  <td class="col text-right" v-bind:title="(100 * row.count/totals.countTotal) + '%'" v-if="row.count > 0"><a href="" v-on:click="onCountClick($event,row.vocabulary, row.key)" class="query-anchor">{{row.count}}</a></td>
-                  <td class="col text-right" v-bind:title="(100 * row.count/totals.countTotal) + '%'" v-if="row.count === 0"><span class="text-muted">{{row.count}}</span></td>
-                  <td class="col text-right" v-bind:title="(100 * row.subAgg/totals.subAggTotal) + '%'" v-if="row.subAgg !== undefined">{{row.subAgg.toLocaleString()}}</td>
+                  <td class="col text-right" v-bind:title="(100 * row.count/totals.countTotal).toFixed(2) + '%'" v-if="row.count > 0"><a href="" v-on:click="onCountClick($event,row.vocabulary, row.key)" class="query-anchor">{{row.count}}</a></td>
+                  <td class="col text-right" v-bind:title="(100 * row.count/totals.countTotal).toFixed(2) + '%'" v-if="row.count === 0"><span class="text-muted">{{row.count}}</span></td>
+                  <td class="col text-right" v-bind:title="(100 * row.subAgg/totals.subAggTotal).toFixed(2) + '%'" v-if="row.subAgg !== undefined">{{row.subAgg.toLocaleString()}}</td>
                 </tr>
             </tbody>
             <tfoot>
