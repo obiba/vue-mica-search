@@ -1,5 +1,5 @@
 <template>
-<div>
+<div v-bind:class="target">
   <span class="float-left mr-2 text-muted" v-show="items.length > 0">
     <h4><i class="align-middle io" v-bind:class="targetIcon"></i></h4>
   </span>
