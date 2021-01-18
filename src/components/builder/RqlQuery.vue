@@ -7,7 +7,7 @@
     </button>
     
     <div ref="menu" class="dropdown-menu" style="width: 25em;">
-      <div class="container" v-bind:title="vocabulary.description | localize-string">{{ vocabulary.title | localize-string }}</div>
+      <div class="container" v-bind:title="vocabulary.description | localize-string"><i class="fa fa-info-circle"></i> {{ vocabulary.title | localize-string }}</div>
       <div class="dropdown-divider"></div>
 
       <template v-if="criterion.type === 'TERMS'">
@@ -32,7 +32,7 @@
       </div>          
       <div class="dropdown-divider"></div>
       <div class="container">
-        <div class="input-group">
+        <div class="input-group mb-2">
           <input type="text" class="form-control" v-model="termsFilter">
           <div class="input-group-append">
             <span class="input-group-text">{{ "search.filter" | translate }}</span>
