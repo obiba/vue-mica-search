@@ -5,7 +5,7 @@
   </span>
   
   <template v-if="!advancedMode">
-  <ul class="list-inline">
+  <ul class="list-inline mb-0">
     <li class="list-inline-item mb-2" v-for="item in items" v-bind:key="item.name">
       <rql-query v-bind:vocabulary="item.vocabulary" v-bind:query="item.associatedQuery" v-on:update-query="updateQuery($event, item.taxonomyName)" v-on:remove-query="removeQuery($event, item.taxonomyName)"></rql-query>
     </li>
