@@ -112,6 +112,32 @@ export default class StudiesResultParser {
             }
             break;
           }
+          case 'datasets': {
+            if (micaConfig.isCollectedDatasetEnabled) {
+              row.push(stats.studyDatasets
+                ? anchor("datasets", stats.studyDatasets, "Study")
+                : "-");
+            }
+            if (micaConfig.isHarmonizedDatasetEnabled) {
+              row.push(stats.dataschemaDatasets
+                ? anchor("datasets", stats.dataschemaDatasets, "HarmonizationStudy")
+                : "-");
+            }
+            break;
+          }
+          case 'variables': {
+            if (micaConfig.isCollectedDatasetEnabled) {
+              row.push(stats.studyVariables
+                ? anchor("variables", stats.studyVariables, "Study")
+                : "-");
+            }
+            if (micaConfig.isHarmonizedDatasetEnabled) {
+              row.push(stats.dataschemaVariables
+                ? anchor("variables", stats.dataschemaVariables, "HarmonizationStudy")
+                : "-");
+            }
+            break;
+          }
           default:
             row.push('');
             console.debug('Wrong study table column: ' + column);

@@ -64,6 +64,8 @@ export default {
             return this.withCollectedDatasets;
           } else if (col === 'harmonization') {
             return this.withHarmonizedDatasets;
+          } else if (['datasets', 'variables'].includes(col)) {
+            return this.withCollectedDatasets || this.withHarmonizedDatasets;
           }
           return true;
         })
@@ -84,6 +86,8 @@ export default {
             return this.withCollectedDatasets;
           } else if (col === 'harmonization') {
             return this.withHarmonizedDatasets;
+          } else if (['datasets', 'variables'].includes(col)) {
+            return this.withCollectedDatasets || this.withHarmonizedDatasets;
           }
           return col === 'data-sources-available';
         })
@@ -91,6 +95,13 @@ export default {
           if (['individual', 'harmonization'].includes(col)) {
             items2.push({id: id, name: 'datasets', title: ''});
             items2.push({id: id, name: 'variables', title: ''});  
+          } else if (['datasets', 'variables'].includes(col)) {
+            if (this.withCollectedDatasets) {
+              items2.push({id: id, name: 'individual', title: ''});
+            }
+            if (this.withHarmonizedDatasets) {
+              items2.push({id: id, name: 'harmonization', title: ''});
+            }
           } else if (col === 'data-sources-available') {
             items2.push({
               id: id,
