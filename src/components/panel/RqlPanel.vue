@@ -26,7 +26,7 @@
     <div class="col-12 col-sm-12 col-md-6 d-flex align-items-stretch" v-for="vocabulary in vocabularies" v-bind:key="vocabulary.name">
       <div class="card mb-2 w-100">
         <div class="card-header bg-light">
-          <span class="panel-vocabulary-title" {{ vocabulary.description | localize-string }}>{{ vocabulary.title | localize-string }}</span>
+          <span class="panel-vocabulary-title" v-bind:title="vocabulary.description | localize-string">{{ vocabulary.title | localize-string }}</span>
           <span class="float-right">
             <button type="button" class="btn btn-link btn-sm pt-0 pb-0" v-if="canDoSelectAll(vocabulary)" v-on:click="selectAll(vocabulary)"><span aria-hidden="true">{{ "select-all" | translate }}</span></button>
             <button type="button" class="btn btn-link btn-sm pt-0 pb-0" v-if="hasAssociatedQuery(vocabulary)" v-on:click="clear(vocabulary)"><span aria-hidden="true">{{ "clear-selection" | translate }}</span></button>
