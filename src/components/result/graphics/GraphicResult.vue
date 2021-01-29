@@ -18,22 +18,22 @@
           <table id="vosr-datasets-result" class="table table-striped" width="100%">
             <thead>
               <tr class="row">
-                <th class="col" v-bind:class="{ 'text-right': index > 0 }" v-for="(col, index) in chartDataset.tableData.cols" v-bind:key="index">{{ col }}</th>
+                <th class="col" v-for="(col, index) in chartDataset.tableData.cols" v-bind:key="index">{{ col }}</th>
               </tr>          
             </thead>
             <tbody>
                 <tr class="row" v-for="(row, index) in chartDataset.tableData.rows" v-bind:key="index">
                   <td class="col">{{row.title}}</td>                  
-                  <td class="col text-right" v-bind:title="(100 * row.count/totals.countTotal).toFixed(2) + '%'" v-if="row.count > 0"><a href="" v-on:click="onCountClick($event,row.vocabulary, row.key)" class="query-anchor">{{row.count}}</a></td>
-                  <td class="col text-right" v-bind:title="(100 * row.count/totals.countTotal).toFixed(2) + '%'" v-if="row.count === 0"><span class="text-muted">{{row.count}}</span></td>
-                  <td class="col text-right" v-bind:title="(100 * row.subAgg/totals.subAggTotal).toFixed(2) + '%'" v-if="row.subAgg !== undefined">{{row.subAgg.toLocaleString()}}</td>
+                  <td class="col" v-bind:title="(100 * row.count/totals.countTotal).toFixed(2) + '%'" v-if="row.count > 0"><a href="" v-on:click="onCountClick($event,row.vocabulary, row.key)" class="query-anchor">{{row.count}}</a></td>
+                  <td class="col" v-bind:title="(100 * row.count/totals.countTotal).toFixed(2) + '%'" v-if="row.count === 0"><span class="text-muted">{{row.count}}</span></td>
+                  <td class="col" v-bind:title="(100 * row.subAgg/totals.subAggTotal).toFixed(2) + '%'" v-if="row.subAgg !== undefined">{{row.subAgg.toLocaleString()}}</td>
                 </tr>
             </tbody>
             <tfoot>
               <tr class="row">
                   <th class="col">{{ 'graphics.total' | translate }}</th>
-                  <th class="col text-right">{{totals.countTotal.toLocaleString()}}</th>
-                  <th class="col text-right" v-if="totals.subAggTotal !== undefined">{{totals.subAggTotal.toLocaleString()}}</th>
+                  <th class="col">{{totals.countTotal.toLocaleString()}}</th>
+                  <th class="col" v-if="totals.subAggTotal !== undefined">{{totals.subAggTotal.toLocaleString()}}</th>
                 </tr>
             </tfoot>
           </table>
