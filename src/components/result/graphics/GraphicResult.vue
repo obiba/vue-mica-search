@@ -24,12 +24,12 @@
             <tbody>
                 <tr class="row" v-for="(row, index) in chartDataset.tableData.rows" v-bind:key="index">
                   <td class="col">{{row.title}}</td>                  
-                  <td class="col" v-bind:title="(100 * row.count/totals.countTotal).toFixed(2) + '%'" v-if="row.count > 0"><a href="" v-on:click="onCountClick($event,row.vocabulary, row.key)" class="query-anchor">{{row.count}}</a></td>
-                  <td class="col" v-bind:title="(100 * row.count/totals.countTotal).toFixed(2) + '%'" v-if="row.count === 0"><span class="text-muted">{{row.count}}</span></td>
-                  <td class="col" v-bind:title="(100 * row.subAgg/totals.subAggTotal).toFixed(2) + '%'" v-if="row.subAgg !== undefined">{{row.subAgg.toLocaleString()}}</td>
+                  <td class="col" v-bind:title="totals ? (100 * row.count/totals.countTotal).toFixed(2) + '%' : ''" v-if="row.count > 0"><a href="" v-on:click="onCountClick($event,row.vocabulary, row.key)" class="query-anchor">{{row.count}}</a></td>
+                  <td class="col" v-bind:title="totals ? (100 * row.count/totals.countTotal).toFixed(2) + '%' : ''" v-if="row.count === 0"><span class="text-muted">{{row.count}}</span></td>
+                  <td class="col" v-bind:title="totals ? (100 * row.subAgg/totals.subAggTotal).toFixed(2) + '%' : ''" v-if="row.subAgg !== undefined">{{row.subAgg.toLocaleString()}}</td>
                 </tr>
             </tbody>
-            <tfoot>
+            <tfoot v-if="totals">
               <tr class="row">
                   <th class="col">{{ 'graphics.total' | translate }}</th>
                   <th class="col">{{totals.countTotal.toLocaleString()}}</th>
@@ -58,16 +58,18 @@ export default {
   data: function() {
     const agg = this.chartDataset.options.agg;
 
-    const totals = {countTotal: 0, subAggTotal: 0};
+    let totals = this.chartDataset.options.withTotals ? {countTotal: 0, subAggTotal: 0} : null;
 
-    this.chartDataset.tableData.rows.forEach(row => {
-      totals.countTotal += row.count;
-      if (row.subAgg !== undefined) {
-        totals.subAggTotal += row.subAgg;
-      } else {
-        totals.subAggTotal = undefined;
-      }
-    });
+    if (this.chartDataset.options.withTotals) {
+      this.chartDataset.tableData.rows.forEach(row => {
+        totals.countTotal += row.count;
+        if (row.subAgg !== undefined) {
+          totals.subAggTotal += row.subAgg;
+        } else {
+          totals.subAggTotal = undefined;
+        }
+      });
+    } 
 
     return {
       cardId: this.chartDataset.options.id,
