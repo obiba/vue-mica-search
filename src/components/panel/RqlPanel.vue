@@ -16,11 +16,11 @@
   </template>
 
   <template v-else>
-  <h4 class="mt-3">
+  <h4 class="mt-3" v-if="vocabularies.length > 0">
     {{ taxonomy.title | localize-string }}
   </h4>
 
-  <p class="text-muted">{{ taxonomy.description | localize-string }}</p>
+  <p class="text-muted" v-if="vocabularies.length > 0">{{ taxonomy.description | localize-string }}</p>
 
   <div class="row d-flex align-items-stretch">
     <div class="col-12 col-sm-12 col-md-6 d-flex align-items-stretch" v-for="vocabulary in vocabularies" v-bind:key="vocabulary.name">
