@@ -1,12 +1,12 @@
 <template>
- <div v-bind:id="cardId" class="card card-primary card-outline">
-  <div class="card-header">
-    <h3 class="card-title">{{chartDataset.options.title | translate}}</h3>
-    <div class="card-tools float-right">
-      <button type="button" class="btn btn-tool" data-card-widget="collapse" data-toggle="tooltip" v-bind:title="'collapse' | translate">
-        <i class="fas fa-minus"></i>
-      </button>
-      </div>
+  <div v-bind:id="cardId" class="card card-primary card-outline">
+    <div v-if="!hideHeader" class="card-header">
+      <h3 class="card-title">{{chartDataset.options.title | translate}}</h3>
+      <div class="card-tools float-right">
+        <button type="button" class="btn btn-tool" data-card-widget="collapse" data-toggle="tooltip" v-bind:title="'collapse' | translate">
+          <i class="fas fa-minus"></i>
+        </button>
+        </div>
     </div>
     <div class="card-body">
       <p class="text-muted">{{chartDataset.options.text | translate}}</p>
@@ -40,7 +40,7 @@
         </div>
       </div>
     </div>
- </div>
+  </div>
 </template>
 
 <script>
@@ -53,7 +53,8 @@ export default {
   props: {
     position: Number,
     totalHits: Number,
-    chartDataset: Object
+    chartDataset: Object,
+    hideHeader: Boolean
   },
   data: function() {
     const agg = this.chartDataset.options.agg;
