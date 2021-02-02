@@ -23,16 +23,27 @@
             </thead>
             <tbody>
                 <tr class="row" v-for="(row, index) in chartDataset.tableData.rows" v-bind:key="index">
-                  <td class="col">{{row.title}}</td>                  
-                  <td class="col" v-bind:title="totals ? (100 * row.count/totals.countTotal).toFixed(2) + '%' : ''" v-if="row.count > 0"><a href="" v-on:click="onCountClick($event,row.vocabulary, row.key)" class="query-anchor">{{row.count}}</a></td>
-                  <td class="col" v-bind:title="totals ? (100 * row.count/totals.countTotal).toFixed(2) + '%' : ''" v-if="row.count === 0"><span class="text-muted">{{row.count}}</span></td>
-                  <td class="col" v-bind:title="totals ? (100 * row.subAgg/totals.subAggTotal).toFixed(2) + '%' : ''" v-if="row.subAgg !== undefined">{{row.subAgg.toLocaleString()}}</td>
+                  <td class="col">{{row.title}}</td>
+
+                  <td class="col" v-bind:title="totals ? (100 * row.count/totals.countTotal).toFixed(2) + '%' : ''" v-if="row.count > 0">
+                    <a href="" v-on:click="onCountClick($event,row.vocabulary, row.key)" class="query-anchor">{{row.count}}</a> 
+                    <span class="ml-1" v-if="chartDataset.options.withTotals && chartDataset.options.withPercentages">({{totals ? (100 * row.count/totals.countTotal).toFixed(2) + '%' : ''}})</span>
+                  </td>
+
+                  <td class="col" v-bind:title="totals ? (0).toFixed(2) + '%' : ''" v-if="row.count === 0">
+                    <span class="text-muted">{{row.count}}</span> 
+                    <span v-if="chartDataset.options.withTotals && chartDataset.options.withPercentages" class="ml-1 text-muted">({{totals ? (0).toFixed(2) + '%' : ''}})</span>
+                  </td>
+
+                  <td class="col" v-bind:title="totals ? (100 * row.subAgg/totals.subAggTotal).toFixed(2) + '%' : ''" v-if="row.subAgg !== undefined">
+                    <span v-bind:class="{ 'text-muted': row.subAgg !== undefined && row.subAgg === 0 }">{{row.subAgg.toLocaleString()}}</span>
+                  </td>
                 </tr>
             </tbody>
             <tfoot v-if="totals">
               <tr class="row">
                   <th class="col">{{ 'graphics.total' | translate }}</th>
-                  <th class="col">{{totals.countTotal.toLocaleString()}}</th>
+                  <th class="col">{{totals.countTotal.toLocaleString()}} <span v-if="chartDataset.options.withTotals && chartDataset.options.withPercentages">({{(100).toFixed(2) + '%'}})</span></th>
                   <th class="col" v-if="totals.subAggTotal !== undefined">{{totals.subAggTotal.toLocaleString()}}</th>
                 </tr>
             </tfoot>
