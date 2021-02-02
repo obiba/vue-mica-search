@@ -1,7 +1,7 @@
 <template>
   <div>  
     <div v-for="(chartDataset, index) in chartDatasets" v-bind:key="index">
-      <graphic-result v-bind:chart-dataset="chartDataset" v-bind:total-hits="totalHits" v-bind:position="index"></graphic-result>
+      <graphic-result v-bind:chart-dataset="chartDataset" v-bind:total-hits="totalHits" v-bind:position="index" v-bind:hideHeader="hideHeader"></graphic-result>
     </div>
     <div id="vosr-charts-container">    
     </div>
@@ -15,7 +15,8 @@ import GraphicResult from "./GraphicResult.vue";
 export default {
   name: "GraphicsResult",  
   props: {
-    chartOptions: Array
+    chartOptions: Array,
+    hideHeader: Boolean
   },
   components: {
     GraphicResult
