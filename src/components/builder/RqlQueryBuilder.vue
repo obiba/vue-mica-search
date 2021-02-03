@@ -1,25 +1,14 @@
 <template>
-<div v-bind:class="target">
-  <span class="float-left mr-2 text-muted" v-show="items.length > 0">
-    <h4><i class="align-middle io" v-bind:class="targetIcon"></i></h4>
+<div v-bind:class="target" class="d-flex">
+  <span class="my-auto text-muted" v-show="items.length > 0">
+    <h4 class="mb-0"><i class="align-middle io" v-bind:class="targetIcon"></i></h4>
   </span>
   
-  <template v-if="!advancedMode">
-  <ul class="list-inline mb-0">
-    <li class="list-inline-item mb-2" v-for="item in items" v-bind:key="item.name">
-      <rql-query v-bind:vocabulary="item.vocabulary" v-bind:query="item.associatedQuery" v-on:update-query="updateQuery($event, item.taxonomyName)" v-on:remove-query="removeQuery($event, item.taxonomyName)"></rql-query>
-    </li>
-  </ul>
-  </template>
-
-  <template v-else>
-  <rql-node v-for="(arg, index) in query.args" v-bind:key="index" v-bind:name="arg.name" v-bind:args="arg.args" v-bind:taxonomy="taxonomy" v-on:update-node="updateNode($event)" v-on:update-query="updateNodeQuery($event)" v-on:remove-query="removeNodeQuery($event)"></rql-node>
-  </template>
+  <rql-node v-for="(arg, index) in query.args" v-bind:key="index" v-bind:name="arg.name" v-bind:args="arg.args" v-bind:taxonomy="taxonomy" v-bind:advanced-mode="advancedMode" v-on:update-node="updateNode($event)" v-on:update-query="updateNodeQuery($event)" v-on:remove-query="removeNodeQuery($event)"></rql-node>
 </div>    
 </template>
 
 <script>
-import RqlQuery from "./RqlQuery.vue";
 import RqlNode from "./RqlNode.vue";
 import Criterion from "../../libs/Criterion";
 
@@ -65,7 +54,6 @@ export default {
     }
   },
   components: {
-    RqlQuery,
     RqlNode
   },
   methods: {

@@ -1,38 +1,34 @@
 <template>
-<span>
-  <ul class="list-inline">
-    <li class="list-inline-item mb-2">
-      <template v-if="isNode(firstArg)">
-      <rql-node v-bind:name="firstArg.name" v-bind:args="firstArg.args" v-bind:taxonomy="taxonomy" v-on:update-node="onUpdateNode($event)" v-on:update-query="updateQuery($event, firstArg.taxonomyName)" v-on:remove-query="removeQuery($event, firstArg.taxonomyName)"></rql-node>
-      </template>
+<div class="d-flex">  
+  <template v-if="isNode(firstArg)">
+  <rql-node v-bind:name="firstArg.name" v-bind:args="firstArg.args" v-bind:taxonomy="taxonomy" v-on:update-node="onUpdateNode($event)" v-bind:advanced-mode="advancedMode" v-on:update-query="updateQuery($event, firstArg.taxonomyName)" v-on:remove-query="removeQuery($event, firstArg.taxonomyName)"></rql-node>
+  </template>
 
-      <template v-else>
-      <rql-query v-bind:vocabulary="firstArg.vocabulary" v-bind:query="firstArg.associatedQuery" v-on:update-query="updateQuery($event, firstArg.taxonomyName)" v-on:remove-query="removeQuery($event, firstArg.taxonomyName)"></rql-query>
-      </template>
-    </li>
+  <template v-else>
+  <rql-query v-bind:vocabulary="firstArg.vocabulary" v-bind:query="firstArg.associatedQuery" v-on:update-query="updateQuery($event, firstArg.taxonomyName)" v-on:remove-query="removeQuery($event, firstArg.taxonomyName)"></rql-query>
+  </template>
 
-    <li v-if="otherArgs.length > 0" class="list-inline-item mb-2">
-      <div class="dropdown">
-        <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown">{{ "search." + name | translate }}</button>
-        
-        <div class="dropdown-menu">
-          <button class="dropdown-item" type="button" v-if="name !== 'and'" v-on:click="updateNodeName('and')">{{ "search.and" | translate }}</button>
-          <button class="dropdown-item" type="button" v-if="name !== 'or'" v-on:click="updateNodeName('or')">{{ "search.or" | translate }}</button>
-        </div>
+  <span v-if="advancedMode && otherArgs.length > 0" class="d-flex my-auto">
+    <div class="dropdown">
+      <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown">{{ "search." + name | translate }}</button>
+      
+      <div class="dropdown-menu">
+        <button class="dropdown-item" type="button" v-if="name !== 'and'" v-on:click="updateNodeName('and')">{{ "search.and" | translate }}</button>
+        <button class="dropdown-item" type="button" v-if="name !== 'or'" v-on:click="updateNodeName('or')">{{ "search.or" | translate }}</button>
       </div>
-    </li>
+    </div>
+  </span>
 
-    <li v-for="(arg, index) in otherArgs" v-bind:key="index" class="list-inline-item mb-2">
-      <template v-if="isNode(arg)">
-      <rql-node v-bind:name="arg.name" v-bind:args="arg.args" v-bind:taxonomy="taxonomy" v-on:update-node="onUpdateNode($event)" v-on:update-query="updateQuery($event, arg.taxonomyName)" v-on:remove-query="removeQuery($event, arg.taxonomyName)"></rql-node>
-      </template>
+  <span v-for="(arg, index) in otherArgs" v-bind:key="index" class="d-flex">
+    <template v-if="isNode(arg)">
+    <rql-node v-bind:name="arg.name" v-bind:args="arg.args" v-bind:taxonomy="taxonomy" v-on:update-node="onUpdateNode($event)" v-bind:advanced-mode="advancedMode" v-on:update-query="updateQuery($event, arg.taxonomyName)" v-on:remove-query="removeQuery($event, arg.taxonomyName)"></rql-node>
+    </template>
 
-      <template v-else>
-      <rql-query v-bind:vocabulary="arg.vocabulary" v-bind:query="arg.associatedQuery" v-on:update-query="updateQuery($event, arg.taxonomyName)" v-on:remove-query="removeQuery($event, arg.taxonomyName)"></rql-query>
-      </template>
-    </li>
-  </ul>
-</span>
+    <template v-else>
+    <rql-query v-bind:vocabulary="arg.vocabulary" v-bind:query="arg.associatedQuery" v-on:update-query="updateQuery($event, arg.taxonomyName)" v-on:remove-query="removeQuery($event, arg.taxonomyName)"></rql-query>
+    </template>
+  </span>
+</div>
 </template>
 
 <script>
@@ -43,6 +39,10 @@ import Criterion from "../../libs/Criterion";
 export default {
   name: "rql-node",
   props: {
+    advancedMode: {
+      type: Boolean,
+      default: false
+    },
     name: String,
     args: Array,
     taxonomy: [Object, Array]
