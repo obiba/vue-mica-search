@@ -1,9 +1,9 @@
 <template>
 <span>
-  <ul class="list-inline">
-    <li class="list-inline-item mb-2">
+  <ul class="list-inline mb-2">
+    <li class="list-inline-item">
       <template v-if="isNode(firstArg)">
-      <rql-node v-bind:name="firstArg.name" v-bind:args="firstArg.args" v-bind:taxonomy="taxonomy" v-on:update-node="onUpdateNode($event)" v-on:update-query="updateQuery($event, firstArg.taxonomyName)" v-on:remove-query="removeQuery($event, firstArg.taxonomyName)"></rql-node>
+      <rql-node v-bind:name="firstArg.name" v-bind:args="firstArg.args" v-bind:taxonomy="taxonomy" v-bind:advanced-mode="advancedMode" v-on:update-node="onUpdateNode($event)" v-on:update-query="updateQuery($event, firstArg.taxonomyName)" v-on:remove-query="removeQuery($event, firstArg.taxonomyName)"></rql-node>
       </template>
 
       <template v-else>
@@ -11,7 +11,7 @@
       </template>
     </li>
 
-    <li v-if="otherArgs.length > 0" class="list-inline-item mb-2">
+    <li v-if="advancedMode && otherArgs.length > 0" class="list-inline-item">
       <div class="dropdown">
         <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown">{{ "search." + name | translate }}</button>
         
@@ -22,9 +22,9 @@
       </div>
     </li>
 
-    <li v-for="(arg, index) in otherArgs" v-bind:key="index" class="list-inline-item mb-2">
+    <li v-for="(arg, index) in otherArgs" v-bind:key="index" class="list-inline-item">
       <template v-if="isNode(arg)">
-      <rql-node v-bind:name="arg.name" v-bind:args="arg.args" v-bind:taxonomy="taxonomy" v-on:update-node="onUpdateNode($event)" v-on:update-query="updateQuery($event, arg.taxonomyName)" v-on:remove-query="removeQuery($event, arg.taxonomyName)"></rql-node>
+      <rql-node v-bind:name="arg.name" v-bind:args="arg.args" v-bind:taxonomy="taxonomy" v-bind:advanced-mode="advancedMode" v-on:update-node="onUpdateNode($event)" v-on:update-query="updateQuery($event, arg.taxonomyName)" v-on:remove-query="removeQuery($event, arg.taxonomyName)"></rql-node>
       </template>
 
       <template v-else>
@@ -43,6 +43,10 @@ import Criterion from "../../libs/Criterion";
 export default {
   name: "rql-node",
   props: {
+    advancedMode: {
+      type: Boolean,
+      default: false
+    },
     name: String,
     args: Array,
     taxonomy: [Object, Array]
