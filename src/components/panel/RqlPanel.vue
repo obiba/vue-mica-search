@@ -92,7 +92,7 @@ export default {
         let vocabularyPasses = passes || localizeStringFunction(vocabulary.title).toLowerCase().indexOf(this.theFilter.toLowerCase()) > -1;
         if ("TERMS" !== Criterion.typeOfVocabulary(vocabulary) && vocabularyPasses) return true;
 
-        let foundTerms = (vocabulary.terms || []).filter(term => passes || localizeStringFunction(term.title).toLowerCase().indexOf(this.theFilter.toLowerCase()) > -1);
+        let foundTerms = (vocabulary.terms || []).filter(term => passes || term.name.toLowerCase().indexOf(this.theFilter.toLowerCase()) > -1 || localizeStringFunction(term.title).toLowerCase().indexOf(this.theFilter.toLowerCase()) > -1);
         return vocabularyPasses || foundTerms.length > 0;
       });
     },
