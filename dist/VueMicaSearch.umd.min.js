@@ -69264,7 +69264,7 @@ var GraphicsResultParser = /*#__PURE__*/function () {
       var labelStudies = tr('studies');
       var aggData = chartData[chartOptions.dataKey];
 
-      var _ref = typeof chartOptions.parseForChart === 'function' ? chartOptions.parseForChart(aggData) : this.__parseForChart(aggData),
+      var _ref = typeof chartOptions.parseForChart === 'function' ? chartOptions.parseForChart(aggData, chartOptions.vocabulary) : this.__parseForChart(aggData, chartOptions.vocabulary),
           _ref2 = Object(_home_user_projects_vue_mica_search_node_modules_babel_runtime_helpers_esm_slicedToArray__WEBPACK_IMPORTED_MODULE_7__["default"])(_ref, 2),
           labels = _ref2[0],
           dataset = _ref2[1];
