@@ -1,5 +1,5 @@
 <template>
-<div class="d-flex">  
+<div class="d-flex flex-wrap">  
   <template v-if="isNode(firstArg)">
   <rql-node v-bind:name="firstArg.name" v-bind:args="firstArg.args" v-bind:taxonomy="taxonomy" v-on:update-node="onUpdateNode($event)" v-bind:advanced-mode="advancedMode" v-on:update-query="updateQuery($event, firstArg.taxonomyName)" v-on:remove-query="removeQuery($event, firstArg.taxonomyName)"></rql-node>
   </template>
