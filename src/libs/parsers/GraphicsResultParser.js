@@ -43,7 +43,7 @@ export default class GraphicsResultParser {
     const tr = Vue.filter('translate') || (value => value);
     const labelStudies = tr('studies');
     const aggData = chartData[chartOptions.dataKey];
-    let [labels, dataset] = typeof chartOptions.parseForChart === 'function' ? chartOptions.parseForChart(aggData) : this.__parseForChart(aggData);
+    let [labels, dataset] = typeof chartOptions.parseForChart === 'function' ? chartOptions.parseForChart(aggData, chartOptions.vocabulary) : this.__parseForChart(aggData, chartOptions.vocabulary);
     const tableCols = [chartOptions.title, labelStudies];
 
     if (chartOptions.subAgg) {
