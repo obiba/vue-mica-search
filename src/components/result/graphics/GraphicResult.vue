@@ -11,10 +11,10 @@
     <div class="card-body">
       <p class="text-muted">{{chartDataset.options.text | translate}}</p>
       <div v-bind:id="containerId" class="row">
-        <div v-bind:id="chartContainerId" class="col-sm-6">
+        <div v-bind:id="chartContainerId" class="col-sm-12 col-lg-6 my-auto">
           <!-- canvas element -->
         </div>
-        <div v-bind:id="tableContainerId" class="col-sm-6 overflow-auto" style="max-height: 30em">
+        <div v-bind:id="tableContainerId" class="col-sm-12 col-lg-6 overflow-auto" style="max-height: 24em">
           <table id="vosr-datasets-result" class="table table-striped" width="100%">
             <thead>
               <tr class="row">
