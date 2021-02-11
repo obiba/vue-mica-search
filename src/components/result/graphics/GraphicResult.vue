@@ -26,7 +26,7 @@
                   <td class="col">{{row.title}}</td>
 
                   <td class="col" v-bind:title="totals ? (100 * row.count/totals.countTotal).toFixed(2) + '%' : ''" v-if="row.count > 0">
-                    <a href="" v-on:click="onCountClick($event,row.vocabulary, row.key)" class="query-anchor">{{row.count}}</a> 
+                    <a href="" v-on:mouseover="showTooltip(index)" v-on:mouseout=hideTooltip()  v-on:click="onCountClick($event,row.vocabulary, row.key)" class="query-anchor">{{row.count}}</a> 
                     <small class="ml-1" v-if="chartDataset.options.withTotals && chartDataset.options.withPercentages">({{totals ? (100 * row.count/totals.countTotal).toFixed(2) + '%' : ''}})</small>
                   </td>
 
@@ -85,6 +85,7 @@ export default {
     } 
 
     return {
+      chart: null,
       cardId: this.chartDataset.options.id,
       containerId: `vosrs-charts-container-${this.position}`,
       chartContainerId: `vosrs-charts-${agg}-${this.position}`,
@@ -94,12 +95,25 @@ export default {
     }
   },
   methods: {
+
+    showTooltip(index) {
+      const meta = this.chart.getDatasetMeta(0);
+      const rect = this.chart.canvas.getBoundingClientRect();
+      const point = meta.data[index].getCenterPoint();
+      this.chart.canvas.dispatchEvent(new MouseEvent('mousemove', {clientX: rect.left + point.x, clientY: rect.top + point.y}));
+    },
+
+    hideTooltip() {
+      this.chart.canvas.dispatchEvent(new MouseEvent('mouseout'));
+    },
+
     renderCanvas() {
+      
       const chartContainer = $(`#${this.chartContainerId}`);
       chartContainer.children().remove();
       chartContainer.append(`<canvas id="${this.canvasId}" class="mb-4"></canvas>`);
       const chartCanvas = $(`#${this.canvasId}`).get(0).getContext('2d');
-      new Chart(chartCanvas, this.chartDataset.canvasData);
+      this.chart = new Chart(chartCanvas, this.chartDataset.canvasData);
     },
     onCountClick(event, vocabulary, term) {
       event.preventDefault();
