@@ -60,7 +60,7 @@ export default class Criterion {
           
           break;
         case "MATCH":
-          found = input.operator === "match" && (input.args[1] || "").split(/\./)[1] === vocabulary.name;
+          found = (input.operator === "match" || input.name === "match") && (input.args[1] || "").split(/\./)[1] === vocabulary.name;
 
           break;    
       }
