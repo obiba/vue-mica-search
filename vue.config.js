@@ -9,7 +9,6 @@ module.exports = {
           path.resolve('node_compoents')
         ]
       },
-      mode: 'development',
       output: {
         globalObject: 'this',
         library: 'VueMicaSearch',
