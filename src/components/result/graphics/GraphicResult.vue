@@ -106,7 +106,7 @@ export default {
         const index = this.chartDataset.tableData.rows.indexOf(row);
         if (index > -1) data = meta.data[index];
       }
-      if (data === null) return;
+      if (!data) return;
 
       this.chart.tooltip._active = [data];
       this.chart.tooltip.update(true);
