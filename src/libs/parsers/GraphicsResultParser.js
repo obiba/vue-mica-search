@@ -5,7 +5,7 @@ export default class GraphicsResultParser {
     this.normalizePath = normalizePath;
   }
 
-  __parseForChart(chartData) {
+  __parseForChart(totalHits, chartData) {
     let labels = [];
     let data = [];
 
@@ -17,7 +17,7 @@ export default class GraphicsResultParser {
     return [labels, { data: data }];
   }
 
-  __parseForTable(vocabulary, chartData, forSubAggData) {
+  __parseForTable(totalHits, vocabulary, chartData, forSubAggData) {
     return chartData.filter(term => term.count>0).map(term => {
       let row = {
         vocabulary: vocabulary.replace(/model-/, ""),
@@ -35,7 +35,7 @@ export default class GraphicsResultParser {
     });
   }  
 
-  parse(chartData, chartOptions) {
+  parse(totalHits, chartData, chartOptions) {
     if (!chartData) {
       return;
     }
@@ -43,14 +43,18 @@ export default class GraphicsResultParser {
     const tr = Vue.filter('translate') || (value => value);
     const labelStudies = tr('studies');
     const aggData = chartData[chartOptions.dataKey];
-    let [labels, dataset] = typeof chartOptions.parseForChart === 'function' ? chartOptions.parseForChart(aggData, chartOptions.vocabulary) : this.__parseForChart(aggData, chartOptions.vocabulary);
+    let [labels, dataset] = typeof chartOptions.parseForChart === 'function' 
+      ? chartOptions.parseForChart(totalHits, aggData, chartOptions.vocabulary) 
+      : this.__parseForChart(totalHits, aggData, chartOptions.vocabulary);
     const tableCols = [chartOptions.title, labelStudies];
 
     if (chartOptions.subAgg) {
       tableCols.push(chartOptions.subAgg.title);
     }
 
-    const tableRows = typeof chartOptions.parseForTable === 'function' ? chartOptions.parseForTable(chartOptions.vocabulary, aggData, chartOptions.subAgg) : this.__parseForTable(chartOptions.vocabulary, aggData, chartOptions.subAgg);
+    const tableRows = typeof chartOptions.parseForTable === 'function' 
+      ? chartOptions.parseForTable(totalHits, chartOptions.vocabulary, aggData, chartOptions.subAgg) 
+      : this.__parseForTable(totalHits, chartOptions.vocabulary, aggData, chartOptions.subAgg);
 
     if (!dataset.label) {
       dataset.label = labelStudies;
