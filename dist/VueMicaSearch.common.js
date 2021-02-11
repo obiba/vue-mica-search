@@ -72561,12 +72561,12 @@ var CoverageResult_component = normalizeComponent(
 )
 
 /* harmony default export */ var CoverageResult = (CoverageResult_component.exports);
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"65f9863b-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/result/graphics/GraphicsResult.vue?vue&type=template&id=bebf795e&
-var GraphicsResultvue_type_template_id_bebf795e_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',[_vm._l((_vm.chartDatasets),function(chartDataset,index){return _c('div',{key:index},[_c('graphic-result',{attrs:{"chart-dataset":chartDataset,"total-hits":_vm.totalHits,"position":index,"hideHeader":_vm.hideHeader}})],1)}),_c('div',{attrs:{"id":"vosr-charts-container"}})],2)}
-var GraphicsResultvue_type_template_id_bebf795e_staticRenderFns = []
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"65f9863b-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/result/graphics/GraphicsResult.vue?vue&type=template&id=1c634a89&
+var GraphicsResultvue_type_template_id_1c634a89_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',[_vm._l((_vm.chartDatasets),function(chartDataset,index){return _c('div',{key:index},[_c('graphic-result',{attrs:{"chart-dataset":chartDataset,"total-hits":_vm.totalHits,"position":index,"hideHeader":_vm.hideHeader}})],1)}),_c('div',{attrs:{"id":"vosr-charts-container"}})],2)}
+var GraphicsResultvue_type_template_id_1c634a89_staticRenderFns = []
 
 
-// CONCATENATED MODULE: ./src/components/result/graphics/GraphicsResult.vue?vue&type=template&id=bebf795e&
+// CONCATENATED MODULE: ./src/components/result/graphics/GraphicsResult.vue?vue&type=template&id=1c634a89&
 
 // CONCATENATED MODULE: ./node_modules/@babel/runtime/helpers/esm/arrayWithHoles.js
 function _arrayWithHoles(arr) {
@@ -72754,7 +72754,7 @@ var GraphicsResultParser_GraphicsResultParser = /*#__PURE__*/function () {
 
   _createClass(GraphicsResultParser, [{
     key: "__parseForChart",
-    value: function __parseForChart(chartData) {
+    value: function __parseForChart(totalHits, chartData) {
       var labels = [];
       var data = [];
       chartData.filter(function (term) {
@@ -72769,7 +72769,7 @@ var GraphicsResultParser_GraphicsResultParser = /*#__PURE__*/function () {
     }
   }, {
     key: "__parseForTable",
-    value: function __parseForTable(vocabulary, chartData, forSubAggData) {
+    value: function __parseForTable(totalHits, vocabulary, chartData, forSubAggData) {
       return chartData.filter(function (term) {
         return term.count > 0;
       }).map(function (term) {
@@ -72794,7 +72794,7 @@ var GraphicsResultParser_GraphicsResultParser = /*#__PURE__*/function () {
     }
   }, {
     key: "parse",
-    value: function parse(chartData, chartOptions) {
+    value: function parse(totalHits, chartData, chartOptions) {
       if (!chartData) {
         return;
       }
@@ -72806,7 +72806,7 @@ var GraphicsResultParser_GraphicsResultParser = /*#__PURE__*/function () {
       var labelStudies = tr('studies');
       var aggData = chartData[chartOptions.dataKey];
 
-      var _ref = typeof chartOptions.parseForChart === 'function' ? chartOptions.parseForChart(aggData, chartOptions.vocabulary) : this.__parseForChart(aggData, chartOptions.vocabulary),
+      var _ref = typeof chartOptions.parseForChart === 'function' ? chartOptions.parseForChart(totalHits, aggData, chartOptions.vocabulary) : this.__parseForChart(totalHits, aggData, chartOptions.vocabulary),
           _ref2 = _slicedToArray(_ref, 2),
           labels = _ref2[0],
           dataset = _ref2[1];
@@ -72817,7 +72817,7 @@ var GraphicsResultParser_GraphicsResultParser = /*#__PURE__*/function () {
         tableCols.push(chartOptions.subAgg.title);
       }
 
-      var tableRows = typeof chartOptions.parseForTable === 'function' ? chartOptions.parseForTable(chartOptions.vocabulary, aggData, chartOptions.subAgg) : this.__parseForTable(chartOptions.vocabulary, aggData, chartOptions.subAgg);
+      var tableRows = typeof chartOptions.parseForTable === 'function' ? chartOptions.parseForTable(totalHits, chartOptions.vocabulary, aggData, chartOptions.subAgg) : this.__parseForTable(totalHits, chartOptions.vocabulary, aggData, chartOptions.subAgg);
 
       if (!dataset.label) {
         dataset.label = labelStudies;
@@ -72862,12 +72862,12 @@ var GraphicsResultParser_GraphicsResultParser = /*#__PURE__*/function () {
 }();
 
 
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"65f9863b-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/result/graphics/GraphicResult.vue?vue&type=template&id=57db6edf&
-var GraphicResultvue_type_template_id_57db6edf_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"card card-primary card-outline",attrs:{"id":_vm.cardId}},[(!_vm.hideHeader)?_c('div',{staticClass:"card-header"},[_c('h3',{staticClass:"card-title"},[_vm._v(_vm._s(_vm._f("translate")(_vm.chartDataset.options.title)))]),_c('div',{staticClass:"card-tools float-right"},[_c('button',{staticClass:"btn btn-tool",attrs:{"type":"button","data-card-widget":"collapse","data-toggle":"tooltip","title":_vm._f("translate")('collapse')}},[_c('i',{staticClass:"fas fa-minus"})])])]):_vm._e(),_c('div',{staticClass:"card-body"},[_c('p',{staticClass:"text-muted"},[_vm._v(_vm._s(_vm._f("translate")(_vm.chartDataset.options.text)))]),_c('div',{staticClass:"row",attrs:{"id":_vm.containerId}},[_c('div',{staticClass:"col-sm-12 col-xl-6 my-auto",attrs:{"id":_vm.chartContainerId}}),_c('div',{staticClass:"col-sm-12 col-xl-6 overflow-auto",staticStyle:{"max-height":"24em"},attrs:{"id":_vm.tableContainerId}},[_c('table',{staticClass:"table table-striped",attrs:{"id":"vosr-datasets-result","width":"100%"}},[_c('thead',[_c('tr',{staticClass:"row"},_vm._l((_vm.chartDataset.tableData.cols),function(col,index){return _c('th',{key:index,staticClass:"col"},[_vm._v(_vm._s(col))])}),0)]),_c('tbody',_vm._l((_vm.chartDataset.tableData.rows),function(row,index){return _c('tr',{key:index,staticClass:"row"},[_c('td',{staticClass:"col"},[_vm._v(_vm._s(row.title))]),(row.count > 0)?_c('td',{staticClass:"col",attrs:{"title":_vm.totals ? (100 * row.count/_vm.totals.countTotal).toFixed(2) + '%' : ''}},[_c('a',{staticClass:"query-anchor",attrs:{"href":""},on:{"mouseover":function($event){return _vm.showTooltip(row)},"mouseout":function($event){return _vm.hideTooltip()},"click":function($event){return _vm.onCountClick($event,row.vocabulary, row.key)}}},[_vm._v(_vm._s(row.count))]),(_vm.chartDataset.options.withTotals && _vm.chartDataset.options.withPercentages)?_c('small',{staticClass:"ml-1"},[_vm._v("("+_vm._s(_vm.totals ? (100 * row.count/_vm.totals.countTotal).toFixed(2) + '%' : '')+")")]):_vm._e()]):_vm._e(),(row.count === 0)?_c('td',{staticClass:"col",attrs:{"title":_vm.totals ? (0).toFixed(2) + '%' : ''}},[_c('span',{staticClass:"text-muted"},[_vm._v(_vm._s(row.count))]),(_vm.chartDataset.options.withTotals && _vm.chartDataset.options.withPercentages)?_c('small',{staticClass:"ml-1 text-muted"},[_vm._v("("+_vm._s(_vm.totals ? (0).toFixed(2) + '%' : '')+")")]):_vm._e()]):_vm._e(),(row.subAgg !== undefined)?_c('td',{staticClass:"col",attrs:{"title":_vm.totals ? (100 * row.subAgg/_vm.totals.subAggTotal).toFixed(2) + '%' : ''}},[_c('span',{class:{ 'text-muted': row.subAgg !== undefined && row.subAgg === 0 }},[_vm._v(_vm._s(row.subAgg !== undefined && row.subAgg === 0 ? '-' : row.subAgg.toLocaleString()))])]):_vm._e()])}),0),(_vm.totals)?_c('tfoot',[_c('tr',{staticClass:"row"},[_c('th',{staticClass:"col"},[_vm._v(_vm._s(_vm._f("translate")('graphics.total')))]),_c('th',{staticClass:"col"},[_vm._v(_vm._s(_vm.totals.countTotal.toLocaleString())+" "),(_vm.chartDataset.options.withTotals && _vm.chartDataset.options.withPercentages)?_c('small',{staticClass:"ml-1"},[_vm._v("("+_vm._s((100).toFixed(2) + '%')+")")]):_vm._e()]),(_vm.totals.subAggTotal !== undefined)?_c('th',{staticClass:"col"},[_vm._v(_vm._s(_vm.totals.subAggTotal.toLocaleString()))]):_vm._e()])]):_vm._e()])])])])])}
-var GraphicResultvue_type_template_id_57db6edf_staticRenderFns = []
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"65f9863b-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/result/graphics/GraphicResult.vue?vue&type=template&id=061832d4&
+var GraphicResultvue_type_template_id_061832d4_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"card card-primary card-outline",attrs:{"id":_vm.cardId}},[(!_vm.hideHeader)?_c('div',{staticClass:"card-header"},[_c('h3',{staticClass:"card-title"},[_vm._v(_vm._s(_vm._f("translate")(_vm.chartDataset.options.title)))]),_c('div',{staticClass:"card-tools float-right"},[_c('button',{staticClass:"btn btn-tool",attrs:{"type":"button","data-card-widget":"collapse","data-toggle":"tooltip","title":_vm._f("translate")('collapse')}},[_c('i',{staticClass:"fas fa-minus"})])])]):_vm._e(),_c('div',{staticClass:"card-body"},[_c('p',{staticClass:"text-muted"},[_vm._v(_vm._s(_vm._f("translate")(_vm.chartDataset.options.text)))]),_c('div',{staticClass:"row",attrs:{"id":_vm.containerId}},[_c('div',{staticClass:"col-sm-12 col-xl-6 my-auto",attrs:{"id":_vm.chartContainerId}}),_c('div',{staticClass:"col-sm-12 col-xl-6 overflow-auto",staticStyle:{"max-height":"24em"},attrs:{"id":_vm.tableContainerId}},[_c('table',{staticClass:"table table-striped",attrs:{"id":"vosr-datasets-result","width":"100%"}},[_c('thead',[_c('tr',{staticClass:"row"},_vm._l((_vm.chartDataset.tableData.cols),function(col,index){return _c('th',{key:index,staticClass:"col"},[_vm._v(_vm._s(col))])}),0)]),_c('tbody',_vm._l((_vm.chartDataset.tableData.rows),function(row,index){return _c('tr',{key:index,staticClass:"row"},[_c('td',{staticClass:"col"},[_vm._v(_vm._s(row.title))]),(row.count > 0)?_c('td',{staticClass:"col",attrs:{"title":_vm.totals ? (100 * row.count/_vm.totals.countTotal).toFixed(2) + '%' : ''}},[_c('a',{staticClass:"query-anchor",attrs:{"href":""},on:{"mouseover":function($event){return _vm.showTooltip(row)},"mouseout":function($event){return _vm.hideTooltip()},"click":function($event){return _vm.onCountClick($event,row.vocabulary, row.key)}}},[_vm._v(_vm._s(row.count))]),(_vm.chartDataset.options.withTotals && _vm.chartDataset.options.withPercentages)?_c('small',{staticClass:"ml-1"},[_vm._v("("+_vm._s(_vm.totals ? (100 * row.count/_vm.totals.countTotal).toFixed(2) + '%' : '')+")")]):_vm._e()]):_vm._e(),(row.count === 0)?_c('td',{staticClass:"col",attrs:{"title":_vm.totals ? (0).toFixed(2) + '%' : ''}},[_c('span',{staticClass:"text-muted"},[_vm._v(_vm._s(row.count))]),(_vm.chartDataset.options.withTotals && _vm.chartDataset.options.withPercentages)?_c('small',{staticClass:"ml-1 text-muted"},[_vm._v("("+_vm._s(_vm.totals ? (0).toFixed(2) + '%' : '')+")")]):_vm._e()]):_vm._e(),(row.subAgg !== undefined)?_c('td',{staticClass:"col",attrs:{"title":_vm.totals ? (100 * row.subAgg/_vm.totals.subAggTotal).toFixed(2) + '%' : ''}},[_c('span',{class:{ 'text-muted': row.subAgg !== undefined && row.subAgg === 0 }},[_vm._v(_vm._s(row.subAgg !== undefined && row.subAgg === 0 ? '-' : row.subAgg.toLocaleString()))])]):_vm._e()])}),0),(_vm.totals)?_c('tfoot',[_c('tr',{staticClass:"row"},[_c('th',{staticClass:"col"},[_vm._v(_vm._s(_vm._f("translate")('graphics.total')))]),_c('th',{staticClass:"col"},[_vm._v(_vm._s(_vm.totals.countTotal.toLocaleString())+" "),(_vm.chartDataset.options.withTotals && _vm.chartDataset.options.withPercentages)?_c('small',{staticClass:"ml-1"},[_vm._v("("+_vm._s((100).toFixed(2) + '%')+")")]):_vm._e()]),(_vm.totals.subAggTotal !== undefined)?_c('th',{staticClass:"col"},[_vm._v(_vm._s(_vm.totals.subAggTotal.toLocaleString()))]):_vm._e()])]):_vm._e()])])])])])}
+var GraphicResultvue_type_template_id_061832d4_staticRenderFns = []
 
 
-// CONCATENATED MODULE: ./src/components/result/graphics/GraphicResult.vue?vue&type=template&id=57db6edf&
+// CONCATENATED MODULE: ./src/components/result/graphics/GraphicResult.vue?vue&type=template&id=061832d4&
 
 // EXTERNAL MODULE: ./node_modules/core-js/modules/es.number.constructor.js
 var es_number_constructor = __webpack_require__("a9e3");
@@ -78243,7 +78243,7 @@ var topojson = Chart_Geo_esm_t;
         if (index > -1) data = meta.data[index];
       }
 
-      if (data === null) return;
+      if (!data) return;
       this.chart.tooltip._active = [data];
       this.chart.tooltip.update(true);
       this.chart.draw();
@@ -78300,8 +78300,8 @@ var topojson = Chart_Geo_esm_t;
 
 var GraphicResult_component = normalizeComponent(
   graphics_GraphicResultvue_type_script_lang_js_,
-  GraphicResultvue_type_template_id_57db6edf_render,
-  GraphicResultvue_type_template_id_57db6edf_staticRenderFns,
+  GraphicResultvue_type_template_id_061832d4_render,
+  GraphicResultvue_type_template_id_061832d4_staticRenderFns,
   false,
   null,
   null,
@@ -78360,7 +78360,7 @@ var GraphicResult_component = normalizeComponent(
           }).pop();
 
           if (aggData) {
-            var _this$parser$parse = _this.parser.parse(aggData, options),
+            var _this$parser$parse = _this.parser.parse(_this.totalHits, aggData, options),
                 _this$parser$parse2 = _slicedToArray(_this$parser$parse, 2),
                 canvasData = _this$parser$parse2[0],
                 tableData = _this$parser$parse2[1];
@@ -78397,8 +78397,8 @@ var GraphicResult_component = normalizeComponent(
 
 var GraphicsResult_component = normalizeComponent(
   graphics_GraphicsResultvue_type_script_lang_js_,
-  GraphicsResultvue_type_template_id_bebf795e_render,
-  GraphicsResultvue_type_template_id_bebf795e_staticRenderFns,
+  GraphicsResultvue_type_template_id_1c634a89_render,
+  GraphicsResultvue_type_template_id_1c634a89_staticRenderFns,
   false,
   null,
   null,
