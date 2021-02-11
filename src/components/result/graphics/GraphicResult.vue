@@ -26,7 +26,7 @@
                   <td class="col">{{row.title}}</td>
 
                   <td class="col" v-bind:title="totals ? (100 * row.count/totals.countTotal).toFixed(2) + '%' : ''" v-if="row.count > 0">
-                    <a href="" v-on:mouseover="showTooltip(index)" v-on:mouseout=hideTooltip()  v-on:click="onCountClick($event,row.vocabulary, row.key)" class="query-anchor">{{row.count}}</a> 
+                    <a href="" v-on:mouseover="showTooltip(row)" v-on:mouseout=hideTooltip()  v-on:click="onCountClick($event,row.vocabulary, row.key)" class="query-anchor">{{row.count}}</a> 
                     <small class="ml-1" v-if="chartDataset.options.withTotals && chartDataset.options.withPercentages">({{totals ? (100 * row.count/totals.countTotal).toFixed(2) + '%' : ''}})</small>
                   </td>
 
@@ -96,15 +96,27 @@ export default {
   },
   methods: {
 
-    showTooltip(index) {
+    showTooltip(row) {      
       const meta = this.chart.getDatasetMeta(0);
-      const rect = this.chart.canvas.getBoundingClientRect();
-      const point = meta.data[index].getCenterPoint();
-      this.chart.canvas.dispatchEvent(new MouseEvent('mousemove', {clientX: rect.left + point.x, clientY: rect.top + point.y}));
+      let data = null;
+      if (meta.type === 'choropleth') {
+        // Geo chart
+        data = meta.data.filter(d => d.feature.id === row.key).pop();
+      } else {
+        const index = this.chartDataset.tableData.rows.indexOf(row);
+        if (index > -1) data = meta.data[index];
+      }
+      if (data === null) return;
+
+      this.chart.tooltip._active = [data];
+      this.chart.tooltip.update(true);
+      this.chart.draw();
     },
 
     hideTooltip() {
-      this.chart.canvas.dispatchEvent(new MouseEvent('mouseout'));
+      this.chart.tooltip._active = [];
+      this.chart.tooltip.update(true);
+      this.chart.draw();
     },
 
     renderCanvas() {
