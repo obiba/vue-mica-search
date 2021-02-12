@@ -26,7 +26,7 @@
                   <td class="col">{{row.title}}</td>
 
                   <td class="col" v-bind:title="totals ? (100 * row.count/totals.countTotal).toFixed(2) + '%' : ''" v-if="row.count > 0">
-                    <a href="" v-on:mouseover="showTooltip(row)" v-on:mouseout=hideTooltip()  v-on:click="onCountClick($event,row.vocabulary, row.key)" class="query-anchor">{{row.count}}</a> 
+                    <a href="" v-on:mouseover="showTooltip(row)" v-on:mouseout=hideTooltip()  v-on:click="onCountClick($event, row.vocabulary, row.key, row.queryOverride)" class="query-anchor">{{row.count}}</a> 
                     <small class="ml-1" v-if="chartDataset.options.withTotals && chartDataset.options.withPercentages">({{totals ? (100 * row.count/totals.countTotal).toFixed(2) + '%' : ''}})</small>
                   </td>
 
@@ -127,7 +127,7 @@ export default {
       const chartCanvas = $(`#${this.canvasId}`).get(0).getContext('2d');
       this.chart = new Chart(chartCanvas, this.chartDataset.canvasData);
     },
-    onCountClick(event, vocabulary, term) {
+    onCountClick(event, vocabulary, term, queryOverride) {
       event.preventDefault();
       console.debug(`onCountClicked ${vocabulary}, ${term}`);
 
@@ -137,7 +137,7 @@ export default {
         operator: 'and'
       }];
 
-      updates.push({target:'study', query: new Query('in', [`Mica_study.${vocabulary}`, `${term}`])});
+      updates.push({target:'study', query: (queryOverride ? queryOverride : new Query('in', [`Mica_study.${vocabulary}`, `${term}`]))});
 
       this.getEventBus().$emit('query-type-updates-selection', {display: 'lists', type: `studies`, updates});
     }
