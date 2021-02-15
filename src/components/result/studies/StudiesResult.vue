@@ -5,15 +5,16 @@
       <table id="vosr-studies-result" class="table table-striped" width="100%">        
         <thead>
           <tr>
-            <th rowspan="2">{{ "acronym"  | translate }}</th>
-            <th v-for="(item, index) in studyColumnItems" :key="index" 
+            <th class="column-acronym" rowspan="2">{{ "acronym"  | translate }}</th>
+            <th v-for="(item, index) in studyColumnItems" :key="index"      
+              :class="'column-'+ item.name"        
               :rowspan="item.rowspan" 
               :colspan="item.colspan">
               {{ item.name | translate }}
             </th>
           </tr>
           <tr>
-            <th v-for="(item, index) in studyColumnItems2" :key="index" :title="item.title | taxonomy-title">
+            <th v-for="(item, index) in studyColumnItems2" :key="index" :class="'column-'+ item.name" :title="item.title | taxonomy-title">
              <span> 
               <i v-if="item.icon" :class="item.icon"></i>
               {{ item.name | translate }}

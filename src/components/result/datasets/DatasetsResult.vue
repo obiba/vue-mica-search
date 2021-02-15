@@ -5,8 +5,8 @@
       <table id="vosr-datasets-result" class="table table-striped" width="100%">
         <thead>
           <tr>
-            <th>{{ "acronym" | translate }}</th>
-            <th v-for="(column, index) in datasetColumnNames" :key="index">{{ column | translate }}</th>
+            <th class="column-acronym" >{{ "acronym" | translate }}</th>
+            <th v-for="(column, index) in datasetColumnNames" :key="index" :class="'column-' + column">{{ column | translate }}</th>
           </tr>
         </thead>
       </table>
