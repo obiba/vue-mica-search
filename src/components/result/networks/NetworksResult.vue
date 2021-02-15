@@ -5,15 +5,16 @@
       <table id="vosr-networks-result" class="table table-striped" width="100%">       
         <thead v-if="withCollectedDatasets && withHarmonizedDatasets">
           <tr>
-            <th rowspan="2">{{ "acronym" | translate }}</th>
+            <th class="column-acronym" rowspan="2">{{ "acronym" | translate }}</th>
             <th v-for="(item, index) in networkColumnItems" :key="index" 
+              :class="'column-' + item.name"
               :rowspan="item.rowspan" 
               :colspan="item.colspan">
               {{ item.name | translate }}
             </th>
           </tr>
           <tr v-if="withCollectedDatasets || withHarmonizedDatasets">
-            <th v-for="(item, index) in networkColumnItems2" :key="index">
+            <th v-for="(item, index) in networkColumnItems2" :key="index" :class="'column-' + item.name">
               {{ item.name | translate }}
             </th>
           </tr>
@@ -21,7 +22,7 @@
         <thead v-else>
           <tr>
             <th>{{ "acronym" | translate }}</th>
-            <th v-for="(item, index) in networkColumnItems" :key="index">
+            <th v-for="(item, index) in networkColumnItems" :key="index" :class="'column-' + item.name">
               {{ item.name | translate }}
             </th>
           </tr>

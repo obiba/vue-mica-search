@@ -7,8 +7,8 @@
           <tr>
             <th><i class="far fa-square"></i></th>
             <th></th>
-            <th>{{ "name" | translate }}</th>
-            <th v-for="(column, index) in variableColumnNames" :key="index">{{ column | translate }}</th>
+            <th class="column-name">{{ "name" | translate }}</th>
+            <th v-for="(column, index) in variableColumnNames" :key="index" :class="'column-'+ column" >{{ column | translate }}</th>
           </tr>
         </thead>
       </table>
