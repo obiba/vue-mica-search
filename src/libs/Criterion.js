@@ -184,7 +184,7 @@ export default class Criterion {
           this.value = [input.args[1]];
         } else if (this.operator === "le") {
           this.value = ["", input.args[1]];
-        } else if (input.operator === "between") {
+        } else if ((input.operator || input.name) === "between") {
           this.value = [input.args[1][0], input.args[1][1]];
         }
 
