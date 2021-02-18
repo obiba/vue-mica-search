@@ -73382,7 +73382,15 @@ var GraphicsResultParser_GraphicsResultParser = /*#__PURE__*/function () {
         responsive: true,
         legend: _objectSpread2(_objectSpread2({}, {
           display: false
-        }), chartOptions.legend || {})
+        }), chartOptions.legend || {}),
+        scales: {
+          xAxes: [{
+            ticks: {
+              beginAtZero: true,
+              min: 0
+            }
+          }]
+        }
       };
       var canvasData = {
         type: chartOptions.type,
