@@ -77,6 +77,14 @@ export default class GraphicsResultParser {
       responsive: true,
       legend: {
         ...{ display: false }, ...(chartOptions.legend || {})
+      },
+      scales: {
+        xAxes: [{
+          ticks: {
+            beginAtZero: true,
+            min: 0
+          }
+        }]
       }
     };
 
