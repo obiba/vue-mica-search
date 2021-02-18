@@ -47,7 +47,7 @@ export default {
   extends: EntityResult,
   data () {
     return {
-      parser: new StudiesResultParser(this.normalizePath),
+      parser: new StudiesResultParser(this.normalizePath, this.getLocale()),
       type: "studies",
       target: "study"
     }

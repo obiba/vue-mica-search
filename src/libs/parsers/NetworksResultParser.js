@@ -1,7 +1,8 @@
 export default class NetworksResultParser {
 
-  constructor(normalizePath) {
+  constructor(normalizePath, locale) {
     this.normalizePath = normalizePath;
+    this.locale = locale;
   }
 
   parse(data, micaConfig, localize, displayOptions) {
@@ -26,7 +27,7 @@ export default class NetworksResultParser {
     
     result.networks.forEach(network => {
       const stats = network['obiba.mica.CountStatsDto.networkCountStats'] || {};
-      let anchor = (type, value, studyType) => `<a href="" class="query-anchor" data-study-type="${studyType}" data-target="network" data-target-id="${network.id}" data-type="${type}">${value}</a>`;
+      let anchor = (type, value, studyType) => `<a href="" class="query-anchor" data-study-type="${studyType}" data-target="network" data-target-id="${network.id}" data-type="${type}">${value.toLocaleString(this.locale)}</a>`;
 
       let path = this.normalizePath(`/network/${network.id}`);
       let row = [`<a href="${path}">${localize(network.acronym)}</a>`];
