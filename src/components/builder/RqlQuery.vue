@@ -128,7 +128,10 @@ export default {
     }
   },
   mounted() {
-    this.$refs.menu.addEventListener("click", event => event.stopPropagation());
+    const menuReference = this.$refs.menu;
+    if (menuReference) {
+      menuReference.addEventListener("click", event => event.stopPropagation());
+    }
   }
 }
 </script>
