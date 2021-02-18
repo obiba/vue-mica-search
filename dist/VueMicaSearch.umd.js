@@ -71023,12 +71023,12 @@ var VariablesResult_component = normalizeComponent(
 )
 
 /* harmony default export */ var VariablesResult = (VariablesResult_component.exports);
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"6097eb98-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/result/datasets/DatasetsResult.vue?vue&type=template&id=6a16b97a&
-var DatasetsResultvue_type_template_id_6a16b97a_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',[_c('div',{directives:[{name:"show",rawName:"v-show",value:(_vm.showResult),expression:"showResult"}],staticClass:"row"},[_c('div',{staticClass:"col"},[_c('table',{staticClass:"table table-striped",attrs:{"id":"vosr-datasets-result","width":"100%"}},[_c('thead',[_c('tr',[_c('th',{staticClass:"column-acronym"},[_vm._v(_vm._s(_vm._f("translate")("acronym")))]),_vm._l((_vm.datasetColumnNames),function(column,index){return _c('th',{key:index,class:'column-' + column},[_vm._v(_vm._s(_vm._f("translate")(column)))])})],2)])])])]),_c('div',{directives:[{name:"show",rawName:"v-show",value:(_vm.loading),expression:"loading"}]},[_c('div',{staticClass:"spinner-border spinner-border-sm",attrs:{"role":"status"}})]),_c('div',{directives:[{name:"show",rawName:"v-show",value:(!_vm.loading && !_vm.showResult),expression:"!loading && !showResult"}],staticClass:"text-muted"},[_c('span',[_vm._v(_vm._s(_vm._f("translate")("no-dataset-found")))])])])}
-var DatasetsResultvue_type_template_id_6a16b97a_staticRenderFns = []
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"6097eb98-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/result/datasets/DatasetsResult.vue?vue&type=template&id=5e19aeae&
+var DatasetsResultvue_type_template_id_5e19aeae_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',[_c('div',{directives:[{name:"show",rawName:"v-show",value:(_vm.showResult),expression:"showResult"}],staticClass:"row"},[_c('div',{staticClass:"col"},[_c('table',{staticClass:"table table-striped",attrs:{"id":"vosr-datasets-result","width":"100%"}},[_c('thead',[_c('tr',[_c('th',{staticClass:"column-acronym"},[_vm._v(_vm._s(_vm._f("translate")("acronym")))]),_vm._l((_vm.datasetColumnNames),function(column,index){return _c('th',{key:index,class:'column-' + column},[_vm._v(_vm._s(_vm._f("translate")(column)))])})],2)])])])]),_c('div',{directives:[{name:"show",rawName:"v-show",value:(_vm.loading),expression:"loading"}]},[_c('div',{staticClass:"spinner-border spinner-border-sm",attrs:{"role":"status"}})]),_c('div',{directives:[{name:"show",rawName:"v-show",value:(!_vm.loading && !_vm.showResult),expression:"!loading && !showResult"}],staticClass:"text-muted"},[_c('span',[_vm._v(_vm._s(_vm._f("translate")("no-dataset-found")))])])])}
+var DatasetsResultvue_type_template_id_5e19aeae_staticRenderFns = []
 
 
-// CONCATENATED MODULE: ./src/components/result/datasets/DatasetsResult.vue?vue&type=template&id=6a16b97a&
+// CONCATENATED MODULE: ./src/components/result/datasets/DatasetsResult.vue?vue&type=template&id=5e19aeae&
 
 // EXTERNAL MODULE: ./node_modules/jquery/dist/jquery.js
 var jquery = __webpack_require__("1157");
@@ -71599,10 +71599,11 @@ Object.defineProperty(Query, Symbol.hasInstance, {
 
 
 var DatasetsResultParser_DatasetsResultParser = /*#__PURE__*/function () {
-  function DatasetsResultParser(normalizePath) {
+  function DatasetsResultParser(normalizePath, locale) {
     _classCallCheck(this, DatasetsResultParser);
 
     this.normalizePath = normalizePath;
+    this.locale = locale;
   }
 
   _createClass(DatasetsResultParser, [{
@@ -71645,7 +71646,7 @@ var DatasetsResultParser_DatasetsResultParser = /*#__PURE__*/function () {
         var stats = dataset['obiba.mica.CountStatsDto.datasetCountStats'] || {};
 
         var anchor = function anchor(type, value) {
-          return "<a href=\"\" class=\"query-anchor\" data-target=\"dataset\" data-target-id=\"".concat(dataset.id, "\" data-type=\"").concat(type, "\">").concat(value, "</a>");
+          return "<a href=\"\" class=\"query-anchor\" data-target=\"dataset\" data-target-id=\"".concat(dataset.id, "\" data-type=\"").concat(type, "\">").concat(value.toLocaleString(_this.locale), "</a>");
         };
 
         displayOptions.datasetColumns.forEach(function (column) {
@@ -71741,7 +71742,7 @@ var DatasetsResultParser_DatasetsResultParser = /*#__PURE__*/function () {
   extends: EntityResult,
   data: function data() {
     return {
-      parser: new DatasetsResultParser_DatasetsResultParser(this.normalizePath),
+      parser: new DatasetsResultParser_DatasetsResultParser(this.normalizePath, this.getLocale()),
       type: "datasets",
       target: "dataset"
     };
@@ -71798,8 +71799,8 @@ var DatasetsResultParser_DatasetsResultParser = /*#__PURE__*/function () {
 
 var DatasetsResult_component = normalizeComponent(
   datasets_DatasetsResultvue_type_script_lang_js_,
-  DatasetsResultvue_type_template_id_6a16b97a_render,
-  DatasetsResultvue_type_template_id_6a16b97a_staticRenderFns,
+  DatasetsResultvue_type_template_id_5e19aeae_render,
+  DatasetsResultvue_type_template_id_5e19aeae_staticRenderFns,
   false,
   null,
   null,
@@ -71808,12 +71809,12 @@ var DatasetsResult_component = normalizeComponent(
 )
 
 /* harmony default export */ var DatasetsResult = (DatasetsResult_component.exports);
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"6097eb98-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/result/studies/StudiesResult.vue?vue&type=template&id=e16034dc&
-var StudiesResultvue_type_template_id_e16034dc_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',[_c('div',{directives:[{name:"show",rawName:"v-show",value:(_vm.showResult),expression:"showResult"}],staticClass:"row"},[_c('div',{staticClass:"col"},[_c('table',{staticClass:"table table-striped",attrs:{"id":"vosr-studies-result","width":"100%"}},[_c('thead',[_c('tr',[_c('th',{staticClass:"column-acronym",attrs:{"rowspan":"2"}},[_vm._v(_vm._s(_vm._f("translate")("acronym")))]),_vm._l((_vm.studyColumnItems),function(item,index){return _c('th',{key:index,class:'column-'+ item.name,attrs:{"rowspan":item.rowspan,"colspan":item.colspan}},[_vm._v(" "+_vm._s(_vm._f("translate")(item.name))+" ")])})],2),_c('tr',_vm._l((_vm.studyColumnItems2),function(item,index){return _c('th',{key:index,class:'column-'+ item.name,attrs:{"title":_vm._f("taxonomy-title")(item.title)}},[_c('span',[(item.icon)?_c('i',{class:item.icon}):_vm._e(),_vm._v(" "+_vm._s(_vm._f("translate")(item.name))+" ")])])}),0)])])])]),_c('div',{directives:[{name:"show",rawName:"v-show",value:(_vm.loading),expression:"loading"}]},[_c('div',{staticClass:"spinner-border spinner-border-sm",attrs:{"role":"status"}})]),_c('div',{directives:[{name:"show",rawName:"v-show",value:(!_vm.loading && !_vm.showResult),expression:"!loading && !showResult"}],staticClass:"text-muted"},[_c('span',[_vm._v(_vm._s(_vm._f("translate")("no-study-found")))])])])}
-var StudiesResultvue_type_template_id_e16034dc_staticRenderFns = []
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"6097eb98-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/result/studies/StudiesResult.vue?vue&type=template&id=a79d1206&
+var StudiesResultvue_type_template_id_a79d1206_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',[_c('div',{directives:[{name:"show",rawName:"v-show",value:(_vm.showResult),expression:"showResult"}],staticClass:"row"},[_c('div',{staticClass:"col"},[_c('table',{staticClass:"table table-striped",attrs:{"id":"vosr-studies-result","width":"100%"}},[_c('thead',[_c('tr',[_c('th',{staticClass:"column-acronym",attrs:{"rowspan":"2"}},[_vm._v(_vm._s(_vm._f("translate")("acronym")))]),_vm._l((_vm.studyColumnItems),function(item,index){return _c('th',{key:index,class:'column-'+ item.name,attrs:{"rowspan":item.rowspan,"colspan":item.colspan}},[_vm._v(" "+_vm._s(_vm._f("translate")(item.name))+" ")])})],2),_c('tr',_vm._l((_vm.studyColumnItems2),function(item,index){return _c('th',{key:index,class:'column-'+ item.name,attrs:{"title":_vm._f("taxonomy-title")(item.title)}},[_c('span',[(item.icon)?_c('i',{class:item.icon}):_vm._e(),_vm._v(" "+_vm._s(_vm._f("translate")(item.name))+" ")])])}),0)])])])]),_c('div',{directives:[{name:"show",rawName:"v-show",value:(_vm.loading),expression:"loading"}]},[_c('div',{staticClass:"spinner-border spinner-border-sm",attrs:{"role":"status"}})]),_c('div',{directives:[{name:"show",rawName:"v-show",value:(!_vm.loading && !_vm.showResult),expression:"!loading && !showResult"}],staticClass:"text-muted"},[_c('span',[_vm._v(_vm._s(_vm._f("translate")("no-study-found")))])])])}
+var StudiesResultvue_type_template_id_a79d1206_staticRenderFns = []
 
 
-// CONCATENATED MODULE: ./src/components/result/studies/StudiesResult.vue?vue&type=template&id=e16034dc&
+// CONCATENATED MODULE: ./src/components/result/studies/StudiesResult.vue?vue&type=template&id=a79d1206&
 
 // CONCATENATED MODULE: ./src/libs/parsers/StudiesResultParser.js
 
@@ -71827,10 +71828,11 @@ var StudiesResultvue_type_template_id_e16034dc_staticRenderFns = []
 
 
 var StudiesResultParser_StudiesResultParser = /*#__PURE__*/function () {
-  function StudiesResultParser(normalizePath) {
+  function StudiesResultParser(normalizePath, locale) {
     _classCallCheck(this, StudiesResultParser);
 
     this.normalizePath = normalizePath;
+    this.locale = locale;
   }
 
   _createClass(StudiesResultParser, [{
@@ -71891,7 +71893,7 @@ var StudiesResultParser_StudiesResultParser = /*#__PURE__*/function () {
         var design = summary.design ? taxonomyFilter.apply(null, ["Mica_study.methods-design.".concat(summary.design)]) : '-';
 
         var anchor = function anchor(type, value, studyType) {
-          return "<a href=\"\" class=\"query-anchor\" data-study-type=\"".concat(studyType, "\" data-target=\"study\" data-target-id=\"").concat(summary.id, "\" data-type=\"").concat(type, "\">").concat(value, "</a>");
+          return "<a href=\"\" class=\"query-anchor\" data-study-type=\"".concat(studyType, "\" data-target=\"study\" data-target-id=\"").concat(summary.id, "\" data-type=\"").concat(type, "\">").concat(value.toLocaleString(_this.locale), "</a>");
         };
 
         var path = _this.normalizePath("/study/".concat(summary.id));
@@ -72058,7 +72060,7 @@ var StudiesResultParser_StudiesResultParser = /*#__PURE__*/function () {
   extends: EntityResult,
   data: function data() {
     return {
-      parser: new StudiesResultParser_StudiesResultParser(this.normalizePath),
+      parser: new StudiesResultParser_StudiesResultParser(this.normalizePath, this.getLocale()),
       type: "studies",
       target: "study"
     };
@@ -72204,8 +72206,8 @@ var StudiesResultParser_StudiesResultParser = /*#__PURE__*/function () {
 
 var StudiesResult_component = normalizeComponent(
   studies_StudiesResultvue_type_script_lang_js_,
-  StudiesResultvue_type_template_id_e16034dc_render,
-  StudiesResultvue_type_template_id_e16034dc_staticRenderFns,
+  StudiesResultvue_type_template_id_a79d1206_render,
+  StudiesResultvue_type_template_id_a79d1206_staticRenderFns,
   false,
   null,
   null,
@@ -72214,12 +72216,12 @@ var StudiesResult_component = normalizeComponent(
 )
 
 /* harmony default export */ var StudiesResult = (StudiesResult_component.exports);
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"6097eb98-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/result/networks/NetworksResult.vue?vue&type=template&id=042c2bb8&
-var NetworksResultvue_type_template_id_042c2bb8_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',[_c('div',{directives:[{name:"show",rawName:"v-show",value:(_vm.showResult),expression:"showResult"}],staticClass:"row"},[_c('div',{staticClass:"col"},[_c('table',{staticClass:"table table-striped",attrs:{"id":"vosr-networks-result","width":"100%"}},[(_vm.withCollectedDatasets && _vm.withHarmonizedDatasets)?_c('thead',[_c('tr',[_c('th',{staticClass:"column-acronym",attrs:{"rowspan":"2"}},[_vm._v(_vm._s(_vm._f("translate")("acronym")))]),_vm._l((_vm.networkColumnItems),function(item,index){return _c('th',{key:index,class:'column-' + item.name,attrs:{"rowspan":item.rowspan,"colspan":item.colspan}},[_vm._v(" "+_vm._s(_vm._f("translate")(item.name))+" ")])})],2),(_vm.withCollectedDatasets || _vm.withHarmonizedDatasets)?_c('tr',_vm._l((_vm.networkColumnItems2),function(item,index){return _c('th',{key:index,class:'column-' + item.name},[_vm._v(" "+_vm._s(_vm._f("translate")(item.name))+" ")])}),0):_vm._e()]):_c('thead',[_c('tr',[_c('th',[_vm._v(_vm._s(_vm._f("translate")("acronym")))]),_vm._l((_vm.networkColumnItems),function(item,index){return _c('th',{key:index,class:'column-' + item.name},[_vm._v(" "+_vm._s(_vm._f("translate")(item.name))+" ")])})],2)])])])]),_c('div',{directives:[{name:"show",rawName:"v-show",value:(_vm.loading),expression:"loading"}]},[_c('div',{staticClass:"spinner-border spinner-border-sm",attrs:{"role":"status"}})]),_c('div',{directives:[{name:"show",rawName:"v-show",value:(!_vm.loading && !_vm.showResult),expression:"!loading && !showResult"}],staticClass:"text-muted"},[_c('span',[_vm._v(_vm._s(_vm._f("translate")("no-network-found")))])])])}
-var NetworksResultvue_type_template_id_042c2bb8_staticRenderFns = []
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"6097eb98-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/result/networks/NetworksResult.vue?vue&type=template&id=21b0ab6d&
+var NetworksResultvue_type_template_id_21b0ab6d_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',[_c('div',{directives:[{name:"show",rawName:"v-show",value:(_vm.showResult),expression:"showResult"}],staticClass:"row"},[_c('div',{staticClass:"col"},[_c('table',{staticClass:"table table-striped",attrs:{"id":"vosr-networks-result","width":"100%"}},[(_vm.withCollectedDatasets && _vm.withHarmonizedDatasets)?_c('thead',[_c('tr',[_c('th',{staticClass:"column-acronym",attrs:{"rowspan":"2"}},[_vm._v(_vm._s(_vm._f("translate")("acronym")))]),_vm._l((_vm.networkColumnItems),function(item,index){return _c('th',{key:index,class:'column-' + item.name,attrs:{"rowspan":item.rowspan,"colspan":item.colspan}},[_vm._v(" "+_vm._s(_vm._f("translate")(item.name))+" ")])})],2),(_vm.withCollectedDatasets || _vm.withHarmonizedDatasets)?_c('tr',_vm._l((_vm.networkColumnItems2),function(item,index){return _c('th',{key:index,class:'column-' + item.name},[_vm._v(" "+_vm._s(_vm._f("translate")(item.name))+" ")])}),0):_vm._e()]):_c('thead',[_c('tr',[_c('th',[_vm._v(_vm._s(_vm._f("translate")("acronym")))]),_vm._l((_vm.networkColumnItems),function(item,index){return _c('th',{key:index,class:'column-' + item.name},[_vm._v(" "+_vm._s(_vm._f("translate")(item.name))+" ")])})],2)])])])]),_c('div',{directives:[{name:"show",rawName:"v-show",value:(_vm.loading),expression:"loading"}]},[_c('div',{staticClass:"spinner-border spinner-border-sm",attrs:{"role":"status"}})]),_c('div',{directives:[{name:"show",rawName:"v-show",value:(!_vm.loading && !_vm.showResult),expression:"!loading && !showResult"}],staticClass:"text-muted"},[_c('span',[_vm._v(_vm._s(_vm._f("translate")("no-network-found")))])])])}
+var NetworksResultvue_type_template_id_21b0ab6d_staticRenderFns = []
 
 
-// CONCATENATED MODULE: ./src/components/result/networks/NetworksResult.vue?vue&type=template&id=042c2bb8&
+// CONCATENATED MODULE: ./src/components/result/networks/NetworksResult.vue?vue&type=template&id=21b0ab6d&
 
 // CONCATENATED MODULE: ./src/libs/parsers/NetworksResultParser.js
 
@@ -72230,10 +72232,11 @@ var NetworksResultvue_type_template_id_042c2bb8_staticRenderFns = []
 
 
 var NetworksResultParser_NetworksResultParser = /*#__PURE__*/function () {
-  function NetworksResultParser(normalizePath) {
+  function NetworksResultParser(normalizePath, locale) {
     _classCallCheck(this, NetworksResultParser);
 
     this.normalizePath = normalizePath;
+    this.locale = locale;
   }
 
   _createClass(NetworksResultParser, [{
@@ -72264,7 +72267,7 @@ var NetworksResultParser_NetworksResultParser = /*#__PURE__*/function () {
         var stats = network['obiba.mica.CountStatsDto.networkCountStats'] || {};
 
         var anchor = function anchor(type, value, studyType) {
-          return "<a href=\"\" class=\"query-anchor\" data-study-type=\"".concat(studyType, "\" data-target=\"network\" data-target-id=\"").concat(network.id, "\" data-type=\"").concat(type, "\">").concat(value, "</a>");
+          return "<a href=\"\" class=\"query-anchor\" data-study-type=\"".concat(studyType, "\" data-target=\"network\" data-target-id=\"").concat(network.id, "\" data-type=\"").concat(type, "\">").concat(value.toLocaleString(_this.locale), "</a>");
         };
 
         var path = _this.normalizePath("/network/".concat(network.id));
@@ -72383,7 +72386,7 @@ var NetworksResultParser_NetworksResultParser = /*#__PURE__*/function () {
   data: function data() {
     return {
       dataTable: null,
-      parser: new NetworksResultParser_NetworksResultParser(this.normalizePath),
+      parser: new NetworksResultParser_NetworksResultParser(this.normalizePath, this.getLocale()),
       type: "networks",
       target: "network"
     };
@@ -72491,8 +72494,8 @@ var NetworksResultParser_NetworksResultParser = /*#__PURE__*/function () {
 
 var NetworksResult_component = normalizeComponent(
   networks_NetworksResultvue_type_script_lang_js_,
-  NetworksResultvue_type_template_id_042c2bb8_render,
-  NetworksResultvue_type_template_id_042c2bb8_staticRenderFns,
+  NetworksResultvue_type_template_id_21b0ab6d_render,
+  NetworksResultvue_type_template_id_21b0ab6d_staticRenderFns,
   false,
   null,
   null,
@@ -72501,12 +72504,12 @@ var NetworksResult_component = normalizeComponent(
 )
 
 /* harmony default export */ var NetworksResult = (NetworksResult_component.exports);
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"6097eb98-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/result/coverage/CoverageResult.vue?vue&type=template&id=2e841901&
-var CoverageResultvue_type_template_id_2e841901_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',[_c('div',{directives:[{name:"show",rawName:"v-show",value:(_vm.showResult),expression:"showResult"}]},[_c('div',{staticClass:"row"},[_c('div',{staticClass:"col table-responsive"},[(_vm.table)?_c('table',{staticClass:"table table-striped",attrs:{"id":"vosr-coverage-result","width":"100%"}},[_c('thead',[_c('tr',[_c('th',{attrs:{"rowspan":_vm.bucketStartsWithDce ? 1 : 2,"colspan":_vm.table.cols.colSpan}},[_vm._v(" "+_vm._s(_vm._f("translate")(("coverage-buckets-" + _vm.bucketName)))+" ")]),_vm._l((_vm.table.vocabularyHeaders),function(header,index){return _c('th',{key:index,attrs:{"colspan":header.termsCount}},[_c('span',[_vm._v(_vm._s(_vm._f("localize-string")(header.entity.titles))+" ")]),_c('small',[_c('a',{attrs:{"href":""},on:{"click":function($event){return _vm.removeVocabulary($event, header)}}},[_c('i',{staticClass:"fa fa-times"})])])])})],2),_c('tr',[(_vm.bucketStartsWithDce)?_c('th',[_vm._v(_vm._s(_vm._f("translate")("study")))]):_vm._e(),(_vm.bucketStartsWithDce)?_c('th',{attrs:{"colspan":_vm.studyTypeSelection.harmonization ? 2 : 1}},[_vm._v(_vm._s(_vm._f("translate")("population")))]):_vm._e(),(_vm.bucketStartsWithDce)?_c('th',{directives:[{name:"show",rawName:"v-show",value:(!_vm.studyTypeSelection.harmonization),expression:"!studyTypeSelection.harmonization"}]},[_vm._v(_vm._s(_vm._f("translate")("data-collection-event")))]):_vm._e(),_vm._l((_vm.table.termHeaders),function(header,index){return _c('th',{key:index},[_c('span',[_vm._v(_vm._s(_vm._f("localize-string")(header.entity.titles))+" ")]),_c('small',[_c('a',{attrs:{"ng-if":"header.canRemove","href":""},on:{"click":function($event){return _vm.removeTerm($event, header)}}},[_c('i',{staticClass:"fa fa-times"})])])])})],2),_c('tr',[_c('th',{attrs:{"colspan":_vm.table.cols.colSpan}}),_vm._l((_vm.table.termHeaders),function(header,index){return _c('th',{key:index,attrs:{"title":header.entity.descriptions[0].value}},[_c('a',{attrs:{"href":""},on:{"click":function($event){return _vm.updateQuery($event, null, header, 'variables')}}},[_c('span',[_vm._v(_vm._s(header.hits.toLocaleString()))])])])})],2)]),_c('tbody',_vm._l((_vm.filteredRows),function(row,rindex){return _c('tr',{directives:[{name:"show",rawName:"v-show",value:(_vm.table.termHeaders.length == row.hits.length),expression:"table.termHeaders.length == row.hits.length"}],key:rindex},[_vm._l((_vm.table.cols.ids[row.value]),function(col,cindex){return _c('td',{directives:[{name:"show",rawName:"v-show",value:(!(col.id === '-' && (_vm.isSingleStudyEnabled || _vm.studyTypeSelection.harmonization))),expression:"!(col.id === '-' && (isSingleStudyEnabled || studyTypeSelection.harmonization))"}],key:cindex,attrs:{"colspan":cindex > 0 && _vm.studyTypeSelection.harmonization ? 2 : 1}},[_c('span',{directives:[{name:"show",rawName:"v-show",value:(col.id === '-'),expression:"col.id === '-'"}]},[_vm._v("-")]),_c('a',{directives:[{name:"show",rawName:"v-show",value:(col.rowSpan !== 0  && col.id !== '-'),expression:"col.rowSpan !== 0  && col.id !== '-'"}],attrs:{"href":col.url}},[_vm._v(_vm._s(col.title))]),_c('div',{directives:[{name:"show",rawName:"v-show",value:(col.start && _vm.bucketStartsWithDce),expression:"col.start && bucketStartsWithDce"}],staticStyle:{"text-align":"center"}},[_c('div',[_c('small',{directives:[{name:"show",rawName:"v-show",value:(col.end),expression:"col.end"}],staticClass:"help-block no-margin"},[_vm._v(" "+_vm._s(col.start)+" "+_vm._s(_vm._f("translate")('to'))+" "+_vm._s(col.end)+" ")]),_c('small',{directives:[{name:"show",rawName:"v-show",value:(!col.end),expression:"!col.end"}],staticClass:"help-block no-margin"},[_vm._v(" "+_vm._s(col.start)+", "+_vm._s(_vm._f("translate")('coverage-end-date-ongoing'))+" ")])]),_c('div',{staticClass:"progress no-margin",staticStyle:{"height":"0.5em"}},[_c('div',{staticClass:"progress-bar progress-bar-transparent progress-bar-thin",style:({'width': col.progressStart + '%'}),attrs:{"role":"progressbar","aria-valuenow":"{{::col.start}}","aria-valuemin":"{{::col.min}}","aria-valuemax":"{{::col.start}}"}}),_c('div',{class:'progress-bar progress-bar-' + col.progressClass,style:({'width': col.progress + '%'}),attrs:{"role":"progressbar","aria-valuenow":col.current,"aria-valuemin":col.start,"aria-valuemax":col.end ? col.end : col.current}})])])])}),_vm._l((_vm.table.termHeaders),function(h,hindex){return _c('td',{key:'h'+hindex},[_c('a',{attrs:{"href":""},on:{"click":function($event){return _vm.updateQuery($event, row.value, h, 'variables')}}},[_c('span',{directives:[{name:"show",rawName:"v-show",value:(row.hitsTitles[hindex]),expression:"row.hitsTitles[hindex]"}],staticClass:"badge badge-primary"},[_vm._v(_vm._s(row.hitsTitles[hindex]))])]),_c('span',{directives:[{name:"show",rawName:"v-show",value:(!row.hitsTitles[hindex]),expression:"!row.hitsTitles[hindex]"}]},[_vm._v("0")])])})],2)}),0)]):_vm._e()])])]),_c('div',{directives:[{name:"show",rawName:"v-show",value:(!_vm.showResult),expression:"!showResult"}],staticClass:"text-muted"},[_c('span',[_vm._v(_vm._s(_vm._f("translate")("no-coverage-available")))])])])}
-var CoverageResultvue_type_template_id_2e841901_staticRenderFns = []
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"6097eb98-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/result/coverage/CoverageResult.vue?vue&type=template&id=09fff12a&
+var CoverageResultvue_type_template_id_09fff12a_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',[_c('div',{directives:[{name:"show",rawName:"v-show",value:(_vm.showResult),expression:"showResult"}]},[_c('div',{staticClass:"row"},[_c('div',{staticClass:"col table-responsive"},[(_vm.table)?_c('table',{staticClass:"table table-striped",attrs:{"id":"vosr-coverage-result","width":"100%"}},[_c('thead',[_c('tr',[_c('th',{attrs:{"rowspan":_vm.bucketStartsWithDce ? 1 : 2,"colspan":_vm.table.cols.colSpan}},[_vm._v(" "+_vm._s(_vm._f("translate")(("coverage-buckets-" + _vm.bucketName)))+" ")]),_vm._l((_vm.table.vocabularyHeaders),function(header,index){return _c('th',{key:index,attrs:{"colspan":header.termsCount}},[_c('span',[_vm._v(_vm._s(_vm._f("localize-string")(header.entity.titles))+" ")]),_c('small',[_c('a',{attrs:{"href":""},on:{"click":function($event){return _vm.removeVocabulary($event, header)}}},[_c('i',{staticClass:"fa fa-times"})])])])})],2),_c('tr',[(_vm.bucketStartsWithDce)?_c('th',[_vm._v(_vm._s(_vm._f("translate")("study")))]):_vm._e(),(_vm.bucketStartsWithDce)?_c('th',{attrs:{"colspan":_vm.studyTypeSelection.harmonization ? 2 : 1}},[_vm._v(_vm._s(_vm._f("translate")("population")))]):_vm._e(),(_vm.bucketStartsWithDce)?_c('th',{directives:[{name:"show",rawName:"v-show",value:(!_vm.studyTypeSelection.harmonization),expression:"!studyTypeSelection.harmonization"}]},[_vm._v(_vm._s(_vm._f("translate")("data-collection-event")))]):_vm._e(),_vm._l((_vm.table.termHeaders),function(header,index){return _c('th',{key:index},[_c('span',[_vm._v(_vm._s(_vm._f("localize-string")(header.entity.titles))+" ")]),_c('small',[_c('a',{attrs:{"ng-if":"header.canRemove","href":""},on:{"click":function($event){return _vm.removeTerm($event, header)}}},[_c('i',{staticClass:"fa fa-times"})])])])})],2),_c('tr',[_c('th',{attrs:{"colspan":_vm.table.cols.colSpan}}),_vm._l((_vm.table.termHeaders),function(header,index){return _c('th',{key:index,attrs:{"title":header.entity.descriptions[0].value}},[_c('a',{attrs:{"href":""},on:{"click":function($event){return _vm.updateQuery($event, null, header, 'variables')}}},[_c('span',[_vm._v(_vm._s(header.hits.toLocaleString()))])])])})],2)]),_c('tbody',_vm._l((_vm.filteredRows),function(row,rindex){return _c('tr',{directives:[{name:"show",rawName:"v-show",value:(_vm.table.termHeaders.length == row.hits.length),expression:"table.termHeaders.length == row.hits.length"}],key:rindex},[_vm._l((_vm.table.cols.ids[row.value]),function(col,cindex){return _c('td',{directives:[{name:"show",rawName:"v-show",value:(!(col.id === '-' && (_vm.isSingleStudyEnabled || _vm.studyTypeSelection.harmonization))),expression:"!(col.id === '-' && (isSingleStudyEnabled || studyTypeSelection.harmonization))"}],key:cindex,attrs:{"colspan":cindex > 0 && _vm.studyTypeSelection.harmonization ? 2 : 1}},[_c('span',{directives:[{name:"show",rawName:"v-show",value:(col.id === '-'),expression:"col.id === '-'"}]},[_vm._v("-")]),_c('a',{directives:[{name:"show",rawName:"v-show",value:(col.rowSpan !== 0  && col.id !== '-'),expression:"col.rowSpan !== 0  && col.id !== '-'"}],attrs:{"href":col.url}},[_vm._v(_vm._s(col.title))]),_c('div',{directives:[{name:"show",rawName:"v-show",value:(col.start && _vm.bucketStartsWithDce),expression:"col.start && bucketStartsWithDce"}],staticStyle:{"text-align":"center"}},[_c('div',[_c('small',{directives:[{name:"show",rawName:"v-show",value:(col.end),expression:"col.end"}],staticClass:"help-block no-margin"},[_vm._v(" "+_vm._s(col.start)+" "+_vm._s(_vm._f("translate")('to'))+" "+_vm._s(col.end)+" ")]),_c('small',{directives:[{name:"show",rawName:"v-show",value:(!col.end),expression:"!col.end"}],staticClass:"help-block no-margin"},[_vm._v(" "+_vm._s(col.start)+", "+_vm._s(_vm._f("translate")('coverage-end-date-ongoing'))+" ")])]),_c('div',{staticClass:"progress no-margin",staticStyle:{"height":"0.5em"}},[_c('div',{staticClass:"progress-bar progress-bar-transparent progress-bar-thin",style:({'width': col.progressStart + '%'}),attrs:{"role":"progressbar","aria-valuenow":col.start,"aria-valuemin":col.min,"aria-valuemax":col.start}}),_c('div',{class:'progress-bar progress-bar-' + col.progressClass,style:({'width': col.progress + '%'}),attrs:{"role":"progressbar","aria-valuenow":col.current,"aria-valuemin":col.start,"aria-valuemax":col.end ? col.end : col.current}})])])])}),_vm._l((_vm.table.termHeaders),function(h,hindex){return _c('td',{key:'h'+hindex},[_c('a',{attrs:{"href":""},on:{"click":function($event){return _vm.updateQuery($event, row.value, h, 'variables')}}},[_c('span',{directives:[{name:"show",rawName:"v-show",value:(row.hitsTitles[hindex]),expression:"row.hitsTitles[hindex]"}],staticClass:"badge badge-primary"},[_vm._v(_vm._s(row.hitsTitles[hindex]))])]),_c('span',{directives:[{name:"show",rawName:"v-show",value:(!row.hitsTitles[hindex]),expression:"!row.hitsTitles[hindex]"}]},[_vm._v("0")])])})],2)}),0)]):_vm._e()])])]),_c('div',{directives:[{name:"show",rawName:"v-show",value:(!_vm.showResult),expression:"!showResult"}],staticClass:"text-muted"},[_c('span',[_vm._v(_vm._s(_vm._f("translate")("no-coverage-available")))])])])}
+var CoverageResultvue_type_template_id_09fff12a_staticRenderFns = []
 
 
-// CONCATENATED MODULE: ./src/components/result/coverage/CoverageResult.vue?vue&type=template&id=2e841901&
+// CONCATENATED MODULE: ./src/components/result/coverage/CoverageResult.vue?vue&type=template&id=09fff12a&
 
 // EXTERNAL MODULE: ./node_modules/core-js/modules/es.regexp.exec.js
 var es_regexp_exec = __webpack_require__("ac1f");
@@ -72834,7 +72837,7 @@ var CoverageResultParser_CoverageResultParser = /*#__PURE__*/function () {
 
       if (result && result.rows) {
         var tableTmp = result;
-        tableTmp.cols = new CoverageResultParser_IdSplitter(bucket, result, this.normalizePath).splitIds(this.micaConfig, this, this.locale);
+        tableTmp.cols = new CoverageResultParser_IdSplitter(bucket, result, this.normalizePath).splitIds(this.micaConfig, this.locale);
         table = tableTmp; // TODO let filteredRows = [];
         // TODO let nextFilteredRowsPage = 0;
         // TODO $scope.loadMoreRows();
@@ -72973,7 +72976,7 @@ var CoverageResultParser_CoverageResultParser = /*#__PURE__*/function () {
       isSingleStudyEnabled: false,
       dataTable: null,
       ajaxCallback: null,
-      parser: new CoverageResultParser_CoverageResultParser(this.getMicaConfig(), this.getLocale, this.normalizePath),
+      parser: new CoverageResultParser_CoverageResultParser(this.getMicaConfig(), this.getLocale(), this.normalizePath),
       table: null,
       vocabulariesTermsMap: null,
       bucketStartsWithDce: false,
@@ -73092,8 +73095,8 @@ var CoverageResultParser_CoverageResultParser = /*#__PURE__*/function () {
 
 var CoverageResult_component = normalizeComponent(
   coverage_CoverageResultvue_type_script_lang_js_,
-  CoverageResultvue_type_template_id_2e841901_render,
-  CoverageResultvue_type_template_id_2e841901_staticRenderFns,
+  CoverageResultvue_type_template_id_09fff12a_render,
+  CoverageResultvue_type_template_id_09fff12a_staticRenderFns,
   false,
   null,
   null,
@@ -73382,7 +73385,15 @@ var GraphicsResultParser_GraphicsResultParser = /*#__PURE__*/function () {
         responsive: true,
         legend: _objectSpread2(_objectSpread2({}, {
           display: false
-        }), chartOptions.legend || {})
+        }), chartOptions.legend || {}),
+        scales: {
+          xAxes: [{
+            ticks: {
+              beginAtZero: true,
+              min: 0
+            }
+          }]
+        }
       };
       var canvasData = {
         type: chartOptions.type,
@@ -80056,12 +80067,12 @@ var RqlPanelvue_type_template_id_01a27cb8_staticRenderFns = []
 
 // CONCATENATED MODULE: ./src/components/panel/RqlPanel.vue?vue&type=template&id=01a27cb8&
 
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"6097eb98-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/panel/RqlPanelVocabulary.vue?vue&type=template&id=476de61c&
-var RqlPanelVocabularyvue_type_template_id_476de61c_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',[(_vm.criterion.type === 'TERMS')?[_c('ul',{staticClass:"list-unstyled row"},_vm._l((_vm.terms),function(term){return _c('li',{key:term.name,staticClass:"list-item col-sm-4",attrs:{"title":_vm._f("localize-string")(term.description)}},[_c('div',{staticClass:"form-check"},[_c('input',{directives:[{name:"model",rawName:"v-model",value:(_vm.criterion.value),expression:"criterion.value"}],staticClass:"form-check-input",attrs:{"type":"checkbox","id":_vm.vocabulary.name + '-' + term.name},domProps:{"value":term.name,"checked":Array.isArray(_vm.criterion.value)?_vm._i(_vm.criterion.value,term.name)>-1:(_vm.criterion.value)},on:{"change":[function($event){var $$a=_vm.criterion.value,$$el=$event.target,$$c=$$el.checked?(true):(false);if(Array.isArray($$a)){var $$v=term.name,$$i=_vm._i($$a,$$v);if($$el.checked){$$i<0&&(_vm.$set(_vm.criterion, "value", $$a.concat([$$v])))}else{$$i>-1&&(_vm.$set(_vm.criterion, "value", $$a.slice(0,$$i).concat($$a.slice($$i+1))))}}else{_vm.$set(_vm.criterion, "value", $$c)}},function($event){return _vm.onInput()}]}}),_c('label',{staticClass:"form-check-label text-break",attrs:{"for":_vm.vocabulary.name + '-' + term.name}},[_vm._v(_vm._s(_vm._f("localize-string")(term.title)))])])])}),0),(_vm.showMoreLess())?_c('div',{staticClass:"float-right"},[_c('button',{staticClass:"btn btn-link btn-sm",attrs:{"type":"button"},on:{"click":function($event){return _vm.switchMoreLess()}}},[(!_vm.showAll)?_c('span',{attrs:{"aria-hidden":"true"}},[_c('i',{staticClass:"fas fa-caret-down"}),_vm._v(" "+_vm._s(_vm._f("translate")("more")))]):_vm._e(),(_vm.showAll)?_c('span',{attrs:{"aria-hidden":"true"}},[_c('i',{staticClass:"fas fa-caret-up"}),_vm._v(" "+_vm._s(_vm._f("translate")("less")))]):_vm._e()])]):_vm._e()]:(_vm.criterion.type === 'NUMERIC')?[_c('div',{staticClass:"form-group"},[_c('label',{attrs:{"for":_vm.vocabulary.name + 'from'}},[_vm._v(_vm._s(_vm._f("translate")("search.from")))]),_c('input',{directives:[{name:"model",rawName:"v-model",value:(_vm.criterion.value[0]),expression:"criterion.value[0]"}],staticClass:"form-control",attrs:{"type":"number","id":_vm.vocabulary.name + '-from'},domProps:{"value":(_vm.criterion.value[0])},on:{"change":function($event){return _vm.onInput()},"input":function($event){if($event.target.composing){ return; }_vm.$set(_vm.criterion.value, 0, $event.target.value)}}})]),_c('div',{staticClass:"form-group"},[_c('label',{attrs:{"for":_vm.vocabulary.name + 'to'}},[_vm._v(_vm._s(_vm._f("translate")("search.to")))]),_c('input',{directives:[{name:"model",rawName:"v-model",value:(_vm.criterion.value[1]),expression:"criterion.value[1]"}],staticClass:"form-control",attrs:{"type":"number","id":_vm.vocabulary.name + '-to'},domProps:{"value":(_vm.criterion.value[1])},on:{"change":function($event){return _vm.onInput()},"input":function($event){if($event.target.composing){ return; }_vm.$set(_vm.criterion.value, 1, $event.target.value)}}})])]:[_c('input',{directives:[{name:"model",rawName:"v-model",value:(_vm.criterion.value),expression:"criterion.value"}],staticClass:"form-control",attrs:{"type":"text"},domProps:{"value":(_vm.criterion.value)},on:{"change":function($event){return _vm.onInput()},"input":function($event){if($event.target.composing){ return; }_vm.$set(_vm.criterion, "value", $event.target.value)}}})]],2)}
-var RqlPanelVocabularyvue_type_template_id_476de61c_staticRenderFns = []
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"6097eb98-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/panel/RqlPanelVocabulary.vue?vue&type=template&id=2f2ba3d8&
+var RqlPanelVocabularyvue_type_template_id_2f2ba3d8_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',[(_vm.criterion.type === 'TERMS')?[_c('ul',{staticClass:"list-unstyled row"},_vm._l((_vm.terms),function(term){return _c('li',{key:term.name,staticClass:"list-item col-sm-4",attrs:{"title":_vm._f("localize-string")(term.description)}},[_c('div',{staticClass:"form-check"},[_c('input',{directives:[{name:"model",rawName:"v-model",value:(_vm.criterion.value),expression:"criterion.value"}],staticClass:"form-check-input",attrs:{"type":"checkbox","id":_vm.vocabulary.name + '-' + term.name},domProps:{"value":term.name,"checked":Array.isArray(_vm.criterion.value)?_vm._i(_vm.criterion.value,term.name)>-1:(_vm.criterion.value)},on:{"change":[function($event){var $$a=_vm.criterion.value,$$el=$event.target,$$c=$$el.checked?(true):(false);if(Array.isArray($$a)){var $$v=term.name,$$i=_vm._i($$a,$$v);if($$el.checked){$$i<0&&(_vm.$set(_vm.criterion, "value", $$a.concat([$$v])))}else{$$i>-1&&(_vm.$set(_vm.criterion, "value", $$a.slice(0,$$i).concat($$a.slice($$i+1))))}}else{_vm.$set(_vm.criterion, "value", $$c)}},function($event){return _vm.onInput()}]}}),_c('label',{staticClass:"form-check-label text-break",attrs:{"for":_vm.vocabulary.name + '-' + term.name}},[_vm._v(_vm._s(_vm._f("localize-string")(term.title)))])])])}),0),(_vm.showMoreLess())?_c('div',{staticClass:"float-right"},[_c('button',{staticClass:"btn btn-link btn-sm",attrs:{"type":"button"},on:{"click":function($event){return _vm.switchMoreLess()}}},[(!_vm.showAll)?_c('span',{attrs:{"aria-hidden":"true"}},[_c('i',{staticClass:"fas fa-caret-down"}),_vm._v(" "+_vm._s(_vm._f("translate")("more")))]):_vm._e(),(_vm.showAll)?_c('span',{attrs:{"aria-hidden":"true"}},[_c('i',{staticClass:"fas fa-caret-up"}),_vm._v(" "+_vm._s(_vm._f("translate")("less")))]):_vm._e()])]):_vm._e()]:(_vm.criterion.type === 'NUMERIC')?[_c('div',{staticClass:"form-group col-6 d-inline-block"},[_c('label',{attrs:{"for":_vm.vocabulary.name + 'from'}},[_vm._v(_vm._s(_vm._f("translate")("search.from")))]),_c('input',{directives:[{name:"model",rawName:"v-model",value:(_vm.criterion.value[0]),expression:"criterion.value[0]"}],staticClass:"form-control",attrs:{"type":"number","id":_vm.vocabulary.name + '-from'},domProps:{"value":(_vm.criterion.value[0])},on:{"change":function($event){return _vm.onInput()},"input":function($event){if($event.target.composing){ return; }_vm.$set(_vm.criterion.value, 0, $event.target.value)}}})]),_c('div',{staticClass:"form-group col-6 d-inline-block"},[_c('label',{attrs:{"for":_vm.vocabulary.name + 'to'}},[_vm._v(_vm._s(_vm._f("translate")("search.to")))]),_c('input',{directives:[{name:"model",rawName:"v-model",value:(_vm.criterion.value[1]),expression:"criterion.value[1]"}],staticClass:"form-control",attrs:{"type":"number","id":_vm.vocabulary.name + '-to'},domProps:{"value":(_vm.criterion.value[1])},on:{"change":function($event){return _vm.onInput()},"input":function($event){if($event.target.composing){ return; }_vm.$set(_vm.criterion.value, 1, $event.target.value)}}})])]:[_c('input',{directives:[{name:"model",rawName:"v-model",value:(_vm.criterion.value),expression:"criterion.value"}],staticClass:"form-control",attrs:{"type":"text"},domProps:{"value":(_vm.criterion.value)},on:{"change":function($event){return _vm.onInput()},"input":function($event){if($event.target.composing){ return; }_vm.$set(_vm.criterion, "value", $event.target.value)}}})]],2)}
+var RqlPanelVocabularyvue_type_template_id_2f2ba3d8_staticRenderFns = []
 
 
-// CONCATENATED MODULE: ./src/components/panel/RqlPanelVocabulary.vue?vue&type=template&id=476de61c&
+// CONCATENATED MODULE: ./src/components/panel/RqlPanelVocabulary.vue?vue&type=template&id=2f2ba3d8&
 
 // CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js??ref--12-0!./node_modules/thread-loader/dist/cjs.js!./node_modules/babel-loader/lib!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/panel/RqlPanelVocabulary.vue?vue&type=script&lang=js&
 
@@ -80194,8 +80205,8 @@ var RqlPanelVocabularyvue_type_template_id_476de61c_staticRenderFns = []
 
 var RqlPanelVocabulary_component = normalizeComponent(
   panel_RqlPanelVocabularyvue_type_script_lang_js_,
-  RqlPanelVocabularyvue_type_template_id_476de61c_render,
-  RqlPanelVocabularyvue_type_template_id_476de61c_staticRenderFns,
+  RqlPanelVocabularyvue_type_template_id_2f2ba3d8_render,
+  RqlPanelVocabularyvue_type_template_id_2f2ba3d8_staticRenderFns,
   false,
   null,
   null,
