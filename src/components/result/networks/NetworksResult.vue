@@ -52,7 +52,7 @@ export default {
   data () {
     return {
       dataTable: null,
-      parser: new NetworksResultParser(this.normalizePath),
+      parser: new NetworksResultParser(this.normalizePath, this.getLocale()),
       type: "networks",
       target: "network"
     }

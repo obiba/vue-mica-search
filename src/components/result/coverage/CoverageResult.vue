@@ -63,8 +63,8 @@
                     </small>
                   </div>
                   <div class="progress no-margin" style="height: 0.5em">
-                    <div class="progress-bar progress-bar-transparent progress-bar-thin" role="progressbar" aria-valuenow="{{::col.start}}" aria-valuemin="{{::col.min}}"
-                      aria-valuemax="{{::col.start}}" v-bind:style="{'width': col.progressStart + '%'}">
+                    <div class="progress-bar progress-bar-transparent progress-bar-thin" role="progressbar" :aria-valuenow="col.start" :aria-valuemin="col.min"
+                      :aria-valuemax="col.start" v-bind:style="{'width': col.progressStart + '%'}">
                     </div>
                     <div v-bind:class="'progress-bar progress-bar-' + col.progressClass" role="progressbar" v-bind:aria-valuenow="col.current" v-bind:aria-valuemin="col.start"
                       v-bind:aria-valuemax="col.end ? col.end : col.current" v-bind:style="{'width': col.progress + '%'}">
@@ -102,7 +102,7 @@ export default {
       isSingleStudyEnabled: false,
       dataTable: null,
       ajaxCallback: null,
-      parser: new CoverageResultParser(this.getMicaConfig(), this.getLocale, this.normalizePath),
+      parser: new CoverageResultParser(this.getMicaConfig(), this.getLocale(), this.normalizePath),
       table: null, 
       vocabulariesTermsMap: null,
       bucketStartsWithDce: false,

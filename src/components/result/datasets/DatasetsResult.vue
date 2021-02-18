@@ -34,7 +34,7 @@ export default {
   extends: EntityResult,
   data () {
     return {
-      parser: new DatasetsResultParser(this.normalizePath),
+      parser: new DatasetsResultParser(this.normalizePath, this.getLocale()),
       type: "datasets",
       target: "dataset"
     }

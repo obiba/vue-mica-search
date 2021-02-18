@@ -1,8 +1,9 @@
 import Vue from 'vue';
 export default class StudiesResultParser {
 
-  constructor(normalizePath) {
+  constructor(normalizePath, locale) {
     this.normalizePath = normalizePath;
+    this.locale = locale;
   }
 
   __getNumberOfParticipants(content) {
@@ -52,7 +53,7 @@ export default class StudiesResultParser {
       const hasDatasource = (dataSources, id) => dataSources.indexOf(id) > -1;
       const design = summary.design ? taxonomyFilter.apply(null, [`Mica_study.methods-design.${summary.design}`]) : '-';
       let anchor = (type, value, studyType) =>
-        `<a href="" class="query-anchor" data-study-type="${studyType}" data-target="study" data-target-id="${summary.id}" data-type="${type}">${value}</a>`;
+        `<a href="" class="query-anchor" data-study-type="${studyType}" data-target="study" data-target-id="${summary.id}" data-type="${type}">${value.toLocaleString(this.locale)}</a>`;
       
       let path = this.normalizePath(`/study/${summary.id}`);
       let row = [`<a href="${path}">${localize(summary.acronym)}</a>`];

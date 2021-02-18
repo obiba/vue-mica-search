@@ -2,8 +2,9 @@ import Vue from 'vue';
 
 export default class DatasetsResultParser {
 
-  constructor(normalizePath) {
+  constructor(normalizePath, locale) {
     this.normalizePath = normalizePath;
+    this.locale = locale;
   }
 
   parse(data, micaConfig, localize, displayOptions) {
@@ -36,7 +37,7 @@ export default class DatasetsResultParser {
         ? taxonomyFilter.apply(null, ['Mica_dataset.className.HarmonizationDataset'])
         : taxonomyFilter.apply(null, ['Mica_dataset.className.StudyDataset']) ;
       const stats = dataset['obiba.mica.CountStatsDto.datasetCountStats'] || {};
-      let anchor = (type, value) => `<a href="" class="query-anchor" data-target="dataset" data-target-id="${dataset.id}" data-type="${type}">${value}</a>`;
+      let anchor = (type, value) => `<a href="" class="query-anchor" data-target="dataset" data-target-id="${dataset.id}" data-type="${type}">${value.toLocaleString(this.locale)}</a>`;
   
       displayOptions.datasetColumns.forEach(column => {
         switch (column) {

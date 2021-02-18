@@ -259,7 +259,7 @@ export default class CoverageResultParser {
 
     if (result && result.rows) {
       var tableTmp = result;
-      tableTmp.cols = new IdSplitter(bucket, result, this.normalizePath).splitIds(this.micaConfig, this, this.locale);
+      tableTmp.cols = new IdSplitter(bucket, result, this.normalizePath).splitIds(this.micaConfig, this.locale);
       table = tableTmp;
 
       // TODO let filteredRows = [];
