@@ -84,10 +84,7 @@
         </table>
       </div>
     </div>
-  </div>
-  <div v-show="!showResult" class="text-muted">
-    <span>{{ "no-coverage-available" | translate }}</span>
-  </div>
+  </div>  
 </div>
 </template>
 <script>
