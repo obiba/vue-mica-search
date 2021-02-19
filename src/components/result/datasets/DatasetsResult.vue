@@ -12,15 +12,6 @@
       </table>
     </div>
   </div>
-
-  <div v-show="loading">
-    <div class="spinner-border spinner-border-sm" role="status"></div>
-  </div>
-
-  <div v-show="!loading && !showResult" class="text-muted">
-    <span>{{ "no-dataset-found" | translate }}</span>
-  </div>
-
 </div>
 </template>
 <script>

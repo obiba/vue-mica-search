@@ -9,7 +9,6 @@ export default {
       type: null,
       target: null,
       showResult: false,
-      loading: true,
       selections: []
     };
   },
@@ -36,7 +35,6 @@ export default {
       const pageInfo = this.dataTable.page.info();
       var parsed = this.parser.parse(payload.response, this.getMicaConfig(), this.localize, this.getDisplayOptions());
       this.showResult = parsed.totalHits > 0;
-      this.loading = false;
       if (!this.showResult) return; 
 
       this.ajaxCallback({
@@ -61,7 +59,6 @@ export default {
      * DataTable AJAX callback used to send pagination events 
      */
     onAjaxCallback(data, callback) {
-      this.loading = true;
       if (this.ajaxCallback) {
         // this is called when paginating or page size is changed
         if (this.manualPagination) {
