@@ -77,16 +77,19 @@ export default class GraphicsResultParser {
       responsive: true,
       legend: {
         ...{ display: false }, ...(chartOptions.legend || {})
-      },
-      scales: {
+      }
+    };
+
+    if (chartOptions.type === 'horizontalBar') {
+      options.scales = options.scales ? options.scales : {
         xAxes: [{
           ticks: {
             beginAtZero: true,
             min: 0
           }
         }]
-      }
-    };
+      };
+    }
 
     const canvasData = {
       type: chartOptions.type,
