@@ -2,7 +2,8 @@
 <div>
   <div v-show="showResult">
     <div class="row">
-      <div class="col table-responsive">
+      <div id="coverage-table-container" class="col table-responsive">
+        <row-popup :state="rowPopupState"></row-popup>
         <table v-if="table" id="vosr-coverage-result" class="table table-striped" width="100%">
           <thead>
             <tr>
@@ -45,8 +46,12 @@
           </thead>
 
           <tbody>
-            <tr v-for="(row, rindex) in filteredRows" v-bind:key="rindex" v-show="table.termHeaders.length == row.hits.length">
-              <td v-for="(col, cindex) in table.cols.ids[row.value]" 
+            <tr v-for="(row, rindex) in filteredRows" v-bind:key="rindex" 
+              v-show="table.termHeaders.length == row.hits.length"
+              v-on:mouseover="onMouseOver($event, row)"
+              v-on:mouseleave="onMouseLeave()">
+
+              <td v-for="(col, cindex) in table.cols.ids[row.value]"
                 v-bind:key="cindex" 
                 v-bind:colspan="cindex > 0 && studyTypeSelection.harmonization ? 2 : 1" 
                 v-show="!(col.id === '-' && (isSingleStudyEnabled || studyTypeSelection.harmonization))">
@@ -90,9 +95,15 @@
 <script>
 import Query from 'rql/src/query';
 import CoverageResultParser from "libs/parsers/CoverageResultParser";
+import RowPopupState from './row-popup/RowPopupState'
+import RowPopup from './row-popup/RowPopup.vue'
+const rowPopupState = new RowPopupState();
 
 export default {
   name: "CoverageResult",  
+  components: {
+    RowPopup
+  },
   data() {
     return {
       studyTypeSelection: {all: true},
@@ -104,7 +115,8 @@ export default {
       vocabulariesTermsMap: null,
       bucketStartsWithDce: false,
       showResult: false,
-      filteredRows: []
+      filteredRows: [],
+      rowPopupState: null
     };
   },
   methods: {
@@ -147,6 +159,14 @@ export default {
       } else {
         this.getEventBus().$emit('query-type-update', {target: 'variable', query: new Query('in', [`${term.taxonomyName}.${term.vocabularyName}`, argsToKeep])});
       }
+    },
+    onMouseOver(event, row) {
+      rowPopupState.update(event.target, row);
+      this.rowPopupState = rowPopupState;
+    },
+    onMouseLeave() {
+      rowPopupState.reset();
+      this.rowPopupState = null;
     },
     updateQuery(event, id, term, type) {
       console.debug(`Id: ${id} Term: ${term} Type: ${type}`);
