@@ -19,13 +19,15 @@ export default class NetworksResultParser {
     if (!result) {
       throw new Error("Invalid JSON.");
     }
-
+    
     let parsed = {
       data: [],
       totalHits: networksResult.totalHits
     }
+
+    const networks = result.networks || []; 
     
-    result.networks.forEach(network => {
+    networks.forEach(network => {
       const stats = network['obiba.mica.CountStatsDto.networkCountStats'] || {};
       let anchor = (type, value, studyType) => `<a href="" class="query-anchor" data-study-type="${studyType}" data-target="network" data-target-id="${network.id}" data-type="${type}">${value.toLocaleString(this.locale)}</a>`;
 

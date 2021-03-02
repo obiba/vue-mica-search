@@ -70290,7 +70290,8 @@ var VariablesResultParser_VariablesResultParser = /*#__PURE__*/function () {
         data: [],
         totalHits: variablesResult.totalHits
       };
-      result.summaries.forEach(function (summary) {
+      var summaries = result.summaries || [];
+      summaries.forEach(function (summary) {
         var path = _this.normalizePath("/variable/".concat(summary.id));
 
         var row = ['<i class="far fa-square"></i>', summary.id, "<a href=\"".concat(path, "\">").concat(summary.name, "</a>")];
@@ -70346,7 +70347,7 @@ var VariablesResultParser_VariablesResultParser = /*#__PURE__*/function () {
             case 'population':
               {
                 path = _this.normalizePath("/study/".concat(summary.studyId));
-                row.push("<a href=\"".concat(path, "#populations\">").concat(localize(summary.populationName), "</a>"));
+                row.push("<a href=\"".concat(path, "#population/").concat(summary.populationId, "\">").concat(localize(summary.populationName), "</a>"));
                 break;
               }
 
@@ -70356,7 +70357,7 @@ var VariablesResultParser_VariablesResultParser = /*#__PURE__*/function () {
                 path = _this.normalizePath("/study/".concat(summary.studyId));
 
                 if (summary.dceName) {
-                  row.push("<a href=\"".concat(path, "#populations  \">").concat(localize(summary.dceName), "</a>"));
+                  row.push("<a href=\"".concat(path, "#population/").concat(summary.populationId, "/data-collection-event/").concat(summary.dceId, "\">").concat(localize(summary.dceName), "</a>"));
                 } else {
                   row.push('-');
                 }
@@ -71104,7 +71105,8 @@ var DatasetsResultParser_DatasetsResultParser = /*#__PURE__*/function () {
         data: [],
         totalHits: datasetsResult.totalHits
       };
-      result.datasets.forEach(function (dataset) {
+      var datasets = result.datasets || [];
+      datasets.forEach(function (dataset) {
         var path = _this.normalizePath("/dataset/".concat(dataset.id));
 
         var row = ["<a href=\"".concat(path, "\">").concat(localize(dataset.acronym), "</a>")];
@@ -71337,7 +71339,8 @@ var StudiesResultParser_StudiesResultParser = /*#__PURE__*/function () {
       };
 
       var checkIcon = "<i class=\"fa fa-check\">";
-      result.summaries.forEach(function (summary) {
+      var summaries = result.summaries || [];
+      summaries.forEach(function (summary) {
         var type = summary.studyResourcePath === 'harmonization-study' ? taxonomyFilter.apply(null, ['Mica_study.className.HarmonizationStudy']) : taxonomyFilter.apply(null, ['Mica_study.className.Study']);
         var stats = summary['obiba.mica.CountStatsDto.studyCountStats'] || {};
         var content = JSON.parse(summary.content);
@@ -71711,7 +71714,8 @@ var NetworksResultParser_NetworksResultParser = /*#__PURE__*/function () {
         data: [],
         totalHits: networksResult.totalHits
       };
-      result.networks.forEach(function (network) {
+      var networks = result.networks || [];
+      networks.forEach(function (network) {
         var stats = network['obiba.mica.CountStatsDto.networkCountStats'] || {};
 
         var anchor = function anchor(type, value, studyType) {
