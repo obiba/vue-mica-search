@@ -72349,18 +72349,17 @@ var RowPopupState_RowPopupState = /*#__PURE__*/function () {
 }();
 
 
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"65f9863b-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/result/coverage/row-popup/RowPopup.vue?vue&type=template&id=65fd33df&
-var RowPopupvue_type_template_id_65fd33df_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{directives:[{name:"show",rawName:"v-show",value:(_vm.visible === true),expression:"visible === true"}],staticClass:"coverage-row-popup",attrs:{"id":"row-popup"}},[_c('div',{staticClass:"coverage-row-popup-content"},[_c('table',{staticClass:"table table-striped table-condensed p-0 m-0"},[_c('tr',_vm._l((_vm.headers),function(value,index){return _c('th',{key:index},[_vm._v(_vm._s(value))])}),0),_c('tr',_vm._l((_vm.content),function(value,index){return _c('td',{key:index},[_vm._v(_vm._s(value))])}),0)])])])}
-var RowPopupvue_type_template_id_65fd33df_staticRenderFns = []
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"65f9863b-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/result/coverage/row-popup/RowPopup.vue?vue&type=template&id=3d322b86&
+var RowPopupvue_type_template_id_3d322b86_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{directives:[{name:"show",rawName:"v-show",value:(_vm.visible === true),expression:"visible === true"}],staticClass:"coverage-row-popup",attrs:{"id":"row-popup"}},[_c('div',{staticClass:"coverage-row-popup-content"},[_c('table',{staticClass:"table table-striped table-condensed p-0 m-0"},[_c('tr',_vm._l((_vm.headers),function(value,index){return _c('th',{key:index},[_vm._v(_vm._s(value))])}),0),_c('tr',_vm._l((_vm.content),function(value,index){return _c('td',{key:index},[_vm._v(_vm._s(value))])}),0)])])])}
+var RowPopupvue_type_template_id_3d322b86_staticRenderFns = []
 
 
-// CONCATENATED MODULE: ./src/components/result/coverage/row-popup/RowPopup.vue?vue&type=template&id=65fd33df&
+// CONCATENATED MODULE: ./src/components/result/coverage/row-popup/RowPopup.vue?vue&type=template&id=3d322b86&
 
 // EXTERNAL MODULE: ./node_modules/core-js/modules/es.string.trim.js
 var es_string_trim = __webpack_require__("498a");
 
 // CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js??ref--12-0!./node_modules/thread-loader/dist/cjs.js!./node_modules/babel-loader/lib!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/result/coverage/row-popup/RowPopup.vue?vue&type=script&lang=js&
-
 
 
 
@@ -72439,8 +72438,6 @@ var MARGIN = 15;
       var windowHeight = window.innerHeight || document.documentElement.clientHeight;
       var xInViewPort = windowWidth - rect.width - MARGIN > event.clientX;
       var yInViewPort = windowHeight - rect.height - MARGIN > event.clientY;
-      console.log("mX: ".concat(event.clientX, " mY: ").concat(event.clientY, " wW: ").concat(windowWidth, " wH: ").concat(windowHeight, " rW: ").concat(rect.width, " rH: ").concat(rect.height));
-      console.log("xInViewPort: ".concat(xInViewPort, " yInViewPort: ").concat(yInViewPort));
       this.element.style.left = (xInViewPort ? event.clientX + MARGIN : event.clientX - MARGIN - rect.width) + "px";
       this.element.style.top = (yInViewPort ? event.clientY + MARGIN : event.clientY - MARGIN - rect.height) + "px";
     },
@@ -72492,8 +72489,8 @@ var RowPopupvue_type_style_index_0_lang_css_ = __webpack_require__("6bf2");
 
 var RowPopup_component = normalizeComponent(
   row_popup_RowPopupvue_type_script_lang_js_,
-  RowPopupvue_type_template_id_65fd33df_render,
-  RowPopupvue_type_template_id_65fd33df_staticRenderFns,
+  RowPopupvue_type_template_id_3d322b86_render,
+  RowPopupvue_type_template_id_3d322b86_staticRenderFns,
   false,
   null,
   null,
