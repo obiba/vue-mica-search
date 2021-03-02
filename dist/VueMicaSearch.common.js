@@ -71985,6 +71985,7 @@ var es_string_split = __webpack_require__("1276");
 
 
 
+
 var BUCKET_TYPES = {
   STUDY: 'studyId',
   DCE: 'dceId',
@@ -72144,10 +72145,11 @@ var CoverageResultParser_IdSplitter = /*#__PURE__*/function () {
           }); // population
 
           id = ids[0] + ':' + ids[1];
+          var populationUrl = "".concat(studyUrl, "#/population/").concat(id);
           rowSpan = _this.__appendRowSpan(id);
           cols.ids[row.value].push({
             id: id,
-            url: studyUrl,
+            url: populationUrl,
             title: titles[1],
             description: descriptions[1],
             rowSpan: rowSpan,
@@ -72162,7 +72164,7 @@ var CoverageResultParser_IdSplitter = /*#__PURE__*/function () {
             current: _this.currentYearMonth,
             end: row.end,
             progressClass: odd ? 'info' : 'warning',
-            url: studyUrl,
+            url: isHarmo ? studyUrl : "".concat(populationUrl, "/data-collection-event/").concat(row.value),
             rowSpan: 1,
             index: i++
           });
