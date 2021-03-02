@@ -29,7 +29,7 @@ export default class VariablesResultParser {
       totalHits: variablesResult.totalHits
     }
 
-    result.summaries.forEach(summary => {
+    (result.summaries || []).forEach(summary => {
 
       let path = this.normalizePath(`/variable/${summary.id}`);
       let row = ['<i class="far fa-square"></i>', summary.id, `<a href="${path}">${summary.name}</a>`,];
@@ -74,14 +74,14 @@ export default class VariablesResultParser {
           }
           case 'population': {
             path = this.normalizePath(`/study/${summary.studyId}`);
-            row.push(`<a href="${path}#populations">${localize(summary.populationName)}</a>`);
+            row.push(`<a href="${path}#population/${summary.populationId}">${localize(summary.populationName)}</a>`);
             break;
           }
           case 'dce':
           case 'data-collection-event': {
             path = this.normalizePath(`/study/${summary.studyId}`);
             if (summary.dceName) {
-              row.push(`<a href="${path}#populations  ">${localize(summary.dceName)}</a>`);
+              row.push(`<a href="${path}#population/${summary.populationId}/data-collection-event/${summary.dceId}">${localize(summary.dceName)}</a>`);
             } else {
               row.push('-');
             }
