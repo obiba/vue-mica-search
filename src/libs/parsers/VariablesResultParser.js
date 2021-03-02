@@ -28,8 +28,10 @@ export default class VariablesResultParser {
       data: [],
       totalHits: variablesResult.totalHits
     }
+    
+    const summaries = result.summaries || [];
 
-    (result.summaries || []).forEach(summary => {
+    summaries.forEach(summary => {
 
       let path = this.normalizePath(`/variable/${summary.id}`);
       let row = ['<i class="far fa-square"></i>', summary.id, `<a href="${path}">${summary.name}</a>`,];

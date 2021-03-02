@@ -40,8 +40,9 @@ export default class StudiesResultParser {
 
     const taxonomyFilter = Vue.filter('taxonomy-title') || (title => title);
     const checkIcon = `<i class="fa fa-check">`;
+    const summaries = result.summaries || [];
 
-    result.summaries.forEach(summary => {
+    summaries.forEach(summary => {
 
       const type = summary.studyResourcePath === 'harmonization-study'
         ? taxonomyFilter.apply(null, ['Mica_study.className.HarmonizationStudy'])

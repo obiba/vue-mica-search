@@ -29,7 +29,9 @@ export default class DatasetsResultParser {
       totalHits: datasetsResult.totalHits
     }    
 
-    result.datasets.forEach(dataset => {
+    const datasets = result.datasets || [];
+    
+    datasets.forEach(dataset => {
 
       let path = this.normalizePath(`/dataset/${dataset.id}`);
       let row = [`<a href="${path}">${localize(dataset.acronym)}</a>`];
