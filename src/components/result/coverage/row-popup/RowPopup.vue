@@ -77,12 +77,6 @@ export default {
       const windowHeight = (window.innerHeight || document.documentElement.clientHeight);
       const xInViewPort = windowWidth - rect.width - MARGIN > event.clientX;
       const yInViewPort = windowHeight - rect.height - MARGIN > event.clientY;
-
-      console.log(`mX: ${event.clientX} mY: ${event.clientY} wW: ${windowWidth} wH: ${windowHeight} rW: ${rect.width} rH: ${rect.height}`);
-
-
-      console.log(`xInViewPort: ${xInViewPort} yInViewPort: ${yInViewPort}`);
-
       this.element.style.left = (xInViewPort ? event.clientX  + MARGIN : event.clientX - MARGIN - rect.width) + "px";
       this.element.style.top = (yInViewPort ? event.clientY + MARGIN : event.clientY - MARGIN - rect.height) + "px";
     },
