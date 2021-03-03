@@ -178,7 +178,11 @@ export default {
         const a = rowA[sortFields[this.sort.index]];
         const b = rowB[sortFields[this.sort.index]];
 
-        return a.toString().localeCompare(b.toString()) * multiplier;
+        if (typeof a === 'number' || typeof b === 'number') {
+          return (a - b) * multiplier;
+        } else {
+          return a.toString().localeCompare(b.toString()) * multiplier;
+        }  
       });
     }
   },
