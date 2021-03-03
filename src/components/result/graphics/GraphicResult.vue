@@ -17,12 +17,15 @@
         <div v-bind:id="tableContainerId" class="col-sm-12 col-xl-6 overflow-auto" style="max-height: 24em">
           <table id="vosr-datasets-result" class="table table-striped" width="100%">
             <thead>
-              <tr class="row">
-                <th class="col" v-for="(col, index) in chartDataset.tableData.cols" v-bind:key="index">{{ col }}</th>
+              <tr class="row" v-on:click.prevent="resetSort()">
+                <th class="col" v-for="(col, index) in chartDataset.tableData.cols" v-bind:key="index">
+                  <span>{{ col }}</span>
+                  <button v-on:click.stop="toggleSortColumn(index)" type="button" class="btn btn-xs btn-default ml-2"><i :class="'fas fa-' + sortClass(index)"></i></button>
+                </th>
               </tr>          
             </thead>
             <tbody>
-                <tr class="row" v-for="(row, index) in chartDataset.tableData.rows" v-bind:key="index">
+                <tr class="row" v-for="(row, index) in rows" v-bind:key="index">
                   <td class="col">{{row.title}}</td>
 
                   <td class="col" v-bind:title="totals ? (100 * row.count/totals.countTotal).toFixed(2) + '%' : ''" v-if="row.count > 0">
@@ -91,11 +94,15 @@ export default {
       chartContainerId: `vosrs-charts-${agg}-${this.position}`,
       tableContainerId: `vosrs-charts-${agg}-${this.position}-table`,
       canvasId: `vosrs-charts-${agg}-${this.position}-canvas`,
-      totals: totals
+      totals: totals,
+      rows: this.chartDataset.tableData.rows.map(r => r),
+      sort: {
+        index: undefined,
+        direction: undefined
+      }
     }
   },
   methods: {
-
     showTooltip(row) {      
       const meta = this.chart.getDatasetMeta(0);
       let data = null;
@@ -112,15 +119,12 @@ export default {
       this.chart.tooltip.update(true);
       this.chart.draw();
     },
-
     hideTooltip() {
       this.chart.tooltip._active = [];
       this.chart.tooltip.update(true);
       this.chart.draw();
     },
-
-    renderCanvas() {
-      
+    renderCanvas() {      
       const chartContainer = $(`#${this.chartContainerId}`);
       chartContainer.children().remove();
       chartContainer.append(`<canvas id="${this.canvasId}" class="mb-4"></canvas>`);
@@ -140,6 +144,42 @@ export default {
       updates.push({target:'study', query: (queryOverride ? queryOverride : new Query('in', [`Mica_study.${vocabulary}`, `${term}`]))});
 
       this.getEventBus().$emit('query-type-updates-selection', {display: 'lists', type: `studies`, updates});
+    },
+    resetSort() {
+      this.sort.index = null;
+      this.sort.direction = null;
+
+      this.rows = this.chartDataset.tableData.rows.map(r => r);
+    },
+    sortClass(index) {
+      if (this.sort.index !== index) {
+        return 'sort';
+      } else {
+        return `sort-${this.sort.direction}`;
+      }
+    },
+    toggleSortColumn(index) {
+      if (this.sort.index !== index) {
+        this.sort.index = index;
+        this.sort.direction = 'up';
+      } else {
+        this.sort.direction = this.sort.direction === 'up' ? 'down' : 'up';
+      }
+
+      const sortFields = ['title', 'count', 'subAgg'];
+
+      this.rows.sort((rowA, rowB) => {
+        let multiplier = 1;
+
+        if (this.sort.direction === 'up') {
+          multiplier = -1;
+        }
+
+        const a = rowA[sortFields[this.sort.index]];
+        const b = rowB[sortFields[this.sort.index]];
+
+        return a.toString().localeCompare(b.toString()) * multiplier;
+      });
     }
   },
   mounted() {
