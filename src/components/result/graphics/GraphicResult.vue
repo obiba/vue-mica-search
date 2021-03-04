@@ -20,7 +20,7 @@
               <tr class="row" v-on:click.prevent="resetSort()">
                 <th class="col" v-for="(col, index) in chartDataset.tableData.cols" v-bind:key="index">
                   <span>{{ col }}</span>
-                  <button v-on:click.stop="toggleSortColumn(index)" type="button" class="btn btn-xs btn-default ml-2"><i :class="'fas fa-' + sortClass(index)"></i></button>
+                  <button v-on:click.stop="toggleSortColumn(index)" type="button" class="btn btn-xs ml-1"><i :class="'fas fa-' + sortClass(index)"></i></button>
                 </th>
               </tr>          
             </thead>
