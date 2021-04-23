@@ -94,12 +94,31 @@ export default {
       chartContainerId: `vosrs-charts-${agg}-${this.position}`,
       tableContainerId: `vosrs-charts-${agg}-${this.position}-table`,
       canvasId: `vosrs-charts-${agg}-${this.position}-canvas`,
-      totals: totals,
-      rows: this.chartDataset.tableData.rows.map(r => r),
       sort: {
         index: undefined,
         direction: undefined
       }
+    }
+  },
+  computed: {
+    rows() {
+      return this.chartDataset.tableData.rows.map(r => r);
+    },
+    totals() {
+      let totals = this.chartDataset.options.withTotals ? {countTotal: 0, subAggTotal: 0} : null;
+
+      if (this.chartDataset.options.withTotals) {
+        this.chartDataset.tableData.rows.forEach(row => {
+          totals.countTotal += row.count;
+          if (row.subAgg !== undefined) {
+            totals.subAggTotal += row.subAgg;
+          } else {
+            totals.subAggTotal = undefined;
+          }
+        });
+      } 
+
+      return totals;
     }
   },
   methods: {
