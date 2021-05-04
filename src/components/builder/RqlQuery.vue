@@ -38,7 +38,14 @@
         </div>
       </div>
       <ul class="list-unstyled" style="max-height: 24em; overflow-y: auto;">
-        <li v-for="term in terms" v-bind:key="term.name">
+        <li v-for="term in checkedTerms" v-bind:key="term.name">
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" v-bind:id="vocabulary.name + '-' + term.name" v-bind:value="term.name" v-bind:name="vocabulary.name + 'terms[]'" v-model="criterion.value" v-on:change="onInput()">
+            <label class="form-check-label" v-bind:for="vocabulary.name + '-' + term.name" v-bind:title="term.description | localize-string">{{ term.title | localize-string }}</label>
+          </div>
+        </li>
+
+        <li v-for="term in uncheckedTerms" v-bind:key="term.name">
           <div class="form-check">
             <input class="form-check-input" type="checkbox" v-bind:id="vocabulary.name + '-' + term.name" v-bind:value="term.name" v-bind:name="vocabulary.name + 'terms[]'" v-model="criterion.value" v-on:change="onInput()">
             <label class="form-check-label" v-bind:for="vocabulary.name + '-' + term.name" v-bind:title="term.description | localize-string">{{ term.title | localize-string }}</label>
@@ -113,6 +120,12 @@ export default {
       return (this.vocabulary.terms || []).filter(term => {
         return (!this.termsFilter || this.termsFilter.trim().length === 0) || localizeStringFunction(term.title).toLowerCase().indexOf(this.termsFilter.toLowerCase()) > -1;
       });
+    },
+    checkedTerms() {
+      return this.terms.filter(t => this.criterion.value.indexOf(t.name) > -1);
+    },
+    uncheckedTerms() {
+      return this.terms.filter(t => this.criterion.value.indexOf(t.name) === -1);
     }
   },
   methods: {
