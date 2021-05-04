@@ -11,7 +11,7 @@
 
   <template v-if="Array.isArray(taxonomy)">
   <div v-for="sub in taxonomy" v-bind:key="sub.name">
-    <rql-panel v-bind:target="target" v-bind:taxonomy="sub" v-bind:query="query" v-on:update-query="updateQuery" v-on:remove-query="removeQuery" v-bind:external-filter="panelFilter" v-bind:has-external-filter="true"></rql-panel>
+    <rql-panel v-bind:target="target" v-bind:taxonomy="sub" v-bind:query="query" v-on:update-query="updateQuery" v-on:remove-query="removeQuery" v-bind:external-filter="theFilter" v-bind:has-external-filter="true"></rql-panel>
   </div>
   </template>
 
