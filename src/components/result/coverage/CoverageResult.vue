@@ -46,6 +46,12 @@
           </thead>
 
           <tbody>
+            <tr v-if="currentPage > 0">
+              <td :colspan="table.termHeaders.length + (bucketStartsWithDce ? 3 : 1)">
+                <button type="button" class="btn btn-sm btn-secondary d-block mx-auto w-25" @click="previous()">[...]</button>
+              </td>
+            </tr>
+
             <tr v-for="(row, rindex) in filteredRows" v-bind:key="rindex" 
               v-show="table.termHeaders.length == row.hits.length"
               v-on:mouseover="onMouseOver($event, row)"
@@ -84,6 +90,12 @@
                 <span v-show="!row.hitsTitles[hindex]">0</span>
               </td>
             </tr>
+
+            <tr v-if="currentPage < (pages - 1)">
+              <td :colspan="table.termHeaders.length + (bucketStartsWithDce ? 3 : 1)">
+                <button type="button" class="btn btn-sm btn-secondary d-block mx-auto w-25" @click="next()">[...]</button>
+              </td>
+            </tr>
           </tbody>
           
         </table>
@@ -98,6 +110,8 @@ import CoverageResultParser from "libs/parsers/CoverageResultParser";
 import RowPopupState from './row-popup/RowPopupState'
 import RowPopup from './row-popup/RowPopup.vue'
 const rowPopupState = new RowPopupState();
+
+const COVERAGE_PAGE_SIZE = 48;
 
 export default {
   name: "CoverageResult",  
@@ -116,7 +130,9 @@ export default {
       bucketStartsWithDce: false,
       showResult: false,
       filteredRows: [],
-      rowPopupState: null
+      rowPopupState: null,
+      pages: 0,
+      currentPage: 0
     };
   },
   methods: {
@@ -129,7 +145,7 @@ export default {
       this.isSingleStudyEnabled = this.getMicaConfig().isSingleStudyEnabled;
       this.studyTypeSelection = payload.studyTypeSelection;
       this.rows = payload.response.rows;
-      this.filteredRows = this.rows;
+      
       this.bucket = payload.bucket;
       this.bucketName = this.bucket.replace(/Id$/,"");
       this.bucketStartsWithDce = payload.bucket.startsWith('dce')
@@ -141,6 +157,11 @@ export default {
         this.dataTable.destroy();
         this.dataTable = null;
       }
+
+      this.currentPage = -1;
+      this.pages = Math.ceil((this.rows || []).length / COVERAGE_PAGE_SIZE);
+
+      this.next();
     },
     removeVocabulary(event, vocabulary) {
       console.debug(`removeVocabulary ${vocabulary}`);
@@ -165,6 +186,21 @@ export default {
     onMouseLeave() {
       rowPopupState.reset();
       this.rowPopupState = null;
+    },
+    next() {
+      if (this.currentPage < this.pages) {
+        this.currentPage++;
+        this.filteredRows = this.getPage(this.currentPage);
+      }      
+    },
+    previous() {
+      if (this.currentPage > 0) {       
+        this.currentPage--; 
+        this.filteredRows = this.getPage(this.currentPage);
+      }
+    },
+    getPage(currentPage) {
+      return (this.rows || []).slice(currentPage * COVERAGE_PAGE_SIZE, (currentPage + 1) * COVERAGE_PAGE_SIZE);
     },
     updateQuery(event, id, term, type) {
       console.debug(`Id: ${id} Term: ${term} Type: ${type}`);
