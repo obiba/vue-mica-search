@@ -191,12 +191,16 @@ export default {
       if (this.currentPage < this.pages) {
         this.currentPage++;
         this.filteredRows = this.getPage(this.currentPage);
+
+        document.getElementById('#vosr-coverage-result').scrollIntoView();
       }      
     },
     previous() {
       if (this.currentPage > 0) {       
         this.currentPage--; 
         this.filteredRows = this.getPage(this.currentPage);
+
+        document.getElementById('#vosr-coverage-result').scrollIntoView();
       }
     },
     getPage(currentPage) {
