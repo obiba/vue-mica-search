@@ -111,7 +111,7 @@ import RowPopupState from './row-popup/RowPopupState'
 import RowPopup from './row-popup/RowPopup.vue'
 const rowPopupState = new RowPopupState();
 
-const COVERAGE_PAGE_SIZE = 8;
+const COVERAGE_PAGE_SIZE = 48;
 
 export default {
   name: "CoverageResult",  
