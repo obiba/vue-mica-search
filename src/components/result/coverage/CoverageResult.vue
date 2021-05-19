@@ -191,12 +191,16 @@ export default {
       if (this.currentPage < this.pages) {
         this.currentPage++;
         this.filteredRows = this.getPage(this.currentPage);
+
+        window.scrollTo(0, 0);
       }      
     },
     previous() {
       if (this.currentPage > 0) {       
         this.currentPage--; 
         this.filteredRows = this.getPage(this.currentPage);
+
+        window.scrollTo(0, 0);
       }
     },
     getPage(currentPage) {
