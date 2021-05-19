@@ -177,12 +177,16 @@ export default {
         return `sort-${this.sort.direction}`;
       }
     },
-    toggleSortColumn(index) {
+    toggleSortColumn(index, goDown) {
       if (this.sort.index !== index) {
         this.sort.index = index;
         this.sort.direction = 'up';
       } else {
         this.sort.direction = this.sort.direction === 'up' ? 'down' : 'up';
+      }
+
+      if (goDown) {
+        this.sort.direction = 'down';
       }
 
       const sortFields = ['title', 'count', 'subAgg'];
@@ -207,6 +211,10 @@ export default {
   },
   mounted() {
     this.renderCanvas();
+
+    if (this.chartDataset.options.initialSortIndex !== undefined) {
+      this.toggleSortColumn(this.chartDataset.options.initialSortIndex, this.chartDataset.options.initialSortDirection === 'down');
+    }
   },
    watch: {
     chartDataset(val) {
