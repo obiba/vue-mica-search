@@ -48,7 +48,7 @@
           <tbody>
             <tr v-if="currentPage > 0">
               <td :colspan="table.termHeaders.length + (bucketStartsWithDce ? 3 : 1)">
-                <button type="button" class="btn btn-sm btn-secondary d-block mx-auto w-25" @click="previous()">[...]</button>
+                <button type="button" class="btn btn-sm btn-secondary coverage-pager" @click="previous()"><i class="fas fa-chevron-up"></i></button>
               </td>
             </tr>
 
@@ -93,7 +93,7 @@
 
             <tr v-if="currentPage < (pages - 1)">
               <td :colspan="table.termHeaders.length + (bucketStartsWithDce ? 3 : 1)">
-                <button type="button" class="btn btn-sm btn-secondary d-block mx-auto w-25" @click="next()">[...]</button>
+                <button type="button" class="btn btn-sm btn-secondary coverage-pager" @click="next()"><i class="fas fa-chevron-down"></i></button>
               </td>
             </tr>
           </tbody>
@@ -111,7 +111,7 @@ import RowPopupState from './row-popup/RowPopupState'
 import RowPopup from './row-popup/RowPopup.vue'
 const rowPopupState = new RowPopupState();
 
-const COVERAGE_PAGE_SIZE = 48;
+const COVERAGE_PAGE_SIZE = 8;
 
 export default {
   name: "CoverageResult",  
