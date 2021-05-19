@@ -192,7 +192,7 @@ export default {
         this.currentPage++;
         this.filteredRows = this.getPage(this.currentPage);
 
-        document.getElementById('#vosr-coverage-result').scrollIntoView();
+        window.scrollTo(0, 0);
       }      
     },
     previous() {
@@ -200,7 +200,7 @@ export default {
         this.currentPage--; 
         this.filteredRows = this.getPage(this.currentPage);
 
-        document.getElementById('#vosr-coverage-result').scrollIntoView();
+        window.scrollTo(0, 0);
       }
     },
     getPage(currentPage) {
