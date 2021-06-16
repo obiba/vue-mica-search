@@ -71,6 +71,20 @@
 
     </template>
 
+    <template v-else-if="criterion.type === 'BOOLEAN'">
+      <div class="container">
+        <div class="form-check">
+          <input class="form-check-input" type="radio" v-bind:id="'radio-' + vocabulary.name + '-in'" v-bind:name="vocabulary.name + '-terms-choice'" value="in" v-model="criterion.operator" v-on:change="onInput()">
+          <label class="form-check-label" v-bind:for="'radio-' + vocabulary.name + '-in'">{{ "search.in" | translate }}</label>
+        </div>
+        <div class="form-check">
+          <input class="form-check-input" type="radio" v-bind:id="'radio-' + vocabulary.name + '-not-in'" v-bind:name="vocabulary.name + '-terms-choice'" value="out" v-model="criterion.operator" v-on:change="onInput()">
+          <label class="form-check-label" v-bind:for="'radio-' + vocabulary.name + '-not-in'">{{ "search.out" | translate }}</label>
+        </div>
+      </div>
+
+    </template>
+      
     <template v-else>
 
     <div class="container">

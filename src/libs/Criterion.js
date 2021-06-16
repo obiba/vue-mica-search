@@ -12,6 +12,10 @@ function isMatchQuery(vocabulary) {
   return !Array.isArray(vocabulary.terms) && (vocabulary.attributes || []).filter(attribute => (attribute.key === "localized" && "true" === attribute.value) || (attribute.key === "type" && attribute.value === "string")).length > 0;
 }
 
+function isBooleanQuery(vocabulary) {
+  return (vocabulary.attributes || []).filter(attribute => attribute.key === "type" && attribute.value === "boolean").length > 0;
+}
+
 function findTerm(vocabulary, termName) {
   const found = (vocabulary.terms || []).filter(term => term.name === termName);
   return found.length > 0 ? found[0] : undefined;
@@ -42,6 +46,8 @@ export default class Criterion {
       type = "NUMERIC";
     } else if(isMatchQuery(vocabulary)) {
       type = "MATCH";
+    } else if (isBooleanQuery(vocabulary)) {
+      type = "BOOLEAN";
     }
 
     return type;
@@ -56,6 +62,7 @@ export default class Criterion {
       switch(type) {
         case "TERMS":
         case "NUMERIC":
+        case "BOOLEAN":  
           found = (input.args[0] || "").split(/\./)[1] === vocabulary.name;
           
           break;
@@ -121,6 +128,9 @@ export default class Criterion {
     } else if (isNumericQuery(this.vocabulary)) {
       this._operator = "between";
       this.value = [];
+    } else if (isBooleanQuery(this.vocabulary)) {
+      this._operator = "in";
+      this.value = true;
     } else {
       this._operator = "match";
       this.value = "";
@@ -148,6 +158,9 @@ export default class Criterion {
           this.value = [];
         }
 
+        break;
+      case "BOOLEAN":
+          this.value = true
         break;
       default:
         if (["missing", "exists"].indexOf(this.operator) > -1) {
@@ -189,6 +202,9 @@ export default class Criterion {
         }
 
         break;
+        case "BOOLEAN":
+          this.value = input.args[1];
+        break;    
       default:
         this.value = input.args[0];
 
@@ -237,6 +253,11 @@ export default class Criterion {
         query.push(this.value);
 
         break;
+      case "BOOLEAN":
+        query.push(`${taxonomy}.${this.vocabulary.name}`);
+        query.push(this.value);
+
+        break;  
       default: 
         if (!stringIsNullOrEmpty(this.value)) {
           query.push(this.value);
@@ -279,6 +300,8 @@ export default class Criterion {
       }
 
       return `${localizeStringFunction(this.vocabulary.title)}${text}`;
+    } else if (this.type === "BOOLEAN") {
+      return `${localizeStringFunction(this.vocabulary.title)}`;
     } else {
       let text = "";
       if (!stringIsNullOrEmpty(this.value)) {

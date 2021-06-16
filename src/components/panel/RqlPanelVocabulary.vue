@@ -33,6 +33,15 @@
 
   </template>
 
+  <template v-else-if="criterion.type === 'BOOLEAN'">
+
+    <div class="form-check">
+      <input type="checkbox" v-bind:id="vocabulary.name" v-bind:value="true" v-model="criterion.value" v-on:change="onInput()" class="form-check-input">
+      <label class="form-check-label text-break" v-bind:for="vocabulary.name">{{ vocabulary.title | localize-string }}</label>
+    </div>
+
+  </template>
+
   <template v-else>
 
     <input type="text" class="form-control" v-model="criterion.value" v-on:change="onInput()">
