@@ -28,8 +28,8 @@
         <div class="card-header bg-light">
           <span class="panel-vocabulary-title" v-bind:title="vocabulary.description | localize-string">{{ vocabulary.title | localize-string }}</span>
           <span class="float-right">
-            <button type="button" class="btn btn-link btn-sm pt-0 pb-0" v-if="canDoSelectAll(vocabulary)" v-on:click="selectAll(vocabulary)"><span aria-hidden="true">{{ "select-all" | translate }}</span></button>
-            <button type="button" class="btn btn-link btn-sm pt-0 pb-0" v-if="hasAssociatedQuery(vocabulary)" v-on:click="clear(vocabulary)"><span aria-hidden="true">{{ "clear-selection" | translate }}</span></button>
+            <button type="button" v-bind:id="vocabulary.name + '-select-all'" class="btn btn-link btn-sm pt-0 pb-0" v-if="canDoSelectAll(vocabulary)" v-on:click="selectAll(vocabulary)"><span aria-hidden="true">{{ "select-all" | translate }}</span></button>
+            <button type="button" v-bind:id="vocabulary.name + '-clear-selection'" class="btn btn-link btn-sm pt-0 pb-0" v-if="hasAssociatedQuery(vocabulary)" v-on:click="clear(vocabulary)"><span aria-hidden="true">{{ "clear-selection" | translate }}</span></button>
           </span>      
         </div>
         <div class="card-body">
