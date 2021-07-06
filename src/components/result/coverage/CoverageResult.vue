@@ -37,7 +37,7 @@
             </tr>
             <tr>
               <th v-bind:colspan="table.cols.colSpan"></th>
-              <th v-for="(header, index) in table.termHeaders" v-bind:key="index" v-bind:title="header.entity.descriptions[0].value">
+              <th v-for="(header, index) in table.termHeaders" v-bind:key="index" v-bind:title="header.entity.descriptions | localize-string">
                 <a href v-on:click="updateQuery($event, null, header, 'variables')">
                   <span>{{header.hits.toLocaleString()}}</span>
                 </a>
