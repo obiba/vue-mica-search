@@ -35,7 +35,8 @@ const DEFAULT_GRAPH_PROCESSORS = {
     },
     layoutObject: {
       yaxis: {
-        automargin: true
+        automargin: true,
+        ticksuffix: ' '
       }
     }
   },
