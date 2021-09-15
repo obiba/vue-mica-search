@@ -16,7 +16,8 @@ export default {
   name: "GraphicsResult",
   props: {
     chartOptions: Array,
-    hideHeader: Boolean
+    hideHeader: Boolean,
+    taxonomy: Object
   },
   components: {
     GraphicResult
@@ -39,9 +40,13 @@ export default {
         this.chartOptions.forEach((options) => {
           const aggData = studyResult.aggs.filter((item => item.aggregation === options.agg)).pop();
           if (aggData) {
-            const [canvasData, tableData] = this.parser.parse(aggData, options, this.totalHits);
+            if (this.taxonomy) {
+              options.taxonomy = this.taxonomy;
+            }
+
+            const [plotData, tableData] = this.parser.parse(aggData, options, this.totalHits);
             if (tableData.rows.length>0) {
-              this.chartDatasets.push({canvasData, tableData, options});
+              this.chartDatasets.push({plotData, tableData, options});
             }
           }
         });
