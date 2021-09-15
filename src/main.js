@@ -9,6 +9,9 @@ import GraphicResult from 'components/result/graphics/GraphicResult.vue'
 import RqlQueryBuilder from 'components/builder/RqlQueryBuilder.vue'
 import RqlPanel from 'components/panel/RqlPanel.vue'
 
+import SearchGraph from 'components/search-graph/SearchGraph.vue'
+import SearchGraphTable from 'components/search-graph/SearchGraphTable.vue'
+
 function install(Vue, options) {
   VariablesResult.mixins = [options.mixin];
   Vue.component(VariablesResult.name, VariablesResult);
@@ -30,7 +33,13 @@ function install(Vue, options) {
 
   RqlPanel.mixins = [options.mixin];
   Vue.component('rql-panel', RqlPanel);
-  
+
+  SearchGraph.mixins = [options.mixin];
+  Vue.component('search-graph', SearchGraph);
+
+  SearchGraphTable.mixins = [options.mixin];
+  Vue.component('search-graph-table', SearchGraphTable);
+
   GraphicsResult.mixins = [options.mixin];
   GraphicResult.mixins = [options.mixin];
   Vue.component(GraphicsResult.name, GraphicsResult);

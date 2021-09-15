@@ -1,9 +1,9 @@
 <template>
-  <div>  
+  <div>
     <div v-for="(chartDataset, index) in chartDatasets" v-bind:key="index">
       <graphic-result v-bind:chart-dataset="chartDataset" v-bind:total-hits="totalHits" v-bind:position="index" v-bind:hideHeader="hideHeader"></graphic-result>
     </div>
-    <div id="vosr-charts-container">    
+    <div id="vosr-charts-container">
     </div>
   </div>
 </template>
@@ -13,7 +13,7 @@ import GraphicsResultParser from "libs/parsers/GraphicsResultParser";
 import GraphicResult from "./GraphicResult.vue";
 
 export default {
-  name: "GraphicsResult",  
+  name: "GraphicsResult",
   props: {
     chartOptions: Array,
     hideHeader: Boolean
@@ -21,8 +21,8 @@ export default {
   components: {
     GraphicResult
   },
-  data() {   
-    return {      
+  data() {
+    return {
       totalHits: 0,
       chartDatasets: null,
       parser: new GraphicsResultParser(this.normalizePath),
@@ -32,7 +32,7 @@ export default {
     onResults(payload) {
       this.chartDatasets = []
       // TODO make sure any resultDto can be used
-      const studyResult = payload.response.studyResultDto;      
+      const studyResult = payload.response.studyResultDto;
       this.totalHits = studyResult.totalHits;
 
       if (this.totalHits > 0) {
@@ -51,9 +51,6 @@ export default {
   mounted() {
     console.debug(`Prop ${this.options} AGGS ${this.aggs}`);
     this.getEventBus().register('query-type-graphics-results',this.onResults.bind(this));
-
-
-
   },
   beforeDestroy() {
     this.getEventBus().unregister('query-type-graphics-results', this.onResults);
