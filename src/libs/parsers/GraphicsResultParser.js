@@ -88,7 +88,8 @@ const DEFAULT_GRAPH_PROCESSORS = {
         colorscale: Array.isArray(colors) ? [[0, "#f3f3f3"]].concat(colors.map((color, index) => [((index + 1) / colors.length), color])) : VALID_CHOROPLETH_COLORSCALE_NAMES.indexOf(colors) > -1 ? colors : "Blues",
         colorbar: {
           thickness: 10,
-          ypad: 150
+          ypad: 150,
+          dtick: "D1"
         }
       }];
     },
