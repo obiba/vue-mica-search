@@ -110,7 +110,7 @@ const DEFAULT_GRAPH_PROCESSORS = {
         countrywidth: 0.25,
         showcountries: true,
         projection: {
-          type: "mercator",
+          type: "robinson",
         }
       },
       margin: {
