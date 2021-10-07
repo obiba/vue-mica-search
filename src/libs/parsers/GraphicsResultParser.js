@@ -77,7 +77,7 @@ const DEFAULT_GRAPH_PROCESSORS = {
         text.push(val.title);
       });
 
-      return [{
+      const trace = {
         type: "choropleth",
         locations,
         text,
@@ -85,12 +85,23 @@ const DEFAULT_GRAPH_PROCESSORS = {
         zmax: Math.max(...z),
         zmin: 0,
         hoverinfo: "text+z",
-        colorscale: Array.isArray(colors) ? [[0, "#f3f3f3"]].concat(colors.map((color, index) => [((index + 1) / colors.length), color])) : VALID_CHOROPLETH_COLORSCALE_NAMES.indexOf(colors) > -1 ? colors : "Blues",
         colorbar: {
           thickness: 10,
           ypad: 150
         }
-      }];
+      }
+
+      if (Array.isArray(colors)) {
+        trace.colorscale = [[0, "#f3f3f3"]].concat(colors.map((color, index) => [((index + 1) / colors.length), color]));
+      } else if (VALID_CHOROPLETH_COLORSCALE_NAMES.indexOf(colors) > -1) {
+        trace.colorscale = colors;
+        trace.reversescale = true;
+      } else {
+        trace.colorscale = "Blues";
+        trace.reversescale = true;
+      }
+
+      return [trace];
     },
     layoutObject: {
       geo: {
