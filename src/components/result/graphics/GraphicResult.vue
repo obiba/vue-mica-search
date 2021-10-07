@@ -14,7 +14,7 @@
         <div v-bind:id="chartContainerId" class="col-sm-12 col-xl-6 my-auto"></div>
 
         <div v-bind:id="tableContainerId" class="col-sm-12 col-xl-6 overflow-auto" style="max-height: 24em">
-          <table id="vosr-datasets-result" class="table table-striped" width="100%">
+          <table id="vosr-datasets-result" class="table table-striped ml-sm-1 ml-3" width="100%">
             <thead>
               <tr class="row" v-on:click.prevent="resetSort()">
                 <th class="col" v-for="(col, index) in chartDataset.tableData.cols" v-bind:key="index">
