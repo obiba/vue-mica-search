@@ -115,7 +115,7 @@ const DEFAULT_GRAPH_PROCESSORS = {
       },
       margin: {
         t: 0,
-        r: 0,
+        r: -20,
         b: 0,
         l: 0
       }
