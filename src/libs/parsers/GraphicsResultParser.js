@@ -29,6 +29,10 @@ const DEFAULT_GRAPH_PROCESSORS = {
       }];
     },
     layoutObject: {
+      margin: {
+        t: 50,
+        r: -20
+      },
       yaxis: {
         automargin: true,
         ticksuffix: ' '
@@ -59,6 +63,11 @@ const DEFAULT_GRAPH_PROCESSORS = {
         values,
         labels
       }];
+    },
+    layoutObject: {
+      margin: {
+        t: 50
+      }
     }
   },
   geo: {
