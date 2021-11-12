@@ -120,7 +120,7 @@ export default {
   },
   methods: {
     renderCanvas() {
-      Plotly.newPlot(this.chartContainerId, this.chartDataset.plotData.data, this.chartDataset.plotData.layout, {modeBarButtonsToRemove: ['select2d', 'lasso2d', 'pan2d', 'autoScale2d', 'zoom2d']});
+      Plotly.newPlot(this.chartContainerId, this.chartDataset.plotData.data, this.chartDataset.plotData.layout, {responsive: true, displayModeBar: false});
     },
     onCountClick(event, vocabulary, term, queryOverride) {
       event.preventDefault();
