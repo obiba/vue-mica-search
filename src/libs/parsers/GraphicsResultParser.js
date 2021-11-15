@@ -29,11 +29,6 @@ const DEFAULT_GRAPH_PROCESSORS = {
       }];
     },
     layoutObject: {
-      margin: {
-        t: 20,
-        r: -20,
-        b: 40
-      },
       yaxis: {
         automargin: true,
         ticksuffix: ' '
