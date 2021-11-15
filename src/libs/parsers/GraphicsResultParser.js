@@ -30,9 +30,8 @@ const DEFAULT_GRAPH_PROCESSORS = {
     },
     layoutObject: {
       margin: {
-        t: 0,
-        r: -20,
-        b: 0
+        t: 20,
+        b: 40
       },
       yaxis: {
         automargin: true,
@@ -68,10 +67,7 @@ const DEFAULT_GRAPH_PROCESSORS = {
     layoutObject: {
       margin: {
         t: 0,
-        b: 0
-      },
-      legend: {
-        x: 0.875
+        b: 40
       }
     }
   },
