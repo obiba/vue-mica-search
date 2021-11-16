@@ -17,6 +17,8 @@ const DEFAULT_GRAPH_PROCESSORS = {
         x.push(val.count);
         y.push(val.title);
       });
+      
+      const width = Array(x.length).fill(x.length* 0.1);
 
       return [{
         type: "bar",
@@ -25,7 +27,8 @@ const DEFAULT_GRAPH_PROCESSORS = {
           color: colors
         },
         x: x.reverse(),
-        y: y.reverse()
+        y: y.reverse(),
+        width
       }];
     },
     layoutObject: {
@@ -97,7 +100,7 @@ const DEFAULT_GRAPH_PROCESSORS = {
         hoverinfo: "text+z",
         colorbar: {
           thickness: 10,
-          ypad: 150
+          ypad: 50
         }
       }
 
