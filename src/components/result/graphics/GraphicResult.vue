@@ -120,7 +120,13 @@ export default {
   },
   methods: {
     renderCanvas() {
-      Plotly.newPlot(this.chartContainerId, this.chartDataset.plotData.data, this.chartDataset.plotData.layout, {responsive: true, displayModeBar: false});
+      let layout = this.chartDataset.plotData.layout || {};
+
+      if ((this.chartDataset.options.type || 'bar') === 'bar') {
+        layout.height = (2*1.42857)*12*(this.chartDataset.plotData.data[0] || {}).x;
+      }
+
+      Plotly.newPlot(this.chartContainerId, this.chartDataset.plotData.data, layout, {responsive: true, displayModeBar: false});
     },
     onCountClick(event, vocabulary, term, queryOverride) {
       event.preventDefault();
