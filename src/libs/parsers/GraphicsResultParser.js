@@ -17,7 +17,7 @@ const DEFAULT_GRAPH_PROCESSORS = {
         x.push(val.count);
         y.push(val.title);
       });
-      
+
       const width = Array(x.length).fill(x.length* 0.1);
 
       return [{
@@ -69,7 +69,7 @@ const DEFAULT_GRAPH_PROCESSORS = {
     },
     layoutObject: {
       margin: {
-        t: 0,
+        t: 50,
         b: 40
       }
     }
